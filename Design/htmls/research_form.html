@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Paper Submission</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f7ff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header i {
+            font-size: 2rem;
+            color: #3498db;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        label i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .required::after {
+            content: "*";
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-file-alt"></i> Research Paper Submission</h1>
+            <p>Please fill all required fields (*)</p>
+        </div>
+
+        <form>
+            <div class="form-section">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label class="required"><i class="fas fa-book"></i>Paper Title</label>
+                        <input type="text" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="required"><i class="fas fa-users"></i>Authors</label>
+                        <input type="text" placeholder="Separate authors with commas" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="required"><i class="fas fa-university"></i>Affiliations</label>
+                        <textarea rows="3" required></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-id-badge"></i>ORCID iD</label>
+                        <input type="text" placeholder="0000-0000-0000-0000">
+                    </div>
+                </div>
+
+                <div class="input-group full-width">
+                    <label class="required"><i class="fas fa-align-left"></i>Abstract</label>
+                    <textarea rows="5" required></textarea>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3><i class="fas fa-structure"></i> Structural Components</h3>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label><i class="fas fa-play"></i>Introduction</label>
+                        <textarea rows="4"></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-book-open"></i>Literature Review</label>
+                        <textarea rows="4"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-flask"></i>Methodology</label>
+                        <textarea rows="4"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-chart-bar"></i>Results</label>
+                        <textarea rows="4"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-comments"></i>Discussion</label>
+                        <textarea rows="4"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-flag-checkered"></i>Conclusion</label>
+                        <textarea rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label><i class="fas fa-bookmark"></i>Journal Name</label>
+                        <input type="text">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label><i class="fas fa-hashtag"></i>Volume/Issue</label>
+                        <input type="text">
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-link"></i>DOI</label>
+                        <input type="text">
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-balance-scale"></i>License</label>
+                        <select>
+                            <option>CC BY 4.0</option>
+                            <option>CC BY-SA 4.0</option>
+                            <option>All Rights Reserved</option>
+                            <option>Public Domain</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label><i class="fas fa-book"></i>Bibliography</label>
+                        <textarea rows="6" placeholder="Add references in APA/MLA format"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="reset" class="cancel-btn">Cancel</button>
+                <button type="submit" class="submit-btn">Submit Paper</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

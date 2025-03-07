@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural Events Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f7ff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header i {
+            font-size: 2rem;
+            color: #3498db;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        label i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-users"></i> Cultural Events Registration</h1>
+            <p>Fields marked with <span class="required">*</span> are required.</p>
+        </div>
+
+        <form>
+            <!-- Select Category -->
+            <div class="input-group">
+                <label><i class="fas fa-tag"></i>Select Category <span class="required">*</span></label>
+                <select required>
+                    <option value="">Choose...</option>
+                    <option>Cultural Club</option>
+                    <option>Technical Club</option>
+                    <option>Professional Society</option>
+                </select>
+            </div>
+
+            <!-- Name of the Event -->
+            <div class="input-group">
+                <label><i class="fas fa-signature"></i>Name of the Event <span class="required">*</span></label>
+                <input type="text" placeholder="Enter event name" required>
+            </div>
+
+            <!-- Location of the Event -->
+            <div class="input-group">
+                <label><i class="fas fa-map-marker-alt"></i>Location of the Event <span class="required">*</span></label>
+                <input type="text" placeholder="Enter event location" required>
+            </div>
+
+            <!-- Date of the Event -->
+            <div class="input-group">
+                <label><i class="fas fa-calendar-alt"></i>Date of the Event <span class="required">*</span></label>
+                <input type="date" required>
+            </div>
+
+            <!-- Awards if any -->
+            <div class="input-group">
+                <label><i class="fas fa-trophy"></i>Awards if any</label>
+                <select>
+                    <option value="">Choose...</option>
+                    <option>Best Performance</option>
+                    <option>Best Decor</option>
+                    <option>Best Theme</option>
+                    <option>Best Costume</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <!-- Proof (File Upload) -->
+            <div class="input-group">
+                <label><i class="fas fa-file-upload"></i>Proof (if any)</label>
+                <input type="file">
+            </div>
+
+            <!-- Description -->
+            <div class="input-group">
+                <label><i class="fas fa-align-left"></i>Description</label>
+                <textarea rows="4" placeholder="Provide a brief description of the event"></textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <button type="reset" class="cancel-btn">Cancel</button>
+                <button type="submit" class="submit-btn">Continue</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

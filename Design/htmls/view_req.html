@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Request</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f7ff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .request-details {
+            margin-bottom: 2rem;
+        }
+
+        .request-details p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: #34495e;
+        }
+
+        .request-details p strong {
+            color: #2c3e50;
+        }
+
+        .proof-section {
+            margin-bottom: 2rem;
+        }
+
+        .proof-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .proof-section a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .proof-section a:hover {
+            background: #2980b9;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .action-buttons button.approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .action-buttons button.approve:hover {
+            background: #218838;
+        }
+
+        .action-buttons button.reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .action-buttons button.reject:hover {
+            background: #c82333;
+        }
+
+        .back-button {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-button a {
+            text-decoration: none;
+            color: white;
+            background-color: #3498db;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-button a:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-file-alt"></i> View Request</h2>
+
+        <div class="request-details">
+            <p><strong>Category:</strong> Workshop</p>
+            <p><strong>Location:</strong> NIT Calicut</p>
+            <p><strong>Date:</strong> 12/04/2021</p>
+            <p><strong>Awards:</strong> None</p>
+        </div>
+
+        <div class="proof-section">
+            <h3><i class="fas fa-file-pdf"></i> Proof File</h3>
+            <a href="#" target="_blank">View Proof File</a>
+        </div>
+
+        <div class="action-buttons">
+            <button class="approve"><i class="fas fa-check"></i> Approve</button>
+            <button class="reject"><i class="fas fa-times"></i> Reject</button>
+        </div>
+
+        <div class="back-button">
+            <a href="#"><i class="fas fa-arrow-left"></i> Back</a>
+        </div>
+    </div>
+</body>
+</html>

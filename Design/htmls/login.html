@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f7ff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .login-container i {
+            color: #3498db;
+            font-size: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        .input-group i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .forgot-pass {
+            display: block;
+            text-align: right;
+            margin-top: 0.5rem;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-pass:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .signin-btn {
+            background: #3498db;
+            color: white;
+        }
+
+        .signin-btn:hover {
+            background: #2980b9;
+        }
+
+        .nitc-login {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .nitc-login:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <i class="fas fa-user-circle"></i>
+        <h1>Login</h1>
+
+        <form>
+            <div class="input-group">
+                <label><i class="fas fa-user-tag"></i> Select Role</label>
+                <select required>
+                    <option value="">Choose...</option>
+                    <option>Student</option>
+                    <option>Faculty</option>
+                    <option>Admin</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-envelope"></i> Institute Email</label>
+                <input type="email" placeholder="Enter institute email" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" placeholder="Enter password" required>
+            </div>
+
+            <a href="#" class="forgot-pass">Forgot Password?</a>
+            <button type="submit" class="btn signin-btn">Sign In</button>
+            <button type="button" class="btn nitc-login"><i class="fas fa-google"></i> Login using NITC Mail</button>
+        </form>
+    </div>
+</body>
+</html>
+

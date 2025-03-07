@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Verifications</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f7ff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-icons a {
+            text-decoration: none;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+
+        .action-icons a:hover {
+            color: #3498db;
+        }
+
+        .back-button {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .back-button a {
+            text-decoration: none;
+            color: white;
+            background-color: #3498db;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-button a:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-clock"></i> Pending Verifications</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Roll No.</th>
+                    <th>Section</th>
+                    <th>Submission</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Christs Charls</td>
+                    <td>B220244CS</td>
+                    <td>C503</td>
+                    <td>Internship</td>
+                    <td class="action-icons">
+                        <a href="#" title="View"><i class="fas fa-eye"></i></a>
+                        <a href="#" title="Verify"><i class="fas fa-check"></i></a>
+                        <a href="#" title="Reject"><i class="fas fa-times"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Stephari S</td>
+                    <td>B220544CS</td>
+                    <td>C504</td>
+                    <td>Technical event</td>
+                    <td class="action-icons">
+                        <a href="#" title="View"><i class="fas fa-eye"></i></a>
+                        <a href="#" title="Verify"><i class="fas fa-check"></i></a>
+                        <a href="#" title="Reject"><i class="fas fa-times"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jeev Joe Jaison</td>
+                    <td>B220356CS</td>
+                    <td>C503</td>
+                    <td>Cultural event</td>
+                    <td class="action-icons">
+                        <a href="#" title="View"><i class="fas fa-eye"></i></a>
+                        <a href="#" title="Verify"><i class="fas fa-check"></i></a>
+                        <a href="#" title="Reject"><i class="fas fa-times"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="back-button">
+            <a href="#"><i class="fas fa-arrow-left"></i> Back</a>
+        </div>
+    </div>
+</body>
+</html>

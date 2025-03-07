@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f7ff;
+            padding: 1rem;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            height: 90vh;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .card button {
+            margin-top: 0.75rem;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .card button:hover {
+            background: #2980b9;
+        }
+
+        .activities {
+            margin-top: 1.5rem;
+        }
+
+        .activities h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .activities ul {
+            list-style: none;
+        }
+
+        .activities ul li {
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .activities ul li:last-child {
+            border-bottom: none;
+        }
+
+        .activities ul li a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 500;
+        }
+
+        .activities ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .add-button {
+            margin-top: 0.75rem;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .add-button:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-user-graduate"></i> Student Dashboard</h1>
+            <div class="nav-menu">
+                <a href="#"><i class="fas fa-home"></i> Home</a>
+                <a href="#"><i class="fas fa-info-circle"></i> About</a>
+                <a href="#"><i class="fas fa-comments"></i> Feedback</a>
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard">
+            <div class="card">
+                <h3><i class="fas fa-plus"></i> Add Cultural Event</h3>
+                <button class="add-button">Add</button>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-plus"></i> Add Technical Event</h3>
+                <button class="add-button">Add</button>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-plus"></i> Add Sports Event</h3>
+                <button class="add-button">Add</button>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-plus"></i> Add Internship</h3>
+                <button class="add-button">Add</button>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-plus"></i> Add Placement</h3>
+                <button class="add-button">Add</button>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-plus"></i> Add Society/Clubs</h3>
+                <button class="add-button">Add</button>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-plus"></i> Add Research Paper</h3>
+                <button class="add-button">Add</button>
+            </div>
+        </div>
+
+        <!-- Activities List -->
+        <div class="activities">
+            <h2><i class="fas fa-list"></i> My Activities</h2>
+            <ul>
+                <li>Cultural Events <a href="#">View Details</a></li>
+                <li>Technical Events <a href="#">View Details</a></li>
+                <li>Internships <a href="#">View Details</a></li>
+                <li>Placement <a href="#">View Details</a></li>
+                <li>Societies/Clubs <a href="#">View Details</a></li>
+                <li>Research Papers <a href="#">View Details</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Directory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f5ff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 40px 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .student-table th,
+        .student-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .student-table th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        .student-table tr:hover {
+            background: #f8f9ff;
+            transform: scale(1.02);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .section-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .cs03 { background: #e8f4ff; color: #2980b9; }
+        .cs04 { background: #fff3e0; color: #f39c12; }
+
+        .action-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .student-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-users"></i>Student Directory</h1>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search students...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </div>
+
+        <table class="student-table" id="studentTable">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-user"></i> Name</th>
+                    <th><i class="fas fa-id-card"></i> Roll No.</th>
+                    <th><i class="fas fa-building"></i> Section</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><i class="fas fa-user-graduate"></i> Cirriss Charlis</td>
+                    <td>B220244C5</td>
+                    <td><span class="section-badge cs03">CS03</span></td>
+                </tr>
+                <tr>
+                    <td><i class="fas fa-user-graduate"></i> Sreehari S</td>
+                    <td>B220548C5</td>
+                    <td><span class="section-badge cs04">CS04</span></td>
+                </tr>
+                <tr>
+                    <td><i class="fas fa-user-graduate"></i> Jeev Joe Jaison</td>
+                    <td>B220335C5</td>
+                    <td><span class="section-badge cs03">CS03</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="action-btns">
+            <button class="btn btn-secondary" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button class="btn btn-primary" onclick="exportToExcel()">
+                <i class="fas fa-file-excel"></i> Export as Excel
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.student-table tbody tr');
+            
+            rows.forEach(row => {
+                const name = row.children[0].textContent.toLowerCase();
+                const rollNo = row.children[1].textContent.toLowerCase();
+                const section = row.children[2].textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || rollNo.includes(searchTerm) || section.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Export to Excel functionality
+        function exportToExcel() {
+            const table = document.getElementById('studentTable');
+            const ws = XLSX.utils.table_to_sheet(table);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Students");
+            
+            // Generate current date for filename
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+            
+            XLSX.writeFile(wb, Student_Directory_${dateString}.xlsx);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #f0f7ff;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    padding: 2rem;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: #34495e;
+    margin-bottom: 8px;
+}
+
+label svg {
+    margin-right: 8px;
+    color: #3498db;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+    transition: 0.3s;
+}
+
+.input-container input,
+.input-container select,
+.input-container textarea {
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    background: transparent;
+    padding-left: 8px;
+}
+
+.input-container:focus-within {
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+}
+
+.required {
+    color: #e74c3c;
+    margin-left: 3px;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.submit-btn {
+    background: #3498db;
+    color: white;
+}
+
+.cancel-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}

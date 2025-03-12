@@ -42,6 +42,7 @@ public class Student implements UserDetails {
 
     public boolean checkPassword(String rawPassword) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        System.out.print(this.password);
         return encoder.matches(rawPassword, this.password);
     }
 

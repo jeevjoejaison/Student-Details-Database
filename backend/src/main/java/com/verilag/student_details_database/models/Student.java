@@ -1,134 +1,52 @@
 package com.verilag.student_details_database.models;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "STUDENT") // Ensure table name matches the DB
-public class Student implements UserDetails {
+@Table(name = "STUDENT")
+@Getter
+@Setter
+@NoArgsConstructor
+public class Student extends User {
 
-    @Id
-    @Column(name = "ROLLNUMBER", length = 10)
+    @Column(name = "ROLL_NUMBER", length = 10, unique = true)
+    @NotBlank(message = "Roll number is required")
     private String rollNumber;
 
     @Column(name = "NAME", length = 100)
+    @NotBlank(message = "Name is required")
     private String name;
 
     @Column(name = "DEPARTMENT", length = 50)
+    @NotBlank(message = "Department is required")
     private String department;
 
     @Column(name = "SECTION", length = 10)
+    @NotBlank(message = "Section is required")
     private String section;
 
-    @Column(name = "FA", length = 50)
-    private String fa;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EMAIL")
+    private FA fa; // Reference to FA
 
-    @Column(name = "EMAIL", length = 100, unique = true)
-    private String email;
-
-    @Column(name = "PASSWORD", length = 100)
-    private String password;
-
-    public void setPassword(String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        this.password = encoder.encode(password);
-    }
-
-    public boolean checkPassword(String rawPassword) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.print(this.password);
-        return encoder.matches(rawPassword, this.password);
-    }
-
-    // UserDetails methods
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public String getRollNumber() {
-        return rollNumber;
-    }
-
-    public void setRollNumber(String rollNumber) {
+    // Constructor for Student
+    public Student(String email, String password, String rollNumber, String name, String department, String section, FA fa) {
+        super(email, password, Role.STUDENT);
         this.rollNumber = rollNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
         this.department = department;
-    }
-
-    public String getSection() {
-        return section;
-    }
-
-    public void setSection(String section) {
         this.section = section;
-    }
-
-    public String getFa() {
-        return fa;
-    }
-
-    public void setFa(String fa) {
         this.fa = fa;
     }
 
-    public String getEmail() {
-        return email;
+    public boolean checkPassword(String password, PasswordEncoder passwordEncoder) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'checkPassword'");
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    
 }

@@ -20,6 +20,7 @@ public class SportsEventController {
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createEvent(@ModelAttribute SportsEventDTO dto) {
         try {
+            
             sportsEventService.saveEvent(dto);
         } catch (IOException e) {
             System.out.println("Error in saving Sports Event");

@@ -20,6 +20,7 @@ public class TechnicalEventsController {
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createEvent(@ModelAttribute TechnicalEventDto dto) {
         try {
+            
             technicalEventService.saveEvent(dto);
             return ResponseEntity.ok("Event created successfully");
         } catch (IOException e) {

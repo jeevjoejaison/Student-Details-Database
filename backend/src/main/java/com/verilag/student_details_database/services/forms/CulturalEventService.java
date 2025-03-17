@@ -30,7 +30,8 @@ public class CulturalEventService {
             culturalEvent.setDescription(dto.getDescription());
             culturalEvent.setEventName(dto.getEventName());
             culturalEvent.setLocation(dto.getLocation());
-            culturalEvent.setProof(dto.getProof().getBytes());
+            if(dto.getProof()!=null)
+                culturalEvent.setProof(dto.getProof().getBytes());
         
             return repository.save(culturalEvent);
     }

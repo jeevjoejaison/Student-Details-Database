@@ -1,12 +1,13 @@
 package com.verilag.student_details_database.models.authModels;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class AuthenticationResponse {
-    private String token;
+    private String message;
+    private boolean success;
 }

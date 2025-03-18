@@ -12,6 +12,11 @@ import InternshipEntries from "./views/student/view_details/internships/Internsh
 import PlacementEntries from "./views/student/view_details/placements/Placements";
 import SportsEvents from "./views/student/view_details/sports/Sports";
 import ViewSocietiesClubs from "./views/student/view_details/societiesAndClubs/SocietiesAndClubs";
+import FacultyAccount from "./views/Admin/accountManagement/createFaculty/createFaculty";
+import StudentAccount from "./views/Admin/accountManagement/createStudent/createStudent";
+import DepartmentForm from "./views/Admin/accountManagement/manageStudent/manageStudent";
+import FaDepartmentForm from "./views/Admin/accountManagement/manageFaculty/manageFaculty";
+import AdminDashboard from "./views/Admin/dashboard/dashboard";
 
 function App() {
   return (
@@ -31,6 +36,13 @@ function App() {
         <Route path="/societies-clubs" element={<ViewSocietiesClubs/>}/>
         <Route path="/research-paper-form" element={<PlacementEntries/>}/>
         <Route path="/sports-events" element={<SportsEvents/>}/>
+
+        <Route path="/admin/create-faculty" element={<FacultyAccount/>}/>
+        <Route path="/admin/create-student" element={<StudentAccount/>}/>
+        <Route path="/admin/manage-student" element={<DepartmentForm/>}/>
+        <Route path="/admin/manage-faculty" element={<FaDepartmentForm/>}/>
+        <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+        
       </Routes>
     </Router>
   );

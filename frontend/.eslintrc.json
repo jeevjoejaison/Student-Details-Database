@@ -1,0 +1,17 @@
+{
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "env": {
+      "browser": true,
+      "node": true,
+      "react/jsx-runtime": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "plugins": ["react", "react-hooks"],
+    "rules": {
+      // Add or modify ESLint rules here if needed
+    }
+  }
+  

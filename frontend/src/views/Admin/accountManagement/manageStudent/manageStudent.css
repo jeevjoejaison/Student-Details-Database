@@ -1,0 +1,186 @@
+/* Import FontAwesome at the top */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f0f2f5, #e3e9ef);
+    padding: 2rem;
+    text-align: center;
+    color: #333;
+    font-size: 16px;
+}
+
+/* Button Styles */
+.button {
+    display: inline-flex;
+    align-items: center;
+    width: 250px;
+    padding: 15px;
+    margin: 10px;
+    background: linear-gradient(45deg, #5865F2, #3b4f97);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+    background: linear-gradient(45deg, #4752C4, #3a4c85);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button i {
+    margin-right: 8px;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Content Box Styles */
+.content-box {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.content-box:hover {
+    transform: scale(1.02);
+}
+
+.content-box h3 {
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Dropdown and Button Styles */
+select, button {
+    padding: 12px;
+    margin: 5px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+select:focus, button:focus {
+    border-color: #5865F2;
+    outline: none;
+    background-color: #eef1f7;
+}
+
+/* Category List and Item Styles */
+.category-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.category {
+    width: 85%;
+    padding: 12px 25px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Remove Button */
+.remove-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.remove-btn:hover {
+    background: #c82333;
+    transform: scale(1.05);
+}
+
+.remove-btn i {
+    margin-right: 8px;
+}
+
+/* Add Category Button */
+.add-category-btn {
+    background: linear-gradient(45deg, #28a745, #218838);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-category-btn:hover {
+    background: linear-gradient(45deg, #218838, #1c7430);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-category-btn i {
+    margin-right: 8px;
+}
+
+/* Button Icon Integration */
+.add-category-btn i {
+    content: '\f067';  /* FontAwesome Icon for adding */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+.remove-btn i {
+    content: '\f00d';  /* FontAwesome Icon for remove */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+.button i {
+    content: '\f2b9';  /* FontAwesome Icon for a general button */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}

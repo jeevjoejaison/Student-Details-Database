@@ -1,0 +1,164 @@
+/* General Container Settings */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+/* Heading Styling */
+h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Form Group Settings */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Labels for Dropdowns */
+.form-group label {
+    display: block;
+    color: #34495e;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Styling for the Department Dropdown */
+.form-group select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.form-group select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Button Group */
+.button-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* Button Styling */
+.get-result {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    background: #28a745;
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.get-result:hover {
+    background: #218838;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+    display: block;
+    border-spacing: 0;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header Styling */
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
+    padding: 12px 15px;
+    text-align: left;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 150px; /* Increased min-width to ensure consistent column size */
+}
+
+/* Table Cell Styling */
+td {
+    padding: 12px 15px; /* Increased padding for consistency */
+    text-align: left;
+    color: #34495e;
+    border-bottom: 1px solid #f1f1f1;
+    min-width: 150px; /* Ensure body cells align with header */
+}
+
+/* Table Body Scroll */
+tbody {
+    display: block;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+/* Align Action Button */
+td .edit-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: #f0f2f5;
+    text-align: center;
+    width: 100%; /* Make the link take up the full cell width */
+    box-sizing: border-box; /* Ensures padding and width are calculated properly */
+}
+
+.edit-link:hover {
+    text-decoration: underline;
+    background-color: #dfe6e9;
+}
+
+/* Back Button Styling */
+.buttons .back {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    width: auto;
+    max-width: 150px;
+    background: #dc3545;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.buttons .back:hover {
+    background: #c82333;
+}
+
+/* Icon Styling for the Back Button */
+.buttons .back i {
+    margin-right: 8px;
+}
+
+/* Add some spacing between buttons */
+.button-group button {
+    margin: 0 10px;
+}

@@ -1,0 +1,131 @@
+/* General Styles */
+.App {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Button Container Styles */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button i {
+  font-size: 16px;
+}
+
+/* Content Box Styles */
+.content-box {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-box h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+/* Dropdown Container Styles */
+.dropdown-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.dropdown-container select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.dropdown-container .button {
+  background-color: #28a745;
+}
+
+.dropdown-container .button:hover {
+  background-color: #218838;
+}
+
+/* Category List Styles */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.remove-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.remove-btn:hover {
+  background-color: #c82333;
+}
+
+.remove-btn i {
+  margin-right: 5px;
+}
+
+/* Add Button Styles */
+.add-btn {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: #138496;
+}
+
+.add-btn i {
+  margin-right: 5px;
+}

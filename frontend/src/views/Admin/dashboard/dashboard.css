@@ -65,14 +65,6 @@
   flex-grow: 1;
 }
 
-.dropdown-container .button {
-  background-color: #28a745;
-}
-
-.dropdown-container .button:hover {
-  background-color: #218838;
-}
-
 /* Category List Styles */
 .category-list {
   display: flex;
@@ -104,28 +96,4 @@
 
 .remove-btn:hover {
   background-color: #c82333;
-}
-
-.remove-btn i {
-  margin-right: 5px;
-}
-
-/* Add Button Styles */
-.add-btn {
-  background-color: #17a2b8;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.add-btn:hover {
-  background-color: #138496;
-}
-
-.add-btn i {
-  margin-right: 5px;
 }

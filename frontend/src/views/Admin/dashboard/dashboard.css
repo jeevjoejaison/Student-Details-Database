@@ -1,83 +1,101 @@
 /* General Styles */
-.App {
-  font-family: Arial, sans-serif;
+.dashboard-container {
   padding: 20px;
+  font-family: Arial, sans-serif;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Button Container Styles */
+/* Button Container */
 .button-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  flex-wrap: nowrap; /* Ensure buttons stay in a single row */
+  gap: 10px;
   margin-bottom: 30px;
+  overflow-x: auto; /* Add horizontal scroll if buttons overflow */
 }
 
 .button {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  justify-content: center;
+  padding: 10px;
+  background-color: #e6f2ff; /* Faded light blue */
+  color: #ffffff; /* Darker text for contrast */
   border: none;
-  border-radius: 5px;
+  border-radius: 8px; /* Slightly rounded corners */
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 0.9rem;
+  width: 120px; /* Smaller width for compact buttons */
+  height: 120px; /* Smaller height for compact buttons */
+  text-align: center;
 }
 
 .button:hover {
-  background-color: #0056b3;
+  background-color: #ccebf5; /* Slightly darker on hover */
+  transform: translateY(-2px);
 }
 
-.button i {
-  font-size: 16px;
+.button-icon {
+  margin-bottom: 8px; /* Space between icon and text */
+  font-size: 1.2rem; /* Slightly smaller icon size */
+  color: #f8f8f8; /* Blue icon color */
 }
 
-/* Content Box Styles */
-.content-box {
+/* Content Management Section */
+.content-management {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
 }
 
-.content-box h3 {
-  margin-top: 0;
-  color: #333;
-  font-size: 18px;
+.edit-dropdowns h4 {
+  font-size: 1.2rem;
+  color: #444;
+  margin-bottom: 15px;
 }
 
-/* Dropdown Container Styles */
 .dropdown-container {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
 }
 
 .dropdown-container select {
   padding: 8px;
+  border-radius: 8px; /* Slightly rounded corners */
   border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-  flex-grow: 1;
+  font-size: 1rem;
+  flex: 1;
 }
 
 .dropdown-container .button {
-  background-color: #28a745;
+  width: auto; /* Reset width for the fetch dropdowns button */
+  height: auto; /* Reset height for the fetch dropdowns button */
+  padding: 20px 20px;
 }
 
-.dropdown-container .button:hover {
-  background-color: #218838;
+/* Categories Section */
+.categories {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
 }
 
-/* Category List Styles */
+.categories h3 {
+  font-size: 1.5rem;
+  color: #444;
+  margin-bottom: 20px;
+}
+
 .category-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .category {
@@ -87,45 +105,45 @@
   padding: 10px;
   background-color: white;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
+  border-radius: 8px; /* Slightly rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.category:hover {
+  transform: translateY(-2px);
 }
 
 .remove-btn {
-  background-color: #dc3545;
+  background-color: #ff4d4d;
   color: white;
   border: none;
+  border-radius: 6px; /* Slightly rounded corners */
   padding: 5px 10px;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 12px;
   transition: background-color 0.3s ease;
 }
 
 .remove-btn:hover {
-  background-color: #c82333;
+  background-color: #ffffff;
 }
 
-.remove-btn i {
-  margin-right: 5px;
+.remove-icon {
+  margin-right: 0;
 }
 
-/* Add Button Styles */
-.add-btn {
-  background-color: #17a2b8;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
+.add-category-btn {
+  width: 150px; /* Smaller width */
+  background-color: #e6f2ff; /* Faded light blue */
+  border-radius: 8px; /* Slightly rounded corners */
+  padding: 10px;
+  font-size: 0.9rem; /* Smaller font size */
+  color: #333; /* Darker text for contrast */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.add-btn:hover {
-  background-color: #138496;
-}
-
-.add-btn i {
-  margin-right: 5px;
+.add-category-btn:hover {
+  background-color: #cce6ff; /* Slightly darker on hover */
 }

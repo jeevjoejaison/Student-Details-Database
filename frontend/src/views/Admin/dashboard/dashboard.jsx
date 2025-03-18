@@ -1,66 +1,88 @@
-import React from 'react';
-import './dashboard.css';
+import React, { useState } from 'react';
+import { FaUserPlus, FaUsers, FaChalkboardTeacher, FaFileExcel, FaTrash, FaPlus, FaEdit } from 'react-icons/fa';
+import './dashboard.css';  // Import the CSS file for styling
 
-function Dashboard() {
+function AdminDashboard() {
+  // State to manage the list of categories
+  const [categories, setCategories] = useState(['Dance', 'Music', 'Drama']);
+
+  // Function to add a new category
+  const addCategory = () => {
+    setCategories([...categories, 'New Category']);
+  };
+
+  // Function to remove a category
+  const removeCategory = (category) => {
+    setCategories(categories.filter((cat) => cat !== category));
+  };
+
   return (
-    <div className="App">
-      <ButtonContainer />
-      <ContentBox />
+    <div className="dashboard-container">
+      {/* Button Container: Buttons displayed on the dashboard */}
+      <div className="button-container">
+        <button className="button">
+          <FaUserPlus className="button-icon" />
+          Create Student Account
+        </button>
+        <button className="button">
+          <FaUserPlus className="button-icon" />
+          Create Faculty Account
+        </button>
+        <button className="button">
+          <FaUsers className="button-icon" />
+          Manage Students
+        </button>
+        <button className="button">
+          <FaChalkboardTeacher className="button-icon" />
+          Manage Faculties
+        </button>
+        <button className="button">
+          <FaFileExcel className="button-icon" />
+          Download Students Excel
+        </button>
+        <button className="button">
+          <FaFileExcel className="button-icon" />
+          Download Faculties Excel
+        </button>
+      </div>
+
+      {/* Content Management Section */}
+      <div className="content-management">
+        <h3>Content Management</h3>
+        <div className="edit-dropdowns">
+          <h4>Edit Form Dropdowns</h4>
+          <div className="dropdown-container">
+            <select>
+              <option>Cultural events</option>
+            </select>
+            <button className="button">
+              <FaEdit className="button-icon" />
+              Fetch dropdowns
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Categories Section */}
+      <div className="categories">
+        <h3>Categories</h3>
+        <div className="category-list">
+          {categories.map((category, index) => (
+            <div key={index} className="category">
+              {category}
+              <button className="remove-btn" onClick={() => removeCategory(category)}>
+                <FaTrash className="remove-icon" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <button className="button add-category-btn" onClick={addCategory}>
+          <FaPlus className="button-icon" />
+          Add new category
+        </button>
+      </div>
     </div>
   );
 }
 
-const ButtonContainer = () => {
-  const buttons = [
-    { label: "Create Student Account", icon: "fas fa-user-plus" },
-    { label: "Create Faculty Account", icon: "fas fa-chalkboard-teacher" },
-    { label: "Manage Students", icon: "fas fa-users-cog" },
-    { label: "Manage Faculties", icon: "fas fa-user-tie" },
-    { label: "Download students details as excel", icon: "fas fa-file-excel" },
-    { label: "Download faculties details as excel", icon: "fas fa-file-excel" },
-  ];
-
-  return (
-    <div className="button-container">
-      {buttons.map((button, index) => (
-        <button key={index} className="button">
-          <i className={button.icon}></i> {button.label}
-        </button>
-      ))}
-    </div>
-  );
-};
-
-const ContentBox = () => {
-  const categories = ["Dance", "Music", "Drama"];
-
-  return (
-    <div className="content-box">
-      <h3>Edit form dropdowns</h3>
-      <div className="dropdown-container">
-        <select id="dropdown">
-          <option value="Cultural events">Cultural events</option>
-        </select>
-        <button className="button">
-          <i className="fas fa-sync-alt"></i> Fetch dropdowns
-        </button>
-      </div>
-
-      <h3>Select Category</h3>
-      <div className="category-list">
-        {categories.map((category, index) => (
-          <div key={index} className="category">
-            {category}
-            <button className="remove-btn">
-              <i className="fas fa-trash-alt"></i> Remove
-            </button>
-          </div>
-        ))}
-      </div>
-      <br />
-      <button className="add-btn">
-        <i className="fas fa-plus"></i> Add
-      </button>
-    </div>
-  );
-};
+export default AdminDashboard;

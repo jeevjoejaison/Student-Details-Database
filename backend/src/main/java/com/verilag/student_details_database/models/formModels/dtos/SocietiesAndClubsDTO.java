@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SocietiesAndClubsDTO {
+    private Long studentId;
     private String name;
     private String category;
     private String membershipType;

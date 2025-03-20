@@ -3,16 +3,9 @@ package com.verilag.student_details_database.services.authServices;
 import com.verilag.student_details_database.models.*;
 import com.verilag.student_details_database.models.authModels.AuthenticationRequest;
 import com.verilag.student_details_database.models.authModels.AuthenticationResponse;
+import com.verilag.student_details_database.models.authModels.dtos.StudentRegistrationRequest;
 import com.verilag.student_details_database.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,9 +15,7 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-
+   
     /**
      * Authenticate a user based on email and password.
      *
@@ -32,31 +23,22 @@ public class AuthenticationService {
      * @return AuthenticationResponse indicating success or failure.
      */
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        try {
-            System.out.println("Authenticating user: " + request.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
 
-            // Find user by email
-            Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
-            if (optionalUser.isEmpty()) {
-                throw new BadCredentialsException("User not found with this email");
-            }
-
-            // Authenticate using AuthenticationManager (triggers session & cookies)
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication); // Set authenticated user in security context
-
-            // Get authenticated user details
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-            return new AuthenticationResponse("Login successful!", true);
-        } catch (BadCredentialsException e) {
-            return new AuthenticationResponse("Invalid email or password", false);
-        } catch (Exception e) {
-            return new AuthenticationResponse("Authentication failed", false);
+        if (optionalUser.isEmpty()) {
+            return new AuthenticationResponse("User not found", false, null);
         }
+
+        User user = optionalUser.get();
+
+        // Check if the password matches
+        if (!request.getPassword().equals(user.getPassword())) {
+            return new AuthenticationResponse("Invalid email or password", false, null);
+        }
+        
+
+        // Return userId on successful login
+        return new AuthenticationResponse("Login successful!", true, user.getUserId());
     }
 
     /**
@@ -65,14 +47,14 @@ public class AuthenticationService {
      * @param student The student to register.
      * @return AuthenticationResponse indicating success or failure.
      */
-    public AuthenticationResponse registerStudent(Student student, String faEmail) {
+    public AuthenticationResponse registerStudent(StudentRegistrationRequest student) {
         if (userRepository.findByEmail(student.getEmail()).isPresent()) {
             return new AuthenticationResponse("Email is already registered", false);
         }
 
         // Find FA by email
-        User faUser = userRepository.findByEmail(faEmail)
-                .orElseThrow(() -> new RuntimeException("FA not found with email: " + faEmail));
+        User faUser = userRepository.findByEmail(student.getFaEmail())
+                .orElseThrow(() -> new RuntimeException("FA not found with email: " + student.getFaEmail()));
 
         // Ensure user is an FA
         if (!(faUser instanceof FA)) {
@@ -81,13 +63,19 @@ public class AuthenticationService {
 
         FA fa = (FA) faUser; // Cast to FA
 
-        // Hash password and assign role
-        student.setPassword(passwordEncoder.encode(student.getPassword()));
-        student.setRole(Role.STUDENT);
-        student.setFa(fa);
+        Student student1=new Student();
+        student1.setDepartment(student.getDepartment());
+        student1.setEmail(student.getEmail());
+        student1.setFa(fa);
+        student1.setName(student.getName());
+        student1.setPassword(student.getPassword());
+        student1.setRole(Role.STUDENT);
+        student1.setRollNumber(student.getRollNumber());
+        student1.setSection(student.getSection());
+
 
         // Save student to DB
-        userRepository.save(student);
+        userRepository.save(student1);
 
         return new AuthenticationResponse("Student registration successful!", true);
     }
@@ -104,7 +92,7 @@ public class AuthenticationService {
         }
 
         // Hash password and assign role
-        fa.setPassword(passwordEncoder.encode(fa.getPassword()));
+        fa.setPassword((fa.getPassword()));
         fa.setRole(Role.FA);
 
         userRepository.save(fa);
@@ -124,7 +112,7 @@ public class AuthenticationService {
         }
 
         // Hash password and assign role
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        admin.setPassword((admin.getPassword()));
         admin.setRole(Role.ADMIN);
 
         userRepository.save(admin);
@@ -133,24 +121,5 @@ public class AuthenticationService {
     }
 
 
-    public AuthenticationResponse registerOAuth2User(OAuth2User oAuth2User) {
-        String email = oAuth2User.getAttribute("email");
-
-        Optional<User> existingUser = userRepository.findByEmail(email);
-        if (existingUser.isPresent()) {
-            return new AuthenticationResponse("User already exists!", true);
-        }
-
-        User newUser = new Student(
-            email,
-            "", // No password needed for OAuth2 users
-            "GoogleUser", "Google", "N/A", "N/A", null
-        );
-        newUser.setOauth2Provider("GOOGLE");
-        newUser.setOauth2Id(oAuth2User.getAttribute("sub")); // Google user ID
-
-        userRepository.save(newUser);
-        return new AuthenticationResponse("Google authentication successful!", true);
-    }
 
 }

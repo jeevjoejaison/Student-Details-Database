@@ -22,8 +22,10 @@ public class CulturalEventService {
     @Transactional
     public CulturalEventModel saveEvent(CulturalEventDTO dto) throws IOException{
 
-       
+            System.out.println(dto);
+
             CulturalEventModel culturalEvent=new CulturalEventModel();
+            culturalEvent.setStudentId(dto.getStudentId());
             culturalEvent.setAwards(dto.getAwards());
             culturalEvent.setCategory(dto.getCategory());
             culturalEvent.setDate(dto.getDate());
@@ -36,7 +38,14 @@ public class CulturalEventService {
             return repository.save(culturalEvent);
     }
 
-    public List<CulturalEventModel> getAllEvents(){
-        return repository.findAll();
+    public List<CulturalEventModel> getApprovedEventsForStudent(Long studentId) {
+        return repository.findApprovedEventsByStudentId(studentId);
+    }
+
+    public void deleteActivity(Long activityId) {
+        if (!repository.existsById(activityId)) {
+            throw new IllegalArgumentException("Activity not found with ID: " + activityId);
+        }
+        repository.deleteById(activityId);
     }
 }

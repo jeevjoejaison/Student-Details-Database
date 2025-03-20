@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlacementDTO {
+    private Long studentId;
     private String company;
     private String role;
     private String location;

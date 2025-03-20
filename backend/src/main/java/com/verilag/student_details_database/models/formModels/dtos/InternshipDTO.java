@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class InternshipDTO {
+    private Long studentId;
     private String company;
     private String role;
     private String location;
@@ -17,4 +18,5 @@ public class InternshipDTO {
     private Double stipend;
     private String description;
     private MultipartFile offerLetter;
+    private String proofBase64;
 }

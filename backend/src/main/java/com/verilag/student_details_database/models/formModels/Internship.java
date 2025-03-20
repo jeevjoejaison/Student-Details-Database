@@ -17,8 +17,5 @@ public class Internship extends JobModel {
     private LocalDate startDate;
     private LocalDate endDate;
     private Double stipend;
-    public void setOfferLetter(MultipartFile offerLetter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setOfferLetter'");
-    }
+
 }

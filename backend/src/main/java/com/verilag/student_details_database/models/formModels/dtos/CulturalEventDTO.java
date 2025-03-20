@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CulturalEventDTO {
+    private Long studentId;
     private String eventName;
     private String category;
     private String location;

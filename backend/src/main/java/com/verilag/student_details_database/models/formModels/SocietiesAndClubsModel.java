@@ -1,5 +1,6 @@
 package com.verilag.student_details_database.models.formModels;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -17,5 +18,6 @@ public class SocietiesAndClubsModel extends Activity {
     private String category;
     private String membershipType;
     @Lob
-    private byte[] proof;
+    @Column(name = "proof", columnDefinition = "LONGBLOB")
+    private byte[] proof; // Stores offer letter file as binary data
 }

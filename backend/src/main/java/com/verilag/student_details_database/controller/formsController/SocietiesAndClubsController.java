@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.verilag.student_details_database.models.formModels.Internship;
 import com.verilag.student_details_database.models.formModels.SocietiesAndClubsModel;
 import com.verilag.student_details_database.models.formModels.dtos.SocietiesAndClubsDTO;
 import com.verilag.student_details_database.services.forms.SocietiesAndClubsService;
@@ -30,8 +31,22 @@ public class SocietiesAndClubsController {
         }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<SocietiesAndClubsModel>> getAllSocietiesAndClubs() {
-        return ResponseEntity.ok(service.getAllSocietiesAndClubs());
+    @GetMapping("/get-all")
+    public ResponseEntity<List<SocietiesAndClubsModel>> getAllEvents(@RequestParam Long studentId) {
+        System.out.println(studentId);
+        List<SocietiesAndClubsModel> records = service.getApprovedEventsForStudent(studentId);
+        return ResponseEntity.ok(records);
     }
+
+    @CrossOrigin(origins = "http://localhost:5173")
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteActivity(@RequestParam Long activityId) {
+        try {
+            service.deleteActivity(activityId);
+            return ResponseEntity.ok("Activity deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

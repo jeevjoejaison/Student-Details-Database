@@ -30,10 +30,10 @@ export const TechnicalEventForm = () => {
   const [date, setDate] = useState<Date | undefined>(undefined);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("userId");
     if (storedUser) {
-      const user = JSON.parse(storedUser);
-      setFormData((prev) => ({ ...prev, userId: user.id })); // Assuming user.id holds the ID
+     
+      setFormData((prev) => ({ ...prev, userId: storedUser })); // Assuming user.id holds the ID
     }
   }, []);
 
@@ -71,10 +71,9 @@ export const TechnicalEventForm = () => {
 
     try {
 
-      const storedUser = localStorage.getItem("user");
-      const user = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!user || !user.userId) {
+      const storedUser = localStorage.getItem("userId");
+  
+      if (!storedUser) {
         throw new Error("User not found. Please log in again.");
       }
 
@@ -85,7 +84,7 @@ export const TechnicalEventForm = () => {
       dataToSubmit.append("awards", formData.awards);
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("category", formData.category);
-      dataToSubmit.append("studentId", user.userId);
+      dataToSubmit.append("studentId", storedUser);
       if (formData.proof) {
         dataToSubmit.append("proof", formData.proof);
       }

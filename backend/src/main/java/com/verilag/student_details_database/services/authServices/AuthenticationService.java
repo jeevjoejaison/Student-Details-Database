@@ -36,6 +36,9 @@ public class AuthenticationService {
             return new AuthenticationResponse("Invalid email or password", false, null);
         }
         
+        if(user.isActive()==false || user.getRole()!=Role.STUDENT){
+            return new AuthenticationResponse("Invalid User", false, null);
+        }
 
         // Return userId on successful login
         return new AuthenticationResponse("Login successful!", true, user.getUserId());
@@ -72,7 +75,7 @@ public class AuthenticationService {
         student1.setRole(Role.STUDENT);
         student1.setRollNumber(student.getRollNumber());
         student1.setSection(student.getSection());
-
+        student1.setActive(true);
 
         // Save student to DB
         userRepository.save(student1);
@@ -94,7 +97,7 @@ public class AuthenticationService {
         // Hash password and assign role
         fa.setPassword((fa.getPassword()));
         fa.setRole(Role.FA);
-
+        fa.setActive(true);
         userRepository.save(fa);
 
         return new AuthenticationResponse("FA registration successful!", true);
@@ -114,10 +117,28 @@ public class AuthenticationService {
         // Hash password and assign role
         admin.setPassword((admin.getPassword()));
         admin.setRole(Role.ADMIN);
-
+        admin.setActive(true);
         userRepository.save(admin);
 
         return new AuthenticationResponse("Admin registration successful!", true);
+    }
+
+    public AuthenticationResponse remove(String email) {
+
+        System.out.println(email);
+
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isEmpty()) {
+            return new AuthenticationResponse("User not found", false);
+        }
+
+        User user = optionalUser.get();
+        user.setActive(false);
+        userRepository.save(user); // Persist the updated user status
+
+        return new AuthenticationResponse("User deactivated successfully!", true);
+        
     }
 
 

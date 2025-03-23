@@ -3,7 +3,6 @@ package com.verilag.student_details_database.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,9 +14,8 @@ import java.util.Collections;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // Use JOINED inheritance strategy
 @Table(name = "USER")
-@Getter
-@Setter
-@NoArgsConstructor
+
+
 public abstract class User implements UserDetails {
 
     @Id
@@ -40,12 +38,52 @@ public abstract class User implements UserDetails {
     @NotNull(message = "Role is required")
     private Role role;
 
-    @Column(name = "oauth2_provider")
-    private String oauth2Provider; // Example: "GOOGLE"
+    private boolean isActive;
 
-    @Column(name = "oauth2_id")
-    private String oauth2Id; // Unique ID from Google
+    
+    
+    public Long getUserId() {
+        return userId;
+    }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public User() {
+    }
 
     // UserDetails methods
     @Override
@@ -77,6 +115,8 @@ public abstract class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 
     // Constructor for base User
     public User(String email, String password, Role role) {

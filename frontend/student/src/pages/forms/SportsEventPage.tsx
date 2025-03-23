@@ -12,14 +12,13 @@ import { fetchFormData, handleDownloadProof } from "@/utils/formUtils";
 const SportsEventPage = () => {
   const [activeTab, setActiveTab] = useState("add");
   const [events, setEvents] = useState([]);
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
+  const storedUser = localStorage.getItem("userId");
 
   useEffect(() => {
-    if (activeTab === "view" && user?.userId) {
-      fetchFormData("sports-events", user.userId).then(setEvents);
+    if (activeTab === "view" && storedUser) {
+      fetchFormData("sports-events", storedUser).then(setEvents);
     }
-  }, [activeTab, user?.userId]);
+  }, [activeTab, storedUser]);
 
   const handleDelete = async (eventType: string, activityId: any) => {
     try {

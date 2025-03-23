@@ -6,7 +6,9 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CustomCard } from "@/components/ui/CustomCard";
-import { toast } from "@/components/ui/use-toast"; // Assuming you use a toast library
+import { toast } from "@/components/ui/use-toast";
+import { GoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -18,23 +20,23 @@ export const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-  
+
     try {
       const response = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-  
+
       const data: { userId: number; userName: string; userRole: string; message?: string } = await response.json();
-  
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Invalid email or password");
       }
-  
+
       // Ensure only userId is passed, as expected by the login function
       login(data.userId);
-  
+
       toast({ title: "Success", description: "Logged in successfully!" });
       navigate("/dashboard");
     } catch (error) {
@@ -48,9 +50,45 @@ export const LoginForm = () => {
       setIsLoading(false);
     }
   };
-  
-  
-  
+
+  const handleGoogleLoginSuccess = async (credentialResponse: any) => {
+    setIsLoading(true);
+    try {
+      // Send the Google token to your backend for verification
+      const res = await axios.post("http://localhost:8080/api/auth/google-login", {
+        token: credentialResponse.credential,
+      });
+
+      const { userId } = res.data;
+
+      if (!userId) {
+        throw new Error("User not found or not registered");
+      }
+
+      // Log the user in using the AuthContext
+      login(userId);
+
+      toast({ title: "Success", description: "Logged in successfully with Google!" });
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Google login error:", error);
+      toast({
+        title: "Google login failed",
+        description: (error as Error).message || "An error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLoginError = () => {
+    toast({
+      title: "Google login failed",
+      description: "An error occurred during Google login",
+      variant: "destructive",
+    });
+  };
 
   return (
     <motion.div
@@ -116,6 +154,13 @@ export const LoginForm = () => {
           <p>Use demo credentials:</p>
           <p className="font-medium">Email: student@example.com</p>
           <p className="font-medium">Password: password123</p>
+        </div>
+
+        <div className="mt-6 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleLoginSuccess}
+            onError={handleGoogleLoginError}
+          />
         </div>
       </CustomCard>
     </motion.div>

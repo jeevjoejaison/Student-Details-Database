@@ -1,23 +1,25 @@
 package com.verilag.student_details_database.models.formModels.dtos;
 
-import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDate;
 
 import org.springframework.web.multipart.MultipartFile;
 
-
 public class InternshipDTO {
-    private Long studentId;
-    private String company;
-    private String role;
-    private String location;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Double stipend;
-    private String description;
-    private MultipartFile offerLetter;
-    private String proofBase64;
+
+    public InternshipDTO() {
+    }
+    public InternshipDTO(Long studentId, String company, String role, String location, LocalDate startDate, LocalDate endDate, Double stipend, String description, MultipartFile offerLetter, String proofBase64) {
+        this.studentId = studentId;
+        this.company = company;
+        this.role = role;
+        this.location = location;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.stipend = stipend;
+        this.description = description;
+        this.offerLetter = offerLetter;
+        this.proofBase64 = proofBase64;
+    }
     public Long getStudentId() {
         return studentId;
     }
@@ -78,7 +80,17 @@ public class InternshipDTO {
     public void setProofBase64(String proofBase64) {
         this.proofBase64 = proofBase64;
     }
-
+    private Long studentId;
+    private String company;
+    private String role;
+    private String location;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Double stipend;
+    private String description;
+    private MultipartFile offerLetter;
+    private String proofBase64;
+    
 
     
 }

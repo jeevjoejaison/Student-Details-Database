@@ -2,9 +2,6 @@ package com.verilag.student_details_database.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "FA")
@@ -24,7 +21,9 @@ public class FA extends User {
         super(email, password, Role.FA);
         this.faDepartment = faDepartment;
     }
-
+    public FA(){
+        
+    }
     public String getName() {
         return name;
     }
@@ -41,5 +40,4 @@ public class FA extends User {
         this.faDepartment = faDepartment;
     }
 
-    public FA(){}
 }

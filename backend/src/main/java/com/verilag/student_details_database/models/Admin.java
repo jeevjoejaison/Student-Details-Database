@@ -2,9 +2,6 @@ package com.verilag.student_details_database.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "ADMIN")
@@ -15,6 +12,8 @@ public class Admin extends User {
     @NotBlank(message = "Admin name is required")
     private String adminName;
 
+    public Admin() {
+    }
     // Constructor for Admin
     public Admin(String email, String password, String adminName) {
         super(email, password, Role.ADMIN);
@@ -28,8 +27,4 @@ public class Admin extends User {
     public void setAdminName(String adminName) {
         this.adminName = adminName;
     }
-
-
-    public Admin(){}
-
 }

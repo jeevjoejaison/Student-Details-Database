@@ -12,14 +12,13 @@ import { fetchFormData, handleDownloadProof } from "@/utils/formUtils";
 const InternshipPage = () => {
   const [activeTab, setActiveTab] = useState("add");
   const [internships, setInternships] = useState([]);
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
-
+  const storedUser = localStorage.getItem("userId");
+  
   useEffect(() => {
-    if (activeTab === "view" && user?.userId) {
-      fetchFormData("internships", user.userId).then(setInternships);
+    if (activeTab === "view" && storedUser) {
+      fetchFormData("internships", storedUser).then(setInternships);
     }
-  }, [activeTab, user?.userId]);
+  }, [activeTab, storedUser]);
 
   const handleDelete = async (eventType: string, activityId: any) => {
     try {

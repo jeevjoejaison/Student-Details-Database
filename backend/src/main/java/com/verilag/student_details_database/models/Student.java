@@ -1,17 +1,16 @@
 package com.verilag.student_details_database.models;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
 @Table(name = "STUDENT")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // To ignore proxy issues
+
 public class Student extends User {
 
     @Column(name = "ROLL_NUMBER", length = 10, unique = true)
@@ -31,8 +30,8 @@ public class Student extends User {
     private String section;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EMAIL")
     @JsonIgnore
+    @JoinColumn(name = "FA_ID", referencedColumnName = "USER_ID", nullable = false)
     private FA fa; // Reference to FA
 
     public Student(){
@@ -87,10 +86,5 @@ public class Student extends User {
         this.department = department;
         this.section = section;
         this.fa = fa;
-    }
-
-    public boolean checkPassword(String password, PasswordEncoder passwordEncoder) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'checkPassword'");
     }
 }

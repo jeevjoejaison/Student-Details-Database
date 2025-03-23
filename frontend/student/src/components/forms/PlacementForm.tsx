@@ -27,10 +27,10 @@ export const PlacementForm = () => {
   const { userId } = useAuth();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("userId");
     if (storedUser) {
-      const user = JSON.parse(storedUser);
-      setFormData((prev) => ({ ...prev, userId: user.id })); // Assuming user.id holds the ID
+    
+      setFormData((prev) => ({ ...prev, userId: storedUser })); // Assuming user.id holds the ID
     }
   }, []);
 
@@ -52,10 +52,9 @@ export const PlacementForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const storedUser = localStorage.getItem("user");
-      const user = storedUser ? JSON.parse(storedUser) : null;
-
-      if (!user || !user.userId) {
+    const storedUser = localStorage.getItem("userId");
+   
+      if (!storedUser) {
         throw new Error("User not found. Please log in again.");
       }
 
@@ -83,7 +82,7 @@ export const PlacementForm = () => {
       dataToSubmit.append("joiningDate", formData.joiningDate);
       dataToSubmit.append("ctc", formData.ctc);
       dataToSubmit.append("description", formData.description);
-      dataToSubmit.append("studentId", user.userId);
+      dataToSubmit.append("studentId", storedUser);
       if (formData.offerLetter) {
         dataToSubmit.append("offerLetter", formData.offerLetter);
       }

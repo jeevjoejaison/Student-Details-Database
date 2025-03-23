@@ -12,15 +12,15 @@ import { fetchFormData, handleDownloadProof } from "@/utils/formUtils";
 const SocietyPage = () => {
   const [activeTab, setActiveTab] = useState("add");
   const [societies, setSocieties] = useState([]);
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
+  const storedUser = localStorage.getItem("userId");
+
 
   useEffect(() => {
-    if (activeTab === "view" && user?.userId) {
-      fetchFormData("societies-clubs", user.userId).then(setSocieties);
+    if (activeTab === "view" && storedUser) {
+      fetchFormData("societies-clubs", storedUser).then(setSocieties);
     }
     console.log(societies)
-  }, [activeTab, user?.userId]);
+  }, [activeTab, storedUser]);
 
   const handleDelete = async (eventType: string, activityId: any) => {
     try {

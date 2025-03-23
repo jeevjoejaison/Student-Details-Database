@@ -5,17 +5,19 @@ import com.verilag.student_details_database.models.authModels.AuthenticationRequ
 import com.verilag.student_details_database.models.authModels.AuthenticationResponse;
 import com.verilag.student_details_database.models.authModels.dtos.StudentRegistrationRequest;
 import com.verilag.student_details_database.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-   
+
+    public AuthenticationService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     /**
      * Authenticate a user based on email and password.
      *
@@ -36,6 +38,9 @@ public class AuthenticationService {
             return new AuthenticationResponse("Invalid email or password", false, null);
         }
         
+        if(user.isActive()==false || user.getRole()!=Role.STUDENT){
+            return new AuthenticationResponse("Invalid User", false, null);
+        }
 
         // Return userId on successful login
         return new AuthenticationResponse("Login successful!", true, user.getUserId());
@@ -72,7 +77,7 @@ public class AuthenticationService {
         student1.setRole(Role.STUDENT);
         student1.setRollNumber(student.getRollNumber());
         student1.setSection(student.getSection());
-
+        student1.setActive(true);
 
         // Save student to DB
         userRepository.save(student1);
@@ -87,18 +92,18 @@ public class AuthenticationService {
      * @return AuthenticationResponse indicating success or failure.
      */
     public AuthenticationResponse registerFA(FA fa) {
-    if (userRepository.findByEmail(fa.getEmail()).isPresent()) {
-        return new AuthenticationResponse("Email is already registered", false);
+        if (userRepository.findByEmail(fa.getEmail()).isPresent()) {
+            return new AuthenticationResponse("Email is already registered", false);
+        }
+
+        // Hash password and assign role
+        fa.setPassword((fa.getPassword()));
+        fa.setRole(Role.FA);
+        fa.setActive(true);
+        userRepository.save(fa);
+
+        return new AuthenticationResponse("FA registration successful!", true);
     }
-
-    // Hash password and assign role
-    fa.setPassword(fa.getPassword()); // You might want to hash the password here
-    fa.setRole(Role.FA);
-
-    userRepository.save(fa);
-
-    return new AuthenticationResponse("FA registration successful!", true);
-}
 
     /**
      * Register a new admin.
@@ -114,16 +119,28 @@ public class AuthenticationService {
         // Hash password and assign role
         admin.setPassword((admin.getPassword()));
         admin.setRole(Role.ADMIN);
-
+        admin.setActive(true);
         userRepository.save(admin);
 
         return new AuthenticationResponse("Admin registration successful!", true);
     }
 
-    public AuthenticationService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthenticationResponse remove(String email) {
+
+        System.out.println(email);
+
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if (optionalUser.isEmpty()) {
+            return new AuthenticationResponse("User not found", false);
+        }
+
+        User user = optionalUser.get();
+        user.setActive(false);
+        userRepository.save(user); // Persist the updated user status
+
+        return new AuthenticationResponse("User deactivated successfully!", true);
+        
     }
-
-
 
 }

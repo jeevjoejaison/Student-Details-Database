@@ -1,9 +1,5 @@
 package com.verilag.student_details_database.models.authModels;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 
 public class AuthenticationResponse {
     private String message;

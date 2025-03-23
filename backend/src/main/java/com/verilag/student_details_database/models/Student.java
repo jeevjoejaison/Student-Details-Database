@@ -1,18 +1,14 @@
 package com.verilag.student_details_database.models;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
 @Table(name = "STUDENT")
-@Getter
-@Setter
-@NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // To ignore proxy issues
+
 public class Student extends User {
 
     @Column(name = "ROLL_NUMBER", length = 10, unique = true)
@@ -32,7 +28,7 @@ public class Student extends User {
     private String section;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EMAIL")
+    @JoinColumn(name = "FA_ID", referencedColumnName = "USER_ID", nullable = false)
     private FA fa; // Reference to FA
 
     // Constructor for Student
@@ -44,9 +40,51 @@ public class Student extends User {
         this.section = section;
         this.fa = fa;
     }
-
+    public Student(){
+        
+    }
     public boolean checkPassword(String password, PasswordEncoder passwordEncoder) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'checkPassword'");
+    }
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public FA getFa() {
+        return fa;
+    }
+
+    public void setFa(FA fa) {
+        this.fa = fa;
     }
 }

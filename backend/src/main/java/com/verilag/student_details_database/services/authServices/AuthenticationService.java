@@ -5,17 +5,19 @@ import com.verilag.student_details_database.models.authModels.AuthenticationRequ
 import com.verilag.student_details_database.models.authModels.AuthenticationResponse;
 import com.verilag.student_details_database.models.authModels.dtos.StudentRegistrationRequest;
 import com.verilag.student_details_database.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-   
+
+    public AuthenticationService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     /**
      * Authenticate a user based on email and password.
      *

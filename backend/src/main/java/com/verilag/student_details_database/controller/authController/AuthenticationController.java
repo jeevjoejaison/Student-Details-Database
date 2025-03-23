@@ -5,17 +5,19 @@ import com.verilag.student_details_database.models.authModels.AuthenticationRequ
 import com.verilag.student_details_database.models.authModels.AuthenticationResponse;
 import com.verilag.student_details_database.models.authModels.dtos.StudentRegistrationRequest;
 import com.verilag.student_details_database.services.authServices.AuthenticationService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173") // Allow frontend requests
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {

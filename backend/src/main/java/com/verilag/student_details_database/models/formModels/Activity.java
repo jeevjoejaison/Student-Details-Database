@@ -12,12 +12,14 @@ public class Activity {
     private String description;
     private boolean approved;
     private Long studentId;
-    public Activity() {}
+    public Activity() {
+
+    }
 
     public Activity(String description, boolean approved, Long studentId) {
             this.description = description;
             this.approved = approved;
-            this.studentId=studentId;
+            this.studentId = studentId;
     }
 
   

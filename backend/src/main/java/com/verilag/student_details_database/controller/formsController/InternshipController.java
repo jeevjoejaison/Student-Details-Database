@@ -33,7 +33,7 @@ public class InternshipController {
         }
     }
 
-        @GetMapping("/get-all")
+    @GetMapping("/get-all")
     public ResponseEntity<List<Internship>> getAllEvents(@RequestParam Long studentId) {
         System.out.println(studentId);
         List<Internship> records = service.getApprovedEventsForStudent(studentId);

@@ -2,15 +2,10 @@ package com.verilag.student_details_database.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "FA")
-@Getter
-@Setter
-@NoArgsConstructor
+
 public class FA extends User {
 
     @Column(name = "NAME", length = 100)
@@ -21,9 +16,27 @@ public class FA extends User {
     @NotBlank(message = "FA department is required")
     private String faDepartment;
 
+    public FA() {
+    }
     // Constructor for FA
     public FA(String email, String password, String faDepartment) {
         super(email, password, Role.FA);
+        this.faDepartment = faDepartment;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFaDepartment() {
+        return faDepartment;
+    }
+
+    public void setFaDepartment(String faDepartment) {
         this.faDepartment = faDepartment;
     }
 }

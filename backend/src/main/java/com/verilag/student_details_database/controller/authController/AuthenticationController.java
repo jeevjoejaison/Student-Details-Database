@@ -24,11 +24,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:5173") // Allow frontend requests
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
     @Autowired
     private UserService userService;

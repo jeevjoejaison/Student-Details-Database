@@ -2,13 +2,78 @@ package com.verilag.student_details_database.models.formModels.dtos;
 
 import java.time.LocalDate;
 import org.springframework.web.multipart.MultipartFile;
-import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class TechnicalEventDto {
+
+    public TechnicalEventDto() {
+    }
+
+    public TechnicalEventDto(Long studentId, String eventName, String category, String location, LocalDate date, String awards, String description, MultipartFile proof, String proofBase64) {
+        this.studentId = studentId;
+        this.eventName = eventName;
+        this.category = category;
+        this.location = location;
+        this.date = date;
+        this.awards = awards;
+        this.description = description;
+        this.proof = proof;
+        this.proofBase64 = proofBase64;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+    public String getEventName() {
+        return eventName;
+    }
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    public LocalDate getDate() {
+        return date;
+    }
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+    public String getAwards() {
+        return awards;
+    }
+    public void setAwards(String awards) {
+        this.awards = awards;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public MultipartFile getProof() {
+        return proof;
+    }
+    public void setProof(MultipartFile proof) {
+        this.proof = proof;
+    }
+    public String getProofBase64() {
+        return proofBase64;
+    }
+    public void setProofBase64(String proofBase64) {
+        this.proofBase64 = proofBase64;
+    }
     private Long studentId;
     private String eventName;
     private String category;

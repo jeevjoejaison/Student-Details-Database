@@ -8,9 +8,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "ADMIN")
-@Getter
-@Setter
-@NoArgsConstructor
+
 public class Admin extends User {
 
     @Column(name = "ADMIN_NAME", length = 100)
@@ -22,4 +20,16 @@ public class Admin extends User {
         super(email, password, Role.ADMIN);
         this.adminName = adminName;
     }
+
+    public String getAdminName() {
+        return adminName;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
+    }
+
+
+    public Admin(){}
+
 }

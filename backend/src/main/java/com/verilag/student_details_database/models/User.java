@@ -14,10 +14,8 @@ import java.util.Collections;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // Use JOINED inheritance strategy
-@Table(name = "USER")
-@Getter
-@Setter
-@NoArgsConstructor
+@Table(name = "USERS")
+
 public abstract class User implements UserDetails {
 
     @Id
@@ -84,4 +82,55 @@ public abstract class User implements UserDetails {
         this.password = password;
         this.role = role;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getOauth2Provider() {
+        return oauth2Provider;
+    }
+
+    public void setOauth2Provider(String oauth2Provider) {
+        this.oauth2Provider = oauth2Provider;
+    }
+
+    public String getOauth2Id() {
+        return oauth2Id;
+    }
+
+    public void setOauth2Id(String oauth2Id) {
+        this.oauth2Id = oauth2Id;
+    }
+public User(){}
+
+
 }

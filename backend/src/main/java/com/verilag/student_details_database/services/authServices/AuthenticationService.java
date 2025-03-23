@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+
 public class AuthenticationService {
 
     private final UserRepository userRepository;
@@ -87,18 +87,18 @@ public class AuthenticationService {
      * @return AuthenticationResponse indicating success or failure.
      */
     public AuthenticationResponse registerFA(FA fa) {
-        if (userRepository.findByEmail(fa.getEmail()).isPresent()) {
-            return new AuthenticationResponse("Email is already registered", false);
-        }
-
-        // Hash password and assign role
-        fa.setPassword((fa.getPassword()));
-        fa.setRole(Role.FA);
-
-        userRepository.save(fa);
-
-        return new AuthenticationResponse("FA registration successful!", true);
+    if (userRepository.findByEmail(fa.getEmail()).isPresent()) {
+        return new AuthenticationResponse("Email is already registered", false);
     }
+
+    // Hash password and assign role
+    fa.setPassword(fa.getPassword()); // You might want to hash the password here
+    fa.setRole(Role.FA);
+
+    userRepository.save(fa);
+
+    return new AuthenticationResponse("FA registration successful!", true);
+}
 
     /**
      * Register a new admin.
@@ -118,6 +118,10 @@ public class AuthenticationService {
         userRepository.save(admin);
 
         return new AuthenticationResponse("Admin registration successful!", true);
+    }
+
+    public AuthenticationService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
 

@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 
 public class AuthenticationResponse {
     private String message;
@@ -20,5 +18,27 @@ public class AuthenticationResponse {
         this.message = message;
         this.success = success;
     }
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    public boolean isSuccess() {
+        return success;
+    }
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+    public Long getUserId() {
+        return userId;
+    }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public AuthenticationResponse(){}
+
+    
     
 }

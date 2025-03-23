@@ -10,9 +10,7 @@ import lombok.Setter;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "job_id")
-@Getter
-@Setter
-@NoArgsConstructor
+
 public class JobModel extends Activity {
     private String company;
     private String role;
@@ -21,4 +19,40 @@ public class JobModel extends Activity {
     @Lob
     @Column(name = "proof", columnDefinition = "LONGBLOB")
     private byte[] offerLetter; // Stores offer letter file as binary data
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public byte[] getOfferLetter() {
+        return offerLetter;
+    }
+
+    public void setOfferLetter(byte[] offerLetter) {
+        this.offerLetter = offerLetter;
+    }
+
+    public JobModel(){}
+    
+
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
+
 @CrossOrigin(origins = "http://localhost:5173") // Allow frontend requests
 public class AuthenticationController {
 
@@ -37,4 +37,15 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> registerAdmin(@RequestBody Admin admin) {
         return ResponseEntity.ok(authenticationService.registerAdmin(admin));
     }
+
+    public AuthenticationService getAuthenticationService() {
+        return authenticationService;
+    }
+
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+    
+
+
 }

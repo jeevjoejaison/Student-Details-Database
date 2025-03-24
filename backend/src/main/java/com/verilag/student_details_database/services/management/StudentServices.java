@@ -66,6 +66,44 @@ public class StudentServices {
         }
     }
 
+    @Transactional
+public void bulkDeactivateStudents(MultipartFile file) throws IOException {
+    List<String> emails = readEmailsFromExcel(file);
+    
+    for (String email : emails) {
+        Student student = studentRepository.findByEmail(email.trim());
+        if (student != null) {
+            student.setActive(false);
+            studentRepository.save(student);
+        }
+    }
+}
+
+private List<String> readEmailsFromExcel(MultipartFile file) throws IOException {
+    List<String> emails = new ArrayList<>();
+    
+    try (InputStream inputStream = file.getInputStream()) {
+        Workbook workbook = new XSSFWorkbook(inputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+
+        // Assuming first column contains emails
+        for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+            Row row = sheet.getRow(i);
+            if (row == null) continue;
+
+            Cell cell = row.getCell(0); // First column
+            if (cell != null) {
+                String email = cell.getStringCellValue().trim();
+                if (!email.isEmpty()) {
+                    emails.add(email);
+                }
+            }
+        }
+    }
+    
+    return emails;
+}
+
     // Helper method to safely get cell value as String
     private String getCellValueAsString(Cell cell) {
         if (cell == null) {
@@ -83,4 +121,16 @@ public class StudentServices {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getStudentsByDepartmentAndYear'");
     }
+
+    
+    public void deactivateStudent(String email) {
+        Student student = studentRepository.findByEmail(email);
+        if (student != null) {
+            student.setActive(false);
+            studentRepository.save(student);
+        } else {
+            throw new RuntimeException("Student not found with email: " + email);
+        }
+    }
+    
 }

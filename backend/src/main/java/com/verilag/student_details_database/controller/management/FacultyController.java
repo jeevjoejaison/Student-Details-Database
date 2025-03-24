@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import com.verilag.student_details_database.services.management.FacultyService;
 
 @RestController
 @RequestMapping("/faculties")
+@CrossOrigin(origins = "http://localhost:5173")
 public class FacultyController {
     @Autowired
     private FacultyService facultyService;
@@ -41,6 +43,31 @@ public class FacultyController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process Excel file.");
         }
     }
+
+    @PostMapping("/deactivate")
+    public ResponseEntity<String> deactivateUser(@RequestParam String email) {
+        try {
+            facultyService.deactivateUser(email);
+            return ResponseEntity.ok("User deactivated successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/bulk-deactivate")
+public ResponseEntity<String> bulkDeactivateFaculties(@RequestParam("file") MultipartFile file) {
+    try {
+        facultyService.bulkDeactivateFaculties(file);
+        return ResponseEntity.ok("Bulk deactivation completed successfully");
+    } catch (IOException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error processing Excel file: " + e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error during bulk deactivation: " + e.getMessage());
+    }
+}
+    
 
     // other endpoints
 }

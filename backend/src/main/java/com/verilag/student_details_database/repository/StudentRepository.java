@@ -20,4 +20,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // Fetch students assigned to a specific FA (Faculty Advisor)
     @Query("SELECT s FROM Student s JOIN FETCH s.fa WHERE s.fa.userId = :faId")
     List<Student> findByFaUserId(@Param("faId") Long faId);
+
+
+    Student findByEmail(String email);
 }

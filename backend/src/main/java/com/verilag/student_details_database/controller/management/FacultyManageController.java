@@ -20,7 +20,7 @@ import com.verilag.student_details_database.services.management.FacultyService;
 @RestController
 @RequestMapping("/faculties")
 @CrossOrigin(origins = "http://localhost:5173")
-public class FacultyController {
+public class FacultyManageController {
     @Autowired
     private FacultyService facultyService;
 

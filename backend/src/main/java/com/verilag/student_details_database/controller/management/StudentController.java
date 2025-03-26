@@ -37,6 +37,7 @@ public class StudentController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadStudents(@RequestParam("file") MultipartFile file) {
         try {
+            System.out.println("IN CONTROLLER");
             studentService.createStudentsFromExcel(file);
             return ResponseEntity.ok("Students created successfully from Excel file.");
         } catch (IOException e) {

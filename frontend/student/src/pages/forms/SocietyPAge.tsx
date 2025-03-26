@@ -75,6 +75,13 @@ const SocietyPage = () => {
                     <p className="text-sm text-purple-700 mb-2">{society.description}</p>
                     <p className="text-sm text-purple-800 font-medium">Category: {society.category}</p>
                     <p className="text-sm text-purple-600">Membership Type: {society.membershipType}</p>
+                    {/* Show Comment if available */}
+                    {society.comments && (
+                      <div className="mt-3 p-3 bg-gray-100 rounded-md">
+                        <h4 className="text-sm font-semibold text-purple-800">Comment:</h4>
+                        <p className="text-sm text-purple-700">{society.comments}</p>
+                      </div>
+                    )}
                     <div className="flex gap-2 mt-4">
                       {society.proof && (
                         <Button 

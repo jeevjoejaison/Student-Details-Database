@@ -82,6 +82,13 @@ const PlacementPage = () => {
                     <p className="text-sm text-purple-600">Hiring Mode: {placement.hiringMode}</p>
                     <p className="text-sm text-purple-600">Joining Date: {formatDate(placement.joiningDate)}</p>
                     <p className="text-sm text-purple-600">CTC: {placement.ctc} LPA</p>
+                    {/* Show Comment if available */}
+                    {placement.comments && (
+                      <div className="mt-3 p-3 bg-gray-100 rounded-md">
+                        <h4 className="text-sm font-semibold text-purple-800">Comment:</h4>
+                        <p className="text-sm text-purple-700">{placement.comments}</p>
+                      </div>
+                    )}
                     <div className="flex gap-2 mt-4">
                       {placement.offerLetter && (
                         <Button 

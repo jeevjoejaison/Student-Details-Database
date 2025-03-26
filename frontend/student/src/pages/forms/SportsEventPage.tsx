@@ -82,6 +82,13 @@ const SportsEventPage = () => {
                     <p className="text-sm text-purple-600">Award: {event.awards}</p>
                     <p className="text-sm text-purple-600">Date: {formatDate(event.date)}</p>
                     <p className="text-sm text-purple-600">Location: {event.location}</p>
+                    {/* Show Comment if available */}
+                    {event.comments && (
+                      <div className="mt-3 p-3 bg-gray-100 rounded-md">
+                        <h4 className="text-sm font-semibold text-purple-800">Comment:</h4>
+                        <p className="text-sm text-purple-700">{event.comments}</p>
+                      </div>
+                    )}
                     <div className="flex gap-2 mt-4">
                       {event.proof && (
                         <Button 

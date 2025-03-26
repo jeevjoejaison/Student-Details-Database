@@ -87,4 +87,9 @@ public class Student extends User {
         this.section = section;
         this.fa = fa;
     }
+
+    public void setStatus(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
+    }
 }

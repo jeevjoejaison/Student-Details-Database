@@ -8,7 +8,6 @@ import {
   Search, 
   Filter, 
   UserMinus, 
-  Download,
   AlertTriangle,
   Upload
 } from 'lucide-react';
@@ -21,6 +20,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import * as facultyApi from '@/api/facultyApi';
 
 const ManageFaculty = () => {
   const navigate = useNavigate();
@@ -28,88 +28,79 @@ const ManageFaculty = () => {
   const [department, setDepartment] = useState('');
   const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
   const [showBulkDeactivateDialog, setShowBulkDeactivateDialog] = useState(false);
-  const [selectedFacultyId, setSelectedFacultyId] = useState(null);
+  const [selectedFaculty, setSelectedFaculty] = useState(null);
   const [facultyList, setFacultyList] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [excelFile, setExcelFile] = useState(null);
   const [isBulkProcessing, setIsBulkProcessing] = useState(false);
   const [bulkError, setBulkError] = useState(null);
-
-  useEffect(() => {
-    fetchFaculties();
-    fetchDepartments();
-  }, [department]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchFaculties = async () => {
+    setIsLoading(true);
     try {
-      let url = 'http://localhost:8080/faculties/filter';
-      if (department) {
-        url += `?department=${department}`;
-      }
-
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Failed to fetch faculties');
-      }
-
-      const data = await response.json();
+      const data = await facultyApi.fetchFaculties(department);
       setFacultyList(data);
     } catch (error) {
       console.error('Error fetching faculties:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch faculties.",
+        description: typeof error === 'string' ? error : "Failed to fetch faculties.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchDepartmentsList = async () => {
+    try {
+      const data = await facultyApi.fetchDepartments();
+      setDepartments(data);
+    } catch (error) {
+      console.error('Error fetching departments:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch departments.",
         variant: "destructive",
       });
     }
   };
 
-  const fetchDepartments = async () => {
-    const data = ['Computer Science', 'Electrical', 'Electronics', 'Mechanical'];
-    setDepartments(data);
-  };
+  useEffect(() => {
+    fetchFaculties();
+    fetchDepartmentsList();
+  }, [department]);
 
   const filteredFaculty = facultyList.filter(faculty => {
     return faculty.name.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  const handleDeactivateClick = (facultyId) => {
-    setSelectedFacultyId(facultyId);
+  const handleDeactivateClick = (faculty) => {
+    setSelectedFaculty(faculty);
     setShowDeactivateDialog(true);
   };
 
   const handleDeactivateConfirm = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/faculties/${selectedFacultyId}/deactivate`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update faculty status');
-      }
-
+      await facultyApi.deactivateFaculty(selectedFaculty.id);
+      
       setFacultyList(prevList => 
         prevList.map(faculty => 
-          faculty.id === selectedFacultyId 
+          faculty.id === selectedFaculty.id 
             ? { ...faculty, status: faculty.status === 'active' ? 'inactive' : 'active' } 
             : faculty
         )
       );
       
-      const faculty = facultyList.find(f => f.id === selectedFacultyId);
-      const newStatus = faculty.status === 'active' ? 'inactive' : 'active';
-      
       toast({
-        title: `Account ${newStatus === 'active' ? 'Activated' : 'Deactivated'}`,
-        description: `${faculty.name}'s account has been ${newStatus === 'active' ? 'activated' : 'deactivated'}.`,
+        title: `Account ${selectedFaculty.status === 'active' ? 'Deactivated' : 'Activated'}`,
+        description: `${selectedFaculty.name}'s account has been ${selectedFaculty.status === 'active' ? 'deactivated' : 'activated'}.`,
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: error.message,
+        description: typeof error === 'string' ? error : "Failed to update faculty status",
         variant: "destructive",
       });
     } finally {
@@ -131,20 +122,7 @@ const ManageFaculty = () => {
     setBulkError(null);
     
     try {
-      const formData = new FormData();
-      formData.append('file', excelFile);
-
-      const response = await fetch('http://localhost:8080/faculties/bulk-deactivate', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to bulk deactivate faculties');
-      }
-
-      const result = await response.json();
+      const result = await facultyApi.bulkDeactivateFaculties(excelFile);
       
       if (result.errorEmails && result.errorEmails.length > 0) {
         setBulkError({
@@ -160,12 +138,11 @@ const ManageFaculty = () => {
         setExcelFile(null);
       }
 
-      // Refresh faculty list
       fetchFaculties();
     } catch (error) {
       toast({
         title: "Error",
-        description: error.message,
+        description: typeof error === 'string' ? error : "Failed to process bulk deactivation",
         variant: "destructive",
       });
     } finally {
@@ -187,18 +164,6 @@ const ManageFaculty = () => {
         });
       }
     }
-  };
-
-  const downloadDeactivationTemplate = () => {
-    const templateContent = "Email\nfaculty1@example.com\nfaculty2@example.com";
-    const blob = new Blob([templateContent], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'faculty_deactivation_template.csv';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   return (
@@ -264,12 +229,12 @@ const ManageFaculty = () => {
                 Bulk Deactivate
               </Button>
               <Button 
-                onClick={() => fetchFaculties()} 
+                onClick={fetchFaculties} 
                 variant="outline" 
                 className="gap-2"
               >
                 <Search className="h-4 w-4" />
-                Fetch List
+                Refresh List
               </Button>
             </div>
           </div>
@@ -279,7 +244,6 @@ const ManageFaculty = () => {
               <thead>
                 <tr className="bg-accent/5 text-left">
                   <th className="px-4 py-3 rounded-l-lg">Name</th>
-                  <th className="px-4 py-3">Department</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3 rounded-r-lg text-right">
                     <span>Actions</span>
@@ -291,7 +255,6 @@ const ManageFaculty = () => {
                   filteredFaculty.map((faculty) => (
                     <tr key={faculty.id} className="hover:bg-accent/5 transition-colors">
                       <td className="px-4 py-3">{faculty.name}</td>
-                      <td className="px-4 py-3">{faculty.department}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           faculty.status === 'active' 
@@ -306,7 +269,7 @@ const ManageFaculty = () => {
                           <Button
                             variant={faculty.status === 'active' ? "destructive" : "outline"}
                             size="sm"
-                            onClick={() => handleDeactivateClick(faculty.id)}
+                            onClick={() => handleDeactivateClick(faculty)}
                             className="rounded-lg"
                           >
                             <UserMinus className="h-4 w-4 mr-2" />
@@ -318,8 +281,8 @@ const ManageFaculty = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="px-4 py-8 text-center text-muted-foreground">
-                      No faculty members found matching the search criteria.
+                    <td colSpan="3" className="px-4 py-8 text-center text-muted-foreground">
+                      {isLoading ? 'Loading...' : 'No faculty members found matching the search criteria.'}
                     </td>
                   </tr>
                 )}
@@ -334,12 +297,12 @@ const ManageFaculty = () => {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-destructive" />
-              {selectedFacultyId && facultyList.find(f => f.id === selectedFacultyId)?.status === 'active' 
+              {selectedFaculty?.status === 'active' 
                 ? 'Deactivate Account' 
                 : 'Activate Account'}
             </DialogTitle>
             <DialogDescription>
-              {selectedFacultyId && facultyList.find(f => f.id === selectedFacultyId)?.status === 'active'
+              {selectedFaculty?.status === 'active'
                 ? 'This will deactivate the faculty account. They will no longer be able to log in.'
                 : 'This will activate the faculty account. They will be able to log in again.'}
             </DialogDescription>
@@ -349,10 +312,10 @@ const ManageFaculty = () => {
               Cancel
             </Button>
             <Button 
-              variant="destructive" 
+              variant={selectedFaculty?.status === 'active' ? "destructive" : "default"}
               onClick={handleDeactivateConfirm}
             >
-              {selectedFacultyId && facultyList.find(f => f.id === selectedFacultyId)?.status === 'active' 
+              {selectedFaculty?.status === 'active' 
                 ? 'Deactivate' 
                 : 'Activate'}
             </Button>
@@ -364,44 +327,49 @@ const ManageFaculty = () => {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Bulk Deactivation</DialogTitle>
+            <DialogDescription>
+              Upload an Excel file containing faculty emails to deactivate multiple accounts at once.
+            </DialogDescription>
           </DialogHeader>
-          <DialogDescription>
-            <div className="space-y-4">
-              <div>
-                <p>
-                  To bulk deactivate, upload an Excel file with the list of faculty emails. The file should be formatted as follows:
-                </p>
-                <code className="bg-muted text-muted-foreground px-3 py-1 rounded-md">
-                  Email
-                  faculty1@example.com
-                  faculty2@example.com
-                </code>
-              </div>
-              <div>
-                <input 
-                  type="file" 
-                  accept=".xlsx,.xls"
-                  onChange={handleFileChange}
-                  className="mt-2"
-                />
-              </div>
-
-              {bulkError && (
-                <div className="text-destructive mt-2">
-                  <p>{bulkError.message}</p>
-                  <p className="text-sm">Errors: {bulkError.errorEmails.join(', ')}</p>
-                </div>
-              )}
+          
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="excelFile">Excel File</Label>
+              <Input
+                id="excelFile"
+                type="file"
+                accept=".xlsx, .xls"
+                onChange={handleFileChange}
+                className="mt-1"
+              />
+             
             </div>
-          </DialogDescription>
+
+            {bulkError && (
+              <div className="text-destructive mt-2">
+                <p>{bulkError.message}</p>
+                {bulkError.errorEmails && bulkError.errorEmails.length > 0 && (
+                  <p className="text-sm">Failed emails: {bulkError.errorEmails.join(', ')}</p>
+                )}
+              </div>
+            )}
+          </div>
+          
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowBulkDeactivateDialog(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setShowBulkDeactivateDialog(false);
+                setExcelFile(null);
+                setBulkError(null);
+              }}
+            >
               Cancel
             </Button>
             <Button 
-              variant="destructive" 
+              variant="destructive"
               onClick={handleBulkDeactivate}
-              disabled={isBulkProcessing}
+              disabled={!excelFile || isBulkProcessing}
             >
               {isBulkProcessing ? 'Processing...' : 'Bulk Deactivate'}
             </Button>

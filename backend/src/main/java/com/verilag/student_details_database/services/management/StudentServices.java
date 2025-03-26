@@ -41,10 +41,11 @@ public class StudentServices {
     }
     @Transactional
     public void createStudentsFromExcel(MultipartFile file) throws IOException {
+
         try (InputStream inputStream = file.getInputStream()) {
             Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
-
+            
             // Start from row 1 to skip the header row
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
@@ -58,6 +59,7 @@ public class StudentServices {
                 student.setDepartment(getCellValueAsString(row.getCell(3))); // Column 4: Department
                 student.setSection(getCellValueAsString(row.getCell(4))); // Column 5: Section
                 student.setPassword(getCellValueAsString(row.getCell(5))); // Column 6: Password
+                System.out.println(row.getCell(6));
                 student.setFaEmail(getCellValueAsString(row.getCell(6)));
                 
                 // Register the student using AuthenticationService

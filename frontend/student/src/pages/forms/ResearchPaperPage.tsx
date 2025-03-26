@@ -101,10 +101,17 @@ const ResearchPaperPage = () => {
                         href={paper.url.startsWith("http") ? paper.url : `https://${paper.url}`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="text-purple-600 text-sm hover:underline"
+                        className="text-blue-600 text-sm hover:underline"
                       >
                         View Paper
                       </a>
+                    )}
+                    {/* Show Comment if available */}
+                    {paper.comments && (
+                      <div className="mt-3 p-3 bg-gray-100 rounded-md">
+                        <h4 className="text-sm font-semibold text-purple-800">Comment:</h4>
+                        <p className="text-sm text-purple-700">{paper.comments}</p>
+                      </div>
                     )}
 
                     <div className="flex gap-2 mt-4">

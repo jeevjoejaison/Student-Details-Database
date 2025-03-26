@@ -11,7 +11,7 @@ import com.verilag.student_details_database.models.formModels.TechnicalEventMode
 
 @Repository
 public interface TechnicalEventRepository extends JpaRepository<TechnicalEventModel, Long> {
-    @Query("SELECT c FROM TechnicalEventModel c WHERE c.studentId = :studentId AND c.approved = false")
+    @Query("SELECT c FROM TechnicalEventModel c WHERE c.studentId = :studentId AND c.approved = true")
     List<TechnicalEventModel> findApprovedEventsByStudentId(@Param("studentId") Long studentId);
     void deleteByActivityId(Long activityId);
 }

@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import com.verilag.student_details_database.models.formModels.SportsEventModel;
 
 public interface SportsEventRepository extends JpaRepository<SportsEventModel, Long> {
-    @Query("SELECT c FROM SportsEventModel c WHERE c.studentId = :studentId AND c.approved = false")
+    @Query("SELECT c FROM SportsEventModel c WHERE c.studentId = :studentId AND c.approved = true")
     List<SportsEventModel> findApprovedEventsByStudentId(@Param("studentId") Long studentId);
     void deleteByActivityId(Long activityId);
 }

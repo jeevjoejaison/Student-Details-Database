@@ -27,8 +27,8 @@ public class EventDetails extends Activity {
         this.location = location;
     }
     public EventDetails(String description, boolean approved, String eventName, String awards,
-            byte[] proof, LocalDate date, String location,Long studentId) {
-        super(description, approved,studentId);
+            byte[] proof, LocalDate date, String location, Long studentId, String comments) {
+        super(description, approved, studentId, comments);
         this.eventName = eventName;
         this.awards = awards;
         this.proof = proof;

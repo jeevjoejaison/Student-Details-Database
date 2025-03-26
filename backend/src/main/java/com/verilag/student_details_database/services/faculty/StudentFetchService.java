@@ -19,4 +19,9 @@ public class StudentFetchService {
     public List<Student> getStudentsByFAId(Long faId) {
         return studentRepository.findByFaUserId(faId);
     }
+
+    // Count students assigned to a faculty advisor (FA)
+    public int getStudentCountByFAId(Long faId) {
+        return studentRepository.countByFaUserId(faId);
+    }
 }

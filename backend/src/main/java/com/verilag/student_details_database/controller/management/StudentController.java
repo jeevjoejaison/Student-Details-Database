@@ -24,7 +24,7 @@ public class StudentController {
     @Autowired
     private StudentServices studentService;
 
-    @GetMapping
+    @GetMapping("/get-all")
     public List<Student> getAllStudents() {
         return studentService.getAllStudents();
     }

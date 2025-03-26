@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dropdown")
+@CrossOrigin(origins = "http://localhost:5173")
 public class DropdownController {
 
     @Autowired

@@ -30,4 +30,6 @@ public class ConferencePaper extends ResearchPaper {
 
     @NotNull(message = "End date is required")
     private LocalDate endDate;
+
+    
 }

@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class ResearchPaper extends Activity {
-    
+public class ResearchPaper extends Activity {
+
     @NotBlank(message = "Author name is required")
     private String author;
 
@@ -30,4 +30,6 @@ public abstract class ResearchPaper extends Activity {
 
     @NotBlank(message = "Abstract is required")
     private String abstractText;
+
+
 }

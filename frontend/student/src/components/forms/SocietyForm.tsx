@@ -12,10 +12,13 @@ export const SocietyForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     category: "",
-    name: "",
+    societyOrClubname: "",
     membershipType: "",
     description: "",
     proof: null as File | null,
+    name:"",
+    type:"",
+    rollNumber:""
   });
 
 
@@ -31,13 +34,15 @@ export const SocietyForm = () => {
   },[])
   
   
-   useEffect(() => {
-      const storedUser = localStorage.getItem("userId");
-      if (storedUser) {
-  
-        setFormData((prev) => ({ ...prev, userId: storedUser })); // Assuming user.id holds the ID
-      }
-    }, []);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userId");
+    const name=localStorage.getItem("name")
+    const rollNumber=localStorage.getItem("rollNumber")
+    const type="Society"
+    if (storedUser) {
+      setFormData((prev) => ({ ...prev, userId: storedUser, name: name||"mushki", type: type, rollNumber: rollNumber||"b220244cs" })); // Assuming user.id holds the ID
+    }
+  }, []);
 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -59,10 +64,13 @@ export const SocietyForm = () => {
     e.preventDefault();
     setFormData({
       category: "",
-      name: "",
+      societyOrClubname: "",
       membershipType: "",
       description: "",
       proof: null as File | null,
+      name:"",
+      type:"",
+      rollNumber:""
     })
     const requiredFields = ["category", "name", "membershipType"];
     const validation = validateRequiredFields(formData, requiredFields);
@@ -89,10 +97,13 @@ export const SocietyForm = () => {
 
       const dataToSubmit = new FormData();
       dataToSubmit.append("category", formData.category);
-      dataToSubmit.append("name", formData.name);
+      dataToSubmit.append("societyOrClubname", formData.societyOrClubname);
       dataToSubmit.append("membershipType", formData.membershipType);
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("studentId", storedUser);
+      dataToSubmit.append("name",formData.name)
+      dataToSubmit.append("type",formData.type);
+      dataToSubmit.append("rollNumber",formData.rollNumber)
       if (formData.proof) {
         dataToSubmit.append("proof", formData.proof);
       }
@@ -137,8 +148,8 @@ export const SocietyForm = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-purple-900">Society/Club Name<span className="text-red-500">*</span></Label>
-            <Input id="name" name="name" value={formData.name} onChange={handleInputChange} placeholder="Enter society/club name" className="border-purple-300 focus:border-purple-500" />
+            <Label htmlFor="societyOrClubname" className="text-purple-900">Society/Club Name<span className="text-red-500">*</span></Label>
+            <Input id="societyOrClubname" name="societyOrClubname" value={formData.societyOrClubname} onChange={handleInputChange} placeholder="Enter society/club name" className="border-purple-300 focus:border-purple-500" />
           </div>
         </div>
 

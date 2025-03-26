@@ -24,6 +24,9 @@ public class SportsEventService {
     public SportsEventModel saveEvent(SportsEventDTO dto) throws IOException {
         SportsEventModel sportsEvent = new SportsEventModel();
         sportsEvent.setStudentId(dto.getStudentId());
+        sportsEvent.setName(dto.getName());
+        sportsEvent.setRollNumber(dto.getRollNumber());
+        sportsEvent.setType(dto.getType());
         sportsEvent.setAwards(dto.getAwards());
         sportsEvent.setParticipationType(dto.getParticipationType());
         sportsEvent.setDate(dto.getDate());

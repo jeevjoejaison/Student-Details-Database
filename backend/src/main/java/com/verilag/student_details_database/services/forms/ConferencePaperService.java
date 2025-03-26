@@ -30,6 +30,9 @@ public class ConferencePaperService {
 
         ConferencePaper conferencePaper = new ConferencePaper();
         conferencePaper.setStudentId(dto.getStudentId());
+        conferencePaper.setName(dto.getName());
+        conferencePaper.setRollNumber(dto.getRollNumber());
+        conferencePaper.setType(dto.getType());
         conferencePaper.setTitle(dto.getTitle());
         conferencePaper.setConferenceName(dto.getConferenceName());
         conferencePaper.setLocation(dto.getLocation());

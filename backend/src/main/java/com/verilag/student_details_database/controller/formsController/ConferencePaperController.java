@@ -33,6 +33,13 @@ public class ConferencePaperController {
     
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createPaper(@ModelAttribute ConferencePaperDTO dto) throws IOException {
+        System.out.println("Received Conference Paper Data:");
+    System.out.println("Name: " + dto.getName());
+    System.out.println("Roll Number: " + dto.getRollNumber());
+    System.out.println("Student ID: " + dto.getStudentId());
+    System.out.println("Type: " + dto.getType());
+    System.out.println("Conference Name: " + dto.getConferenceName());
+
         conferencePaperService.saveConferencePaper(dto);
         return ResponseEntity.ok("Conference paper created successfully");
     }

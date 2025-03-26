@@ -8,9 +8,14 @@ public class PlacementDTO {
 
     public PlacementDTO() {
     }
-
-    public PlacementDTO(Long studentId, String company, String role, String location, boolean coreJob, LocalDate joiningDate, String ctc, String hiringMode, MultipartFile offerLetter, String description) {
+    
+    public PlacementDTO(Long studentId, String name, String rollNumber, String type, String company, String role,
+            String location, boolean coreJob, LocalDate joiningDate, String ctc, String hiringMode,
+            MultipartFile offerLetter, String description) {
         this.studentId = studentId;
+        this.name = name;
+        this.rollNumber = rollNumber;
+        this.type = type;
         this.company = company;
         this.role = role;
         this.location = location;
@@ -21,6 +26,33 @@ public class PlacementDTO {
         this.offerLetter = offerLetter;
         this.description = description;
     }
+
+    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Long getStudentId() {
         return studentId;
     }
@@ -82,6 +114,9 @@ public class PlacementDTO {
         this.description = description;
     }
     private Long studentId;
+    private String name;
+    private String rollNumber;
+    private String type;
     private String company;
     private String role;
     private String location;

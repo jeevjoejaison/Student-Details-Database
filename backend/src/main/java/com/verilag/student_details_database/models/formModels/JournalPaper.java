@@ -29,4 +29,10 @@ public class JournalPaper extends ResearchPaper {
     private Integer issue;
 
     private String pageNumbers;
+
+    
+    
+
+    
+
 }

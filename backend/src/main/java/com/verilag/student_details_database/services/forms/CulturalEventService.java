@@ -26,6 +26,9 @@ public class CulturalEventService {
 
             CulturalEventModel culturalEvent=new CulturalEventModel();
             culturalEvent.setStudentId(dto.getStudentId());
+            culturalEvent.setName(dto.getName());
+            culturalEvent.setRollNumber(dto.getRollNumber());
+            culturalEvent.setType(dto.getType());
             culturalEvent.setAwards(dto.getAwards());
             culturalEvent.setCategory(dto.getCategory());
             culturalEvent.setDate(dto.getDate());

@@ -34,10 +34,7 @@ public class CulturalEventsController {
     
     @PostMapping(value = "/create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createEvent(@ModelAttribute CulturalEventDTO dto){
-        try {
-            System.out.println(dto.getEventName());
-            System.out.println(dto.getAwards());
-            
+        try {    
             culturalEventService.saveEvent(dto);
         } catch (IOException e) {
 

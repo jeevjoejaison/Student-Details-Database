@@ -24,6 +24,9 @@ export const TechnicalEventForm = () => {
     description: "",
     category: "",
     proof: null as File | null,
+    name:"",
+    type:"",
+    rollNumber:""
   });
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -31,12 +34,22 @@ export const TechnicalEventForm = () => {
   const [categories,setCategories]=useState([]);
   const [awards,setAwards]=useState([])
   
-    useEffect(()=>{
-      fetchDropdownOptions("Technical Event Form","Category").then(setCategories)
-      fetchDropdownOptions("Technical Event Form","awards").then(setAwards)
-      console.log(categories)
-      console.log(awards)
-    },[])
+  useEffect(()=>{
+    fetchDropdownOptions("Technical Event Form","Category").then(setCategories)
+    fetchDropdownOptions("Technical Event Form","awards").then(setAwards)
+    console.log(categories)
+    console.log(awards)
+  },[])
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userId");
+    const name=localStorage.getItem("name")
+    const rollNumber=localStorage.getItem("rollNumber")
+    const type="Technical Event"
+    if (storedUser) {
+      setFormData((prev) => ({ ...prev, userId: storedUser, name: name||"mushki", type: type, rollNumber: rollNumber||"b220244cs" })); // Assuming user.id holds the ID
+    }
+  }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userId");
@@ -94,6 +107,9 @@ export const TechnicalEventForm = () => {
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("category", formData.category);
       dataToSubmit.append("studentId", storedUser);
+      dataToSubmit.append("name",formData.name)
+      dataToSubmit.append("type",formData.type);
+      dataToSubmit.append("rollNumber",formData.rollNumber)
       if (formData.proof) {
         dataToSubmit.append("proof", formData.proof);
       }

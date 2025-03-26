@@ -30,6 +30,9 @@ public class JournalPaperService {
 
         JournalPaper journalPaper = new JournalPaper();
         journalPaper.setStudentId(dto.getStudentId());
+        journalPaper.setName(dto.getName());
+        journalPaper.setRollNumber(dto.getRollNumber());
+        journalPaper.setType(dto.getType());
         journalPaper.setTitle(dto.getTitle());
         journalPaper.setJournalName(dto.getJournalName());
         journalPaper.setPublisher(dto.getPublisher());

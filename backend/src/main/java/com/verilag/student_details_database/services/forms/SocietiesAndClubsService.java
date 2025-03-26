@@ -25,6 +25,9 @@ public class SocietiesAndClubsService {
         SocietiesAndClubsModel society = new SocietiesAndClubsModel();
         society.setStudentId(dto.getStudentId());
         society.setName(dto.getName());
+        society.setRollNumber(dto.getRollNumber());
+        society.setType(dto.getType());
+        society.setSocietyOrClubName(dto.getSocietyOrClubname());
         society.setCategory(dto.getCategory());
         society.setMembershipType(dto.getMembershipType());
         if(dto.getProof()!=null)

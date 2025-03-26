@@ -23,6 +23,9 @@ public class TechnicalEventsService {
     public TechnicalEventModel saveEvent(TechnicalEventDto dto) throws IOException {
         TechnicalEventModel technicalEvent = new TechnicalEventModel();
         technicalEvent.setStudentId(dto.getStudentId());
+        technicalEvent.setName(dto.getName());
+        technicalEvent.setRollNumber(dto.getRollNumber());
+        technicalEvent.setType(dto.getType());
         technicalEvent.setAwards(dto.getAwards());
         technicalEvent.setCategory(dto.getCategory());
         technicalEvent.setDate(dto.getDate());

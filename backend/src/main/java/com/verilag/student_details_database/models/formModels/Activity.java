@@ -8,7 +8,9 @@ public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long activityId;
-
+    private String name;
+    private String rollNumber;
+    private String type;
     private String description;
     private boolean approved;
     private Long studentId;
@@ -22,7 +24,19 @@ public class Activity {
             this.studentId = studentId;
     }
 
+    
   
+    public Activity(Long activityId, String name, String rollNumber, String type, String description,
+            boolean approved, Long studentId) {
+        this.activityId = activityId;
+        this.name = name;
+        this.rollNumber = rollNumber;
+        this.type = type;
+        this.description = description;
+        this.approved = approved;
+        this.studentId = studentId;
+    }
+
     public Long getActivityId() { return activityId; }
     public void setActivityId(Long activityId) { this.activityId = activityId; }
     
@@ -34,6 +48,30 @@ public class Activity {
 
     public Long getStudentId() { return studentId; }
     public void setStudentId(Long studentId) { this.studentId = studentId; }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     
 }

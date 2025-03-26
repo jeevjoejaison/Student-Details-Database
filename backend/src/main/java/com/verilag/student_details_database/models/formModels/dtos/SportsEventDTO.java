@@ -10,8 +10,15 @@ public class SportsEventDTO {
     public SportsEventDTO() {
     }
 
-    public SportsEventDTO(Long studentId, String eventName, String participationType, String location, LocalDate date, String awards, String description, MultipartFile proof, String proofBase64) {
+    
+
+    public SportsEventDTO(Long studentId, String name, String rollNumber, String type, String eventName,
+            String participationType, String location, LocalDate date, String awards, String description,
+            MultipartFile proof, String proofBase64) {
         this.studentId = studentId;
+        this.name = name;
+        this.rollNumber = rollNumber;
+        this.type = type;
         this.eventName = eventName;
         this.participationType = participationType;
         this.location = location;
@@ -20,7 +27,45 @@ public class SportsEventDTO {
         this.description = description;
         this.proof = proof;
         this.proofBase64 = proofBase64;
-    }   
+    }
+
+    
+
+    public String getName() {
+        return name;
+    }
+
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+
+
+    public String getType() {
+        return type;
+    }
+
+
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
 
     public Long getStudentId() {
         return studentId;
@@ -77,6 +122,9 @@ public class SportsEventDTO {
         this.proofBase64 = proofBase64;
     }
     private Long studentId;
+    private String name;
+    private String rollNumber;
+    private String type;
     private String eventName;
     private String participationType;
     private String location;

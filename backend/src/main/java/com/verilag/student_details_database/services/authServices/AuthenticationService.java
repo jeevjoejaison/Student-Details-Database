@@ -69,7 +69,7 @@ public class AuthenticationService {
         }
 
         // Return userId on successful login
-        return new AuthenticationResponse("Login successful!", true, student.getUserId(),student.getName(),student.getSection(),student.getRollNumber());
+        return new AuthenticationResponse("Login successful!", true, student.getUserId(),student.getName(),student.getRollNumber(),student.getSection());
     }
     /**
      * Register a new student.

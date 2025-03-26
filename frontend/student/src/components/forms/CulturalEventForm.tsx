@@ -35,14 +35,20 @@ export const CulturalEventForm = () => {
     awards: "",
     description: "",
     category: "",
-    proof: null as File | null,
+    proof: null,
     studentId: 0, // Initially set to 0, updated later
+    name:"",
+    type:"",
+    rollNumber:""
   });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userId");
+    const name=localStorage.getItem("name")
+    const rollNumber=localStorage.getItem("rollNumber")
+    const type="Cultural Event"
     if (storedUser) {
-      setFormData((prev) => ({ ...prev, userId: storedUser })); // Assuming user.id holds the ID
+      setFormData((prev) => ({ ...prev, userId: storedUser, name: name||"mushki", type: type, rollNumber: rollNumber||"b220244cs" })); // Assuming user.id holds the ID
     }
   }, []);
 
@@ -88,7 +94,10 @@ export const CulturalEventForm = () => {
       description: "",
       category: "",
       proof: null as File | null,
-      studentId: 0,})
+      studentId: 0,
+      name:"",
+      type:"",
+      rollNumber:""})
     setDate(undefined)
     setIsSubmitting(true);
 
@@ -107,6 +116,9 @@ export const CulturalEventForm = () => {
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("category", formData.category);
       dataToSubmit.append("studentId", storedUser);
+      dataToSubmit.append("name",formData.name);
+      dataToSubmit.append("type",formData.type);
+      dataToSubmit.append("rollNumber",formData.rollNumber)
       if (formData.proof) {
         dataToSubmit.append("proof", formData.proof);
       }

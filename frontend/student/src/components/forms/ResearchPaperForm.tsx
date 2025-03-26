@@ -72,8 +72,6 @@ const ResearchPaperForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Fetch studentId from localStorage
-  const studentId = localStorage.getItem("userId");
 
   const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
     const { name, value } = e.target;
@@ -103,18 +101,37 @@ const ResearchPaperForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
   
+    const studentId = localStorage.getItem("userId");
+    const name = localStorage.getItem("name");
+    const rollNumber = localStorage.getItem("rollNumber");
+    const type = "Research Paper";
+  
     const formData = new FormData();
     formData.append("paperType", paperType);
-    formData.append("studentId", studentId || ""); // Add studentId from localStorage
+    if (studentId) formData.append("studentId", studentId);
+    if (name) formData.append("name", name);
+    if (rollNumber) formData.append("rollNumber", rollNumber);
+    formData.append("type", type);
   
-    const data = paperType === "Journal" ? journalData : conferenceData;
-    Object.entries(data).forEach(([key, value]) => formData.append(key, value));
+    // Ensure dates are formatted properly
+    const data = paperType === "Journal"
+      ? journalData
+      : { 
+          ...conferenceData, 
+          startDate: startDate ? format(startDate, "yyyy-MM-dd") : "", 
+          endDate: endDate ? format(endDate, "yyyy-MM-dd") : "" 
+        };
+  
+    // Append only non-null values to formData
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") {
+        formData.append(key, value);
+      }
+    });
   
     try {
       const endpoint = paperType === "Journal" ? "journal-papers" : "conference-papers";
-      // Assuming submitForm is imported from utils
-      // If it's not implemented, you'll need to create this function
-      const result = await submitForm(endpoint,formData)
+      const result = await submitForm(endpoint, formData);
   
       if (result.success) {
         toast({ title: "Success", description: result.message });
@@ -123,15 +140,16 @@ const ResearchPaperForm = () => {
         throw new Error(result.message);
       }
     } catch (error: any) {
-      toast({ 
-        title: "Error", 
-        description: error?.message || "Submission failed", 
-        variant: "destructive" 
+      toast({
+        title: "Error",
+        description: error?.message || "Submission failed",
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   const handleSelectItem = (item: any) => {
     if (paperType === "Journal") {
@@ -153,9 +171,11 @@ const ResearchPaperForm = () => {
     setShowDropdown(true); // Show dropdown on search
   
     if (paperType === "Journal") {
+      setJournalData((prev) => ({ ...prev, journalName: value })); // Correct spread syntax
       const response = await axios.get(`http://localhost:8080/journal-papers/search?query=${value}`);
       setSearchResults(response.data);
     } else {
+      setConferenceData((prev) => ({ ...prev, conferenceName: value })); // Ensure conference name updates
       const response = await axios.get(`http://localhost:8080/conference-papers/search?query=${value}`);
       setSearchResults(response.data);
     }

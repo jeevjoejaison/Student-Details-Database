@@ -26,6 +26,9 @@ export const InternshipForm = () => {
     description: "",
     offerLetter: null as File | null,
     studentId: 0,
+    name:"",
+    type:"",
+    rollNumber:""
   });
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -34,8 +37,11 @@ export const InternshipForm = () => {
 
    useEffect(() => {
       const storedUser = localStorage.getItem("userId");
+      const name=localStorage.getItem("name")
+      const rollNumber=localStorage.getItem("rollNumber")
+      const type="Internship"
       if (storedUser) {
-        setFormData((prev) => ({ ...prev, userId: storedUser })); // Assuming `user.id` holds the ID
+        setFormData((prev) => ({ ...prev, userId: storedUser, name: name||"mushki", type: type, rollNumber: rollNumber||"b220244cs" })); // Assuming user.id holds the ID
       }
     }, []);
   
@@ -63,7 +69,10 @@ export const InternshipForm = () => {
       description: "",
       stipend: "",
       offerLetter: null as File | null,
-      studentId: 0,})
+      studentId: 0,
+      name:"",
+      type:"",
+      rollNumber:""})
     setStartDate(undefined)
     setEndDate(undefined)
 
@@ -98,6 +107,9 @@ export const InternshipForm = () => {
       dataToSubmit.append("endDate", formData.endDate);
       dataToSubmit.append("stipend", formData.stipend);
       dataToSubmit.append("studentId", storedUser);
+      dataToSubmit.append("name",formData.name)
+      dataToSubmit.append("type",formData.type);
+      dataToSubmit.append("rollNumber",formData.rollNumber)
       
       if (formData.offerLetter) {
         dataToSubmit.append("offerLetter", formData.offerLetter);

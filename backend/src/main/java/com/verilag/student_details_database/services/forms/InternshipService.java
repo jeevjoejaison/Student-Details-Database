@@ -27,6 +27,9 @@ public class InternshipService {
     public Internship saveinternship(InternshipDTO dto) throws IOException {
         Internship internship = new Internship();
         internship.setStudentId(dto.getStudentId());
+        internship.setName(dto.getName());
+        internship.setRollNumber(dto.getRollNumber());
+        internship.setType(dto.getType());
         internship.setCompany(dto.getCompany());
         internship.setRole(dto.getRole());
         internship.setLocation(dto.getLocation());

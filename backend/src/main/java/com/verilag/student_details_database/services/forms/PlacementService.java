@@ -22,6 +22,9 @@ public class PlacementService {
     public PlacementModel savePlacement(PlacementDTO dto) throws IOException {
         PlacementModel placement = new PlacementModel();
         placement.setStudentId(dto.getStudentId());
+        placement.setName(dto.getName());
+        placement.setRollNumber(dto.getRollNumber());
+        placement.setType(dto.getType());
         placement.setCompany(dto.getCompany());
         placement.setRole(dto.getRole());
         placement.setLocation(dto.getLocation());
@@ -29,7 +32,8 @@ public class PlacementService {
         placement.setJoiningDate(dto.getJoiningDate());
         placement.setCtc(dto.getCtc());
         placement.setHiringMode(dto.getHiringMode());
-        placement.setOfferLetter(dto.getOfferLetter().getBytes());
+        if(dto.getOfferLetter()!=null)
+            placement.setOfferLetter(dto.getOfferLetter().getBytes());
 
         return repository.save(placement);
     }

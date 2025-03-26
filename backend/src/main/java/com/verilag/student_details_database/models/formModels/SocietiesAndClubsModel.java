@@ -8,7 +8,7 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 @Entity
 @PrimaryKeyJoinColumn(name = "society_club_id")
 public class SocietiesAndClubsModel extends Activity {
-    private String name;
+    private String societyOrClubName;
     private String category;
     private String membershipType;
     @Lob
@@ -17,12 +17,7 @@ public class SocietiesAndClubsModel extends Activity {
 
     public SocietiesAndClubsModel() {
     }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    
     public String getCategory() {
         return category;
     }
@@ -40,5 +35,13 @@ public class SocietiesAndClubsModel extends Activity {
     }
     public void setProof(byte[] proof) {
         this.proof = proof;
+    }
+
+    public String getSocietyOrClubName() {
+        return societyOrClubName;
+    }
+
+    public void setSocietyOrClubName(String societyOrClubName) {
+        this.societyOrClubName = societyOrClubName;
     }
 }

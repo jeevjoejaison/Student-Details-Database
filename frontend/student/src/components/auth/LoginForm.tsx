@@ -22,20 +22,20 @@ export const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      const response = await fetch("http://localhost:8080/api/auth/login-student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      const data: { userId: number; userName: string; userRole: string; message?: string } = await response.json();
+      const data: { userId: number; name: string; rollNumber: string; section: string; message?: string } = await response.json();
       console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Invalid email or password");
       }
 
       // Ensure only userId is passed, as expected by the login function
-      login(data.userId);
+      login(data.userId,data.name,data.section,data.rollNumber);
 
       toast({ title: "Success", description: "Logged in successfully!" });
       navigate("/dashboard");
@@ -59,14 +59,13 @@ export const LoginForm = () => {
         token: credentialResponse.credential,
       });
 
-      const { userId } = res.data;
+      const { userId,name,section,rollNumber } = res.data;
 
       if (!userId) {
         throw new Error("User not found or not registered");
       }
-
+      login(userId,name,section,rollNumber)
       // Log the user in using the AuthContext
-      login(userId);
 
       toast({ title: "Success", description: "Logged in successfully with Google!" });
       navigate("/dashboard");

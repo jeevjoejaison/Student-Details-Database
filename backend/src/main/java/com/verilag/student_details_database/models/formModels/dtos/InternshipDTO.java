@@ -20,6 +20,44 @@ public class InternshipDTO {
         this.offerLetter = offerLetter;
         this.proofBase64 = proofBase64;
     }
+    
+    public InternshipDTO(Long studentId, String name, String rollNumber, String type, String company,
+            String role, String location, LocalDate startDate, LocalDate endDate, Double stipend, String description,
+            MultipartFile offerLetter, String proofBase64) {
+        this.studentId = studentId;
+        this.name = name;
+        this.rollNumber = rollNumber;
+        this.type = type;
+        this.company = company;
+        this.role = role;
+        this.location = location;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.stipend = stipend;
+        this.description = description;
+        this.offerLetter = offerLetter;
+        this.proofBase64 = proofBase64;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getRollNumber() {
+        return rollNumber;
+    }
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Long getStudentId() {
         return studentId;
     }
@@ -81,6 +119,9 @@ public class InternshipDTO {
         this.proofBase64 = proofBase64;
     }
     private Long studentId;
+    private String name;
+    private String rollNumber;
+    private String type;
     private String company;
     private String role;
     private String location;

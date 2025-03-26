@@ -8,8 +8,15 @@ public class TechnicalEventDto {
     public TechnicalEventDto() {
     }
 
-    public TechnicalEventDto(Long studentId, String eventName, String category, String location, LocalDate date, String awards, String description, MultipartFile proof, String proofBase64) {
+    
+
+    public TechnicalEventDto(Long studentId, String name, String rollNumber, String type, String eventName,
+            String category, String location, LocalDate date, String awards, String description, MultipartFile proof,
+            String proofBase64) {
         this.studentId = studentId;
+        this.name = name;
+        this.rollNumber = rollNumber;
+        this.type = type;
         this.eventName = eventName;
         this.category = category;
         this.location = location;
@@ -19,6 +26,44 @@ public class TechnicalEventDto {
         this.proof = proof;
         this.proofBase64 = proofBase64;
     }
+
+
+    
+    public String getName() {
+        return name;
+    }
+
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public String getRollNumber() {
+        return rollNumber;
+    }
+
+
+
+    public void setRollNumber(String rollNumber) {
+        this.rollNumber = rollNumber;
+    }
+
+
+
+    public String getType() {
+        return type;
+    }
+
+
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
 
     public Long getStudentId() {
         return studentId;
@@ -75,6 +120,9 @@ public class TechnicalEventDto {
         this.proofBase64 = proofBase64;
     }
     private Long studentId;
+    private String name;
+    private String rollNumber;
+    private String type;
     private String eventName;
     private String category;
     private String location;

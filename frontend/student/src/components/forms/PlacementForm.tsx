@@ -20,6 +20,9 @@ export const PlacementForm = () => {
     ctc: "",
     description: "",
     offerLetter: null as File | null,
+    name:"",
+    type:"",
+    rollNumber:""
   });
 
   const { toast } = useToast();
@@ -30,13 +33,15 @@ export const PlacementForm = () => {
       fetchDropdownOptions("Placement Form","Hiring Mode").then(setHiringMode)
     },[])
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("userId");
-    if (storedUser) {
-    
-      setFormData((prev) => ({ ...prev, userId: storedUser })); // Assuming user.id holds the ID
-    }
-  }, []);
+    useEffect(() => {
+      const storedUser = localStorage.getItem("userId");
+      const name=localStorage.getItem("name")
+      const rollNumber=localStorage.getItem("rollNumber")
+      const type="Placement"
+      if (storedUser) {
+        setFormData((prev) => ({ ...prev, userId: storedUser, name: name||"mushki", type: type, rollNumber: rollNumber||"b220244cs" })); // Assuming user.id holds the ID
+      }
+    }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -87,6 +92,10 @@ export const PlacementForm = () => {
       dataToSubmit.append("ctc", formData.ctc);
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("studentId", storedUser);
+      dataToSubmit.append("name",formData.name)
+      dataToSubmit.append("type",formData.type);
+      dataToSubmit.append("rollNumber",formData.rollNumber)
+      
       if (formData.offerLetter) {
         dataToSubmit.append("offerLetter", formData.offerLetter);
       }

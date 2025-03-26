@@ -4,9 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "society_club_id")
+
 public class SocietiesAndClubsModel extends Activity {
     private String societyOrClubName;
     private String category;

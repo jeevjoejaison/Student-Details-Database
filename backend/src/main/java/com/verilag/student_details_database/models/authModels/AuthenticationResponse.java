@@ -64,5 +64,9 @@ public class AuthenticationResponse {
         this.rollNumber = rollNumber;
         this.section = section;
     }
+
+    public AuthenticationResponse(){}
+
+    
     
 }

@@ -16,14 +16,14 @@ public class FA extends User {
     @NotBlank(message = "FA department is required")
     private String faDepartment;
 
-    public FA() {
-    }
     // Constructor for FA
     public FA(String email, String password, String faDepartment) {
         super(email, password, Role.FA);
         this.faDepartment = faDepartment;
     }
-
+    public FA(){
+        
+    }
     public String getName() {
         return name;
     }
@@ -39,4 +39,5 @@ public class FA extends User {
     public void setFaDepartment(String faDepartment) {
         this.faDepartment = faDepartment;
     }
+
 }

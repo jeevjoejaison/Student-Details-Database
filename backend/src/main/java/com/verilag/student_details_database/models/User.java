@@ -11,8 +11,7 @@ import java.util.Collections;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // Use JOINED inheritance strategy
-@Table(name = "USER")
-
+@Table(name = "USERS")
 
 public abstract class User implements UserDetails {
 
@@ -122,4 +121,7 @@ public abstract class User implements UserDetails {
         this.password = password;
         this.role = role;
     }
+
+   
+
 }

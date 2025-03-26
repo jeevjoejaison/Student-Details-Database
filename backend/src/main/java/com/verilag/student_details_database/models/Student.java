@@ -3,6 +3,8 @@ package com.verilag.student_details_database.models;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 @Entity
@@ -28,24 +30,12 @@ public class Student extends User {
     private String section;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "FA_ID", referencedColumnName = "USER_ID", nullable = false)
     private FA fa; // Reference to FA
 
-    // Constructor for Student
-    public Student(String email, String password, String rollNumber, String name, String department, String section, FA fa) {
-        super(email, password, Role.STUDENT);
-        this.rollNumber = rollNumber;
-        this.name = name;
-        this.department = department;
-        this.section = section;
-        this.fa = fa;
-    }
     public Student(){
         
-    }
-    public boolean checkPassword(String password, PasswordEncoder passwordEncoder) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'checkPassword'");
     }
 
     public String getRollNumber() {
@@ -85,6 +75,16 @@ public class Student extends User {
     }
 
     public void setFa(FA fa) {
+        this.fa = fa;
+    }
+
+    // Constructor for Student
+    public Student(String email, String password, String rollNumber, String name, String department, String section, FA fa) {
+        super(email, password, Role.STUDENT);
+        this.rollNumber = rollNumber;
+        this.name = name;
+        this.department = department;
+        this.section = section;
         this.fa = fa;
     }
 }

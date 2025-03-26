@@ -5,8 +5,6 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 public class JournalPaper extends ResearchPaper {
     
@@ -30,8 +28,61 @@ public class JournalPaper extends ResearchPaper {
 
     private String pageNumbers;
 
-    
-    
+    public String getJournalName() {
+        return journalName;
+    }
+
+    public void setJournalName(String journalName) {
+        this.journalName = journalName;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getISSN() {
+        return ISSN;
+    }
+
+    public void setISSN(String iSSN) {
+        ISSN = iSSN;
+    }
+
+    public Double getImpactFactor() {
+        return impactFactor;
+    }
+
+    public void setImpactFactor(Double impactFactor) {
+        this.impactFactor = impactFactor;
+    }
+
+    public Integer getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Integer volume) {
+        this.volume = volume;
+    }
+
+    public Integer getIssue() {
+        return issue;
+    }
+
+    public void setIssue(Integer issue) {
+        this.issue = issue;
+    }
+
+    public String getPageNumbers() {
+        return pageNumbers;
+    }
+
+    public void setPageNumbers(String pageNumbers) {
+        this.pageNumbers = pageNumbers;
+    }
 
     
 

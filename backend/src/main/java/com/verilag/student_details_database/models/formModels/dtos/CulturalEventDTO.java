@@ -3,13 +3,26 @@ import java.time.LocalDate;
 
 import org.springframework.web.multipart.MultipartFile;
 
-
 public class CulturalEventDTO {
+    private Long studentId;
+    private String name;
+    private String rollNumber;
+    private String type;
+    private String eventName;
+    private String category;
+    private String location;
+    private LocalDate date;
+    private String awards;
+    private String description;
+    private MultipartFile proof; // File upload
+    private String proofBase64;
 
-    public CulturalEventDTO() {
+    public CulturalEventDTO(){
+
     }
-
-    public CulturalEventDTO(Long studentId, String eventName, String category, String location, LocalDate date, String awards, String description, MultipartFile proof, String proofBase64) {
+    
+    public CulturalEventDTO(Long studentId, String eventName, String category, String location, LocalDate date,
+            String awards, String description, MultipartFile proof, String proofBase64) {
         this.studentId = studentId;
         this.eventName = eventName;
         this.category = category;
@@ -121,17 +134,6 @@ public class CulturalEventDTO {
     }
 
 
-    private Long studentId;
-    private String name;
-    private String rollNumber;
-    private String type;
-    private String eventName;
-    private String category;
-    private String location;
-    private LocalDate date;
-    private String awards;
-    private String description;
-    private MultipartFile proof; // File upload
-    private String proofBase64;
+
 }
 

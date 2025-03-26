@@ -131,4 +131,7 @@ public class InternshipDTO {
     private String description;
     private MultipartFile offerLetter;
     private String proofBase64;
+    
+
+    
 }

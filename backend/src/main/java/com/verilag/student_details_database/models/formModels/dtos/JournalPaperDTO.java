@@ -1,7 +1,7 @@
 package com.verilag.student_details_database.models.formModels.dtos;
 
-import lombok.*;
 import jakarta.validation.constraints.*;
+
 
 
 public class JournalPaperDTO {

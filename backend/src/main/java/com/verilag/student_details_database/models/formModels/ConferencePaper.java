@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
 
-@Getter
-@Setter
 @Entity
 public class ConferencePaper extends ResearchPaper {
     
@@ -31,5 +29,52 @@ public class ConferencePaper extends ResearchPaper {
     @NotNull(message = "End date is required")
     private LocalDate endDate;
 
+    public String getConferenceName() {
+        return conferenceName;
+    }
+
+    public void setConferenceName(String conferenceName) {
+        this.conferenceName = conferenceName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(String organizer) {
+        this.organizer = organizer;
+    }
+
+    public Double getAcceptanceRate() {
+        return acceptanceRate;
+    }
+
+    public void setAcceptanceRate(Double acceptanceRate) {
+        this.acceptanceRate = acceptanceRate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
     
 }

@@ -51,14 +51,14 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticateStudent(AuthenticationRequest request) {
-        Optional<Student> optionalUser = studentRepository.findByEmail(request.getEmail());
+        System.out.println(request.getEmail());
+        Student student = studentRepository.findByEmail(request.getEmail());
 
-        if (optionalUser.isEmpty()) {
+        if (student==null) {
             return new AuthenticationResponse("User not found", false, null);
         }
 
-        Student student = optionalUser.get();
-
+   
         // Check if the password matches
         if (!request.getPassword().equals(student.getPassword())) {
             return new AuthenticationResponse("Invalid email or password", false, null);
@@ -167,7 +167,5 @@ public class AuthenticationService {
         return new AuthenticationResponse("User deactivated successfully!", true);
         
     }
-
-
 
 }

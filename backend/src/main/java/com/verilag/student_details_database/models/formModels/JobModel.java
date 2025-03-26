@@ -4,9 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "job_id")
+
 public class JobModel extends Activity {
     private String company;
     private String role;
@@ -15,9 +19,6 @@ public class JobModel extends Activity {
     @Lob
     @Column(name = "proof", columnDefinition = "LONGBLOB")
     private byte[] offerLetter; // Stores offer letter file as binary data
-
-    public JobModel() {
-    }
 
     public String getCompany() {
         return company;
@@ -50,4 +51,8 @@ public class JobModel extends Activity {
     public void setOfferLetter(byte[] offerLetter) {
         this.offerLetter = offerLetter;
     }
+
+    public JobModel(){}
+    
+
 }

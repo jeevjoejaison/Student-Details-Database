@@ -18,15 +18,13 @@ export const CulturalEventForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
-  const [categories,setCategories]=useState([]);
-  const [awards,setAwards]=useState([])
+  const [categories, setCategories] = useState([]);
+  const [awards, setAwards] = useState([]);
 
-  useEffect(()=>{
-    fetchDropdownOptions("Cultural Event Form","category").then(setCategories)
-    fetchDropdownOptions("Cultural Event Form","awards").then(setAwards)
-    console.log(categories)
-    console.log(awards)
-  },[])
+  useEffect(() => {
+    fetchDropdownOptions("Cultural Event Form", "category").then(setCategories);
+    fetchDropdownOptions("Cultural Event Form", "awards").then(setAwards);
+  }, []);
 
   const [formData, setFormData] = useState({
     eventName: "",
@@ -35,20 +33,26 @@ export const CulturalEventForm = () => {
     awards: "",
     description: "",
     category: "",
-    proof: null,
-    studentId: 0, // Initially set to 0, updated later
-    name:"",
-    type:"",
-    rollNumber:""
+    proof: null as File | null,
+    studentId: 0,
+    name: "",
+    type: "",
+    rollNumber: ""
   });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userId");
-    const name=localStorage.getItem("name")
-    const rollNumber=localStorage.getItem("rollNumber")
-    const type="Cultural Event"
+    const name = localStorage.getItem("name");
+    const rollNumber = localStorage.getItem("rollNumber");
+    const type = "Cultural Event";
     if (storedUser) {
-      setFormData((prev) => ({ ...prev, userId: storedUser, name: name||"mushki", type: type, rollNumber: rollNumber||"b220244cs" })); // Assuming user.id holds the ID
+      setFormData((prev) => ({ 
+        ...prev, 
+        userId: storedUser, 
+        name: name || "", 
+        type: type, 
+        rollNumber: rollNumber || "" 
+      }));
     }
   }, []);
 
@@ -70,7 +74,6 @@ export const CulturalEventForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate required fields
     const requiredFields = ["eventName", "location", "date", "category"];
     const validation = validateRequiredFields(formData, requiredFields);
 
@@ -82,31 +85,15 @@ export const CulturalEventForm = () => {
       });
       return;
     }
+
     const isConfirmed = window.confirm("Are you sure you want to submit?");
-    if (!isConfirmed) {
-      return; // Abort submission if canceled
-    }
-    setFormData({
-      eventName: "",
-      location: "",
-      date: "",
-      awards: "",
-      description: "",
-      category: "",
-      proof: null as File | null,
-      studentId: 0,
-      name:"",
-      type:"",
-      rollNumber:""})
-    setDate(undefined)
+    if (!isConfirmed) return;
+
     setIsSubmitting(true);
 
     try {
       const storedUser = localStorage.getItem("userId");
-
-      if (!storedUser) {
-        throw new Error("User not found. Please log in again.");
-      }
+      if (!storedUser) throw new Error("User not found. Please log in again.");
 
       const dataToSubmit = new FormData();
       dataToSubmit.append("eventName", formData.eventName);
@@ -116,20 +103,32 @@ export const CulturalEventForm = () => {
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("category", formData.category);
       dataToSubmit.append("studentId", storedUser);
-      dataToSubmit.append("name",formData.name);
-      dataToSubmit.append("type",formData.type);
-      dataToSubmit.append("rollNumber",formData.rollNumber)
-      if (formData.proof) {
-        dataToSubmit.append("proof", formData.proof);
-      }
+      dataToSubmit.append("name", formData.name);
+      dataToSubmit.append("type", formData.type);
+      dataToSubmit.append("rollNumber", formData.rollNumber);
+      if (formData.proof) dataToSubmit.append("proof", formData.proof);
 
       const result = await submitForm("cultural-events", dataToSubmit);
 
       if (result.success) {
-        toast({
-          title: "Success",
-          description: result.message,
+        toast({ title: "Success", description: "Uploaded successfully" });
+        setFormData({
+          eventName: "",
+          location: "",
+          date: "",
+          awards: "",
+          description: "",
+          category: "",
+          proof: null,
+          studentId: 0,
+          name: "",
+          type: "",
+          rollNumber: ""
         });
+        const fileInput = document.getElementById("proof") as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
+        
+        setDate(undefined);
         navigate("/cultural-events");
       } else {
         throw new Error(result.message);
@@ -150,21 +149,47 @@ export const CulturalEventForm = () => {
       <div className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="eventName" className="text-purple-900">Event Name<span className="text-red-500">*</span></Label>
-            <Input id="eventName" name="eventName" value={formData.eventName} onChange={handleInputChange} placeholder="Enter event name" className="border-purple-300 focus:border-purple-500" />
+            <Label htmlFor="eventName" className="text-purple-900">
+              Event Name<span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="eventName"
+              name="eventName"
+              value={formData.eventName}
+              onChange={handleInputChange}
+              placeholder="Enter event name"
+              className="border-purple-300 focus:border-purple-500"
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="location" className="text-purple-900">Location<span className="text-red-500">*</span></Label>
-            <Input id="location" name="location" value={formData.location} onChange={handleInputChange} placeholder="Enter event location" className="border-purple-300 focus:border-purple-500" />
+            <Label htmlFor="location" className="text-purple-900">
+              Location<span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="location"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              placeholder="Enter event location"
+              className="border-purple-300 focus:border-purple-500"
+            />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="date" className="text-purple-900">Date<span className="text-red-500">*</span></Label>
+            <Label htmlFor="date" className="text-purple-900">
+              Date<span className="text-red-500">*</span>
+            </Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className={cn("w-full justify-start text-left font-normal border-purple-300 hover:bg-purple-50", !date && "text-muted-foreground")}>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal border-purple-300 hover:bg-purple-50",
+                    !date && "text-muted-foreground"
+                  )}
+                >
                   <CalendarIcon className="mr-2 h-4 w-4 text-purple-500" />
                   {date ? format(date, "PPP") : <span>Select a date</span>}
                 </Button>
@@ -175,7 +200,10 @@ export const CulturalEventForm = () => {
                   selected={date}
                   onSelect={(date) => {
                     setDate(date);
-                    setFormData((prev) => ({ ...prev, date: date ? format(date, "yyyy-MM-dd") : "" }));
+                    setFormData((prev) => ({ 
+                      ...prev, 
+                      date: date ? format(date, "yyyy-MM-dd") : "" 
+                    }));
                   }}
                   initialFocus
                 />
@@ -184,14 +212,23 @@ export const CulturalEventForm = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-purple-900">Category<span className="text-red-500">*</span></Label>
-            <Select onValueChange={(value) => handleSelectChange("category", value)} value={formData.category}>
+            <Label htmlFor="category" className="text-purple-900">
+              Category<span className="text-red-500">*</span>
+            </Label>
+            <Select
+              onValueChange={(value) => handleSelectChange("category", value)}
+              value={formData.category}
+            >
               <SelectTrigger className="border-purple-300 focus:border-purple-500">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.optionValue} className="text-purple-900">
+                  <SelectItem 
+                    key={category.id} 
+                    value={category.optionValue} 
+                    className="text-purple-900"
+                  >
                     {category.optionValue}
                   </SelectItem>
                 ))}
@@ -200,16 +237,22 @@ export const CulturalEventForm = () => {
           </div>
         </div>
 
-        {/* Award Dropdown */}
         <div className="space-y-2">
           <Label htmlFor="award" className="text-purple-900">Award</Label>
-          <Select onValueChange={(value) => handleSelectChange("awards", value)} value={formData.awards}>
+          <Select
+            onValueChange={(value) => handleSelectChange("awards", value)}
+            value={formData.awards}
+          >
             <SelectTrigger className="border-purple-300 focus:border-purple-500">
               <SelectValue placeholder="Select an award" />
             </SelectTrigger>
             <SelectContent>
               {awards.map((award) => (
-                <SelectItem key={award.id} value={award.optionValue} className="text-purple-900">
+                <SelectItem 
+                  key={award.id} 
+                  value={award.optionValue} 
+                  className="text-purple-900"
+                >
                   {award.optionValue}
                 </SelectItem>
               ))}
@@ -217,23 +260,44 @@ export const CulturalEventForm = () => {
           </Select>
         </div>
 
-        {/* Description Field */}
         <div className="space-y-2">
           <Label htmlFor="description" className="text-purple-900">Description</Label>
-          <Textarea id="description" name="description" value={formData.description} onChange={handleInputChange} placeholder="Enter event description" className="border-purple-300 focus:border-purple-500" />
+          <Textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            placeholder="Enter event description"
+            className="border-purple-300 focus:border-purple-500"
+          />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="proof" className="text-purple-900">Proof (optional)</Label>
-          <Input id="proof" name="proof" type="file" onChange={handleFileChange} className="cursor-pointer border-purple-300 focus:border-purple-500" />
+          <Input
+            id="proof"
+            name="proof"
+            type="file"
+            onChange={handleFileChange}
+            className="cursor-pointer border-purple-300 focus:border-purple-500"
+          />
         </div>
       </div>
 
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={() => navigate("/")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate("/")}
+          className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 hover:text-red-700"
+        >
           Cancel
         </Button>
-        <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-md">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="border-green-300 text-green-600 hover:bg-green-50 hover:border-green-400 hover:text-green-700 bg-white"
+        >
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </div>

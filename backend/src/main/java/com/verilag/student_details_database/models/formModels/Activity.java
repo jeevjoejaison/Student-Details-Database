@@ -14,18 +14,21 @@ public class Activity {
     private String description;
     private boolean approved;
     private Long studentId;
+    
+    @Column(name = "comments", columnDefinition = "TEXT", length = 500)  // New column to store comments
+    private String comments;
+
     public Activity() {
 
     }
 
-    public Activity(String description, boolean approved, Long studentId) {
+    public Activity(String description, boolean approved, Long studentId, String comments) {
             this.description = description;
             this.approved = approved;
             this.studentId = studentId;
+            this.comments = comments;
     }
-
     
-  
     public Activity(Long activityId, String name, String rollNumber, String type, String description,
             boolean approved, Long studentId) {
         this.activityId = activityId;
@@ -48,30 +51,17 @@ public class Activity {
 
     public Long getStudentId() { return studentId; }
     public void setStudentId(Long studentId) { this.studentId = studentId; }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRollNumber() {
-        return rollNumber;
-    }
-
-    public void setRollNumber(String rollNumber) {
-        this.rollNumber = rollNumber;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getRollNumber() { return rollNumber; }
+    public void setRollNumber(String rollNumber) { this.rollNumber = rollNumber; }
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+
+    public String getComments() { return comments; }
+    public void setComments(String comments) { this.comments = comments; }
+
 }

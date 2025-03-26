@@ -12,7 +12,7 @@ import { CalendarIcon, Search } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
-import { submitForm } from "@/utils/formUtils";
+import { submitForm, validateRequiredFields } from "@/utils/formUtils";
 import axios from "axios";
 
 // Generate year options from 1950 to current year
@@ -98,9 +98,10 @@ const ResearchPaperForm = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("enetered")
     e.preventDefault();
     setIsSubmitting(true);
-  
+    console.log("1")
     const studentId = localStorage.getItem("userId");
     const name = localStorage.getItem("name");
     const rollNumber = localStorage.getItem("rollNumber");
@@ -113,7 +114,7 @@ const ResearchPaperForm = () => {
     if (rollNumber) formData.append("rollNumber", rollNumber);
     formData.append("type", type);
   
-    // Ensure dates are formatted properly
+    // Select the correct data object
     const data = paperType === "Journal"
       ? journalData
       : { 
@@ -122,21 +123,62 @@ const ResearchPaperForm = () => {
           endDate: endDate ? format(endDate, "yyyy-MM-dd") : "" 
         };
   
+    // Define required fields based on paper type
+    const requiredFields = paperType === "Journal"
+      ? ["title", "author", "journalName", "publisher", "issn", "year", "volume", "issue", "abstractText"]
+      : ["title", "author", "conferenceName", "location", "organizer", "startDate", "endDate", "abstractText"];
+  
+    // Validate required fields
+    const missingFields = requiredFields.filter(field => {
+      const value = data[field];
+      return value === undefined || value === null || (typeof value === "string" && !value.trim());
+    });
+    
+    if (missingFields.length > 0) {
+      toast({
+        title: "Missing required fields",
+        description: `Please fill out all required fields: ${missingFields.join(", ")}`,
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+    const isConfirmed = window.confirm("Are you sure you want to submit?");
+    if (!isConfirmed) return;
     // Append only non-null values to formData
     Object.entries(data).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== "") {
         formData.append(key, value);
       }
     });
-  
+    
     try {
       const endpoint = paperType === "Journal" ? "journal-papers" : "conference-papers";
       const result = await submitForm(endpoint, formData);
   
       if (result.success) {
-        toast({ title: "Success", description: result.message });
+        toast({ title: "Success", description: "Uploaded Successfully" });
         navigate("/research-papers");
-      } else {
+      
+        // Reset the form fields after successful submission
+        if (paperType === "Journal") {
+          setJournalData({
+            title: "", author: "", journalName: "", publisher: "", issn: "", impactFactor: "", 
+            year: "", volume: "", issue: "", pageNumbers: "", doi: "", url: "", 
+            abstractText: "", description: ""
+          });
+          
+        } else {
+          setConferenceData({
+            title: "", author: "", conferenceName: "", location: "", organizer: "", 
+            acceptanceRate: "", startDate: "", endDate: "", doi: "", url: "", 
+            abstractText: "", description: "", year: ""
+          });
+          setStartDate(undefined)
+          setEndDate(undefined)
+        }
+      }
+      else {
         throw new Error(result.message);
       }
     } catch (error: any) {
@@ -149,6 +191,7 @@ const ResearchPaperForm = () => {
       setIsSubmitting(false);
     }
   };
+  
   
 
   const handleSelectItem = (item: any) => {
@@ -185,13 +228,13 @@ const ResearchPaperForm = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-8">
-      <div className="bg-white/80 backdrop-blur-md border border-gray-100 shadow-xl rounded-2xl p-8">
         <h2 className="text-2xl font-semibold mb-6 text-center">Submit Research Paper</h2>
         
         <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="space-y-4">
           <FormField label="Type of Research Paper">
             <Select onValueChange={setPaperType} value={paperType}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="border-purple-300 focus:border-purple-500" >
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent>
@@ -212,7 +255,8 @@ const ResearchPaperForm = () => {
                         value={searchQuery}
                         onChange={handleSearchChange}
                         required
-                        className="w-full pr-10" // Ensure space for search icon
+                        className="border-purple-300 focus:border-purple-500" 
+                        
                       />
                       <Search className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
                     </div>
@@ -232,42 +276,47 @@ const ResearchPaperForm = () => {
                   </div>
                 </FormField>
                 <FormField label="Title">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="title" 
                     value={journalData.title} 
                     onChange={handleInputChange} 
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
                 <FormField label="Author">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="author" 
                     value={journalData.author} 
                     onChange={handleInputChange} 
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
                 <FormField label="Publisher">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="publisher" 
                     value={journalData.publisher} 
                     onChange={handleInputChange} 
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
+                  
                 </FormField>
 
                 <FormField label="ISSN">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="issn" 
                     value={journalData.issn} 
                     onChange={handleInputChange} 
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
@@ -278,13 +327,14 @@ const ResearchPaperForm = () => {
                     onChange={handleNumberInput} 
                     type="text"
                     inputMode="decimal"
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
                 <FormField label="Year">
-                  <Select onValueChange={handleYearChange} value={journalData.year}>
-                    <SelectTrigger className="w-full">
+                <span className="text-red-500">*</span>
+                  <Select onValueChange={handleYearChange} value={journalData.year} name="year">
+                    <SelectTrigger className="border-purple-300 focus:border-purple-500" >
                       <SelectValue placeholder="Select year" />
                     </SelectTrigger>
                     <SelectContent>
@@ -296,6 +346,7 @@ const ResearchPaperForm = () => {
                 </FormField>
 
                 <FormField label="Volume">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="volume" 
                     value={journalData.volume} 
@@ -303,11 +354,12 @@ const ResearchPaperForm = () => {
                     type="text"
                     inputMode="numeric"
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
                 <FormField label="Issue">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="issue" 
                     value={journalData.issue} 
@@ -315,7 +367,7 @@ const ResearchPaperForm = () => {
                     type="text"
                     inputMode="numeric"
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
@@ -324,7 +376,7 @@ const ResearchPaperForm = () => {
                     name="pageNumbers" 
                     value={journalData.pageNumbers} 
                     onChange={handleInputChange} 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                     placeholder="e.g., 123-145"
                   />
                 </FormField>
@@ -334,7 +386,7 @@ const ResearchPaperForm = () => {
                     name="doi" 
                     value={journalData.doi} 
                     onChange={handleInputChange} 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
@@ -343,7 +395,7 @@ const ResearchPaperForm = () => {
                     name="url" 
                     value={journalData.url} 
                     onChange={handleInputChange} 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                     type="url"
                     placeholder="https://"
                   />
@@ -351,12 +403,13 @@ const ResearchPaperForm = () => {
               </div>
 
               <FormField label="Abstract">
+              <span className="text-red-500">*</span>
                 <Textarea 
                   name="abstractText" 
                   value={journalData.abstractText} 
                   onChange={handleInputChange} 
                   required 
-                  className="min-h-[120px] w-full"
+                  className="min-h-[120px] border-purple-300 focus:border-purple-500"
                 />
               </FormField>
 
@@ -365,7 +418,7 @@ const ResearchPaperForm = () => {
                   name="description" 
                   value={journalData.description} 
                   onChange={handleInputChange} 
-                  className="min-h-[120px] w-full"
+                  className="min-h-[120px] border-purple-300 focus:border-purple-500"
                 />
               </FormField>
             </>
@@ -382,9 +435,9 @@ const ResearchPaperForm = () => {
                         value={searchQuery}
                         onChange={handleSearchChange}
                         required
-                        className="w-full pr-10"
+                        className="border-purple-300 focus:border-purple-500 pr-10"
                       />
-                      <Search className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                      <Search className="absolute right-3 top-3 h-5 w-5 text-gray-400 " />
                     </div>
                     {showDropdown && searchResults.length > 0 && (
                       <div ref={dropdownRef} className="absolute bg-white border border-gray-200 shadow-lg mt-1 w-full max-h-40 overflow-y-auto z-10">
@@ -403,42 +456,46 @@ const ResearchPaperForm = () => {
                 </FormField>
 
                 <FormField label="Title">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="title" 
                     value={conferenceData.title} 
                     onChange={handleInputChange} 
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
                 <FormField label="Author">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="author" 
                     value={conferenceData.author} 
                     onChange={handleInputChange} 
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
                 <FormField label="Location">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="location" 
                     value={conferenceData.location} 
                     onChange={handleInputChange} 
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
                 <FormField label="Organizer">
+                <span className="text-red-500">*</span>
                   <Input 
                     name="organizer" 
                     value={conferenceData.organizer} 
                     onChange={handleInputChange} 
                     required 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
@@ -449,13 +506,14 @@ const ResearchPaperForm = () => {
                     onChange={handleNumberInput}
                     type="text"
                     inputMode="decimal"
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
                 <FormField label="Year">
-                  <Select onValueChange={handleYearChange} value={conferenceData.year}>
-                    <SelectTrigger className="w-full">
+                <span className="text-red-500">*</span>
+                  <Select onValueChange={handleYearChange} value={conferenceData.year} name="year">
+                    <SelectTrigger className="border-purple-300 focus:border-purple-500" >
                       <SelectValue placeholder="Select year" />
                     </SelectTrigger>
                     <SelectContent>
@@ -469,12 +527,13 @@ const ResearchPaperForm = () => {
                 <div></div>
 
                 <FormField label="Start Date">
+                <span className="text-red-500">*</span>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full justify-start text-left font-normal",
+                          "border-purple-300 focus:border-purple-500  justify-start text-left font-normal",
                           !startDate && "text-muted-foreground"
                         )}
                       >
@@ -501,12 +560,13 @@ const ResearchPaperForm = () => {
                 </FormField>
 
                 <FormField label="End Date">
+                <span className="text-red-500">*</span>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full justify-start text-left font-normal",
+                          "border-purple-300 focus:border-purple-500 justify-start text-left font-normal",
                           !endDate && "text-muted-foreground"
                         )}
                       >
@@ -537,7 +597,7 @@ const ResearchPaperForm = () => {
                     name="doi" 
                     value={conferenceData.doi} 
                     onChange={handleInputChange} 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                   />
                 </FormField>
 
@@ -546,7 +606,7 @@ const ResearchPaperForm = () => {
                     name="url" 
                     value={conferenceData.url} 
                     onChange={handleInputChange} 
-                    className="w-full"
+                    className="border-purple-300 focus:border-purple-500" 
                     type="url"
                     placeholder="https://"
                   />
@@ -554,12 +614,13 @@ const ResearchPaperForm = () => {
               </div>
 
               <FormField label="Abstract">
+              <span className="text-red-500">*</span>
                 <Textarea 
                   name="abstractText" 
                   value={conferenceData.abstractText} 
                   onChange={handleInputChange} 
                   required 
-                  className="min-h-[120px] w-full"
+                  className="min-h-[120px] border-purple-300 focus:border-purple-500"
                 />
               </FormField>
 
@@ -568,31 +629,31 @@ const ResearchPaperForm = () => {
                   name="description" 
                   value={conferenceData.description} 
                   onChange={handleInputChange} 
-                  className="min-h-[120px] w-full"
+                  className="min-h-[120px] border-purple-300 focus:border-purple-500"
                 />
               </FormField>
             </>
           )}
 
-          <div className="flex justify-end space-x-4 pt-4">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={() => navigate("/dashboard")}
-              className="px-6"
-            >
-              Cancel
-            </Button>
-            <Button 
-              type="submit" 
-              disabled={isSubmitting} 
-              className="px-6"
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </Button>
-          </div>
-        </form>
+      <div className="flex justify-end space-x-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate("/")}
+          className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 hover:text-red-700"
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="border-green-300 text-green-600 hover:bg-green-50 hover:border-green-400 hover:text-green-700 bg-white"
+        >
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </Button>
       </div>
+      </div>
+        </form>
     </div>
   );
 };

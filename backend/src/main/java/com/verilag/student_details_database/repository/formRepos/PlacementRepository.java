@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.verilag.student_details_database.models.formModels.PlacementModel;
 
 public interface PlacementRepository extends JpaRepository<PlacementModel, Long> {
-    @Query("SELECT c FROM PlacementModel c WHERE c.studentId = :studentId AND c.approved = false")
+    @Query("SELECT c FROM PlacementModel c WHERE c.studentId = :studentId AND c.approved = true")
     List<PlacementModel> findApprovedEventsByStudentId(@Param("studentId") Long studentId);
     void deleteByActivityId(Long activityId);
 }

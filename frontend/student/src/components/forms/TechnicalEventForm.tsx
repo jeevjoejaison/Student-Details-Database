@@ -24,38 +24,28 @@ export const TechnicalEventForm = () => {
     description: "",
     category: "",
     proof: null as File | null,
-    name:"",
-    type:"",
-    rollNumber:""
+    name: "",
+    type: "",
+    rollNumber: ""
   });
   const { toast } = useToast();
   const navigate = useNavigate();
   const [date, setDate] = useState<Date | undefined>(undefined);
-  const [categories,setCategories]=useState([]);
-  const [awards,setAwards]=useState([])
+  const [categories, setCategories] = useState([]);
+  const [awards, setAwards] = useState([]);
   
-  useEffect(()=>{
-    fetchDropdownOptions("Technical Event Form","Category").then(setCategories)
-    fetchDropdownOptions("Technical Event Form","awards").then(setAwards)
-    console.log(categories)
-    console.log(awards)
-  },[])
-
   useEffect(() => {
-    const storedUser = localStorage.getItem("userId");
-    const name=localStorage.getItem("name")
-    const rollNumber=localStorage.getItem("rollNumber")
-    const type="Technical Event"
-    if (storedUser) {
-      setFormData((prev) => ({ ...prev, userId: storedUser, name: name||"mushki", type: type, rollNumber: rollNumber||"b220244cs" })); // Assuming user.id holds the ID
-    }
+    fetchDropdownOptions("Technical Event Form", "Category").then(setCategories);
+    fetchDropdownOptions("Technical Event Form", "awards").then(setAwards);
   }, []);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userId");
+    const name = localStorage.getItem("name");
+    const rollNumber = localStorage.getItem("rollNumber");
+    const type = "Technical Event";
     if (storedUser) {
-     
-      setFormData((prev) => ({ ...prev, userId: storedUser })); // Assuming user.id holds the ID
+      setFormData((prev) => ({ ...prev, userId: storedUser, name: name || "mushki", type: type, rollNumber: rollNumber || "b220244cs" }));
     }
   }, []);
 
@@ -89,10 +79,27 @@ export const TechnicalEventForm = () => {
       return;
     }
 
+    const isConfirmed = window.confirm("Are you sure you want to submit?");
+    if (!isConfirmed) return;
+
     setIsSubmitting(true);
 
-    try {
+    setFormData({
+      eventName: "",
+      location: "",
+      date: "",
+      awards: "",
+      description: "",
+      category: "",
+      proof: null,
+      name: "",
+      type: "",
+      rollNumber: ""
+    })
+    const fileInput = document.getElementById("proof") as HTMLInputElement;
+    if (fileInput) fileInput.value = "";
 
+    try {
       const storedUser = localStorage.getItem("userId");
   
       if (!storedUser) {
@@ -107,9 +114,9 @@ export const TechnicalEventForm = () => {
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("category", formData.category);
       dataToSubmit.append("studentId", storedUser);
-      dataToSubmit.append("name",formData.name)
-      dataToSubmit.append("type",formData.type);
-      dataToSubmit.append("rollNumber",formData.rollNumber)
+      dataToSubmit.append("name", formData.name);
+      dataToSubmit.append("type", formData.type);
+      dataToSubmit.append("rollNumber", formData.rollNumber);
       if (formData.proof) {
         dataToSubmit.append("proof", formData.proof);
       }
@@ -119,7 +126,7 @@ export const TechnicalEventForm = () => {
       if (result.success) {
         toast({
           title: "Success",
-          description: result.message,
+          description: "Uploaded successfully",
         });
         navigate("/technical-events");
       } else {
@@ -221,10 +228,19 @@ export const TechnicalEventForm = () => {
       </div>
 
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={() => navigate("/dashboard")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={() => navigate("/dashboard")} 
+          className="border-red-500 text-red-500 hover:bg-red-50 hover:text-red-600"
+        >
           Cancel
         </Button>
-        <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-md">
+        <Button 
+          type="submit" 
+          disabled={isSubmitting} 
+          className="border-green-500 text-green-500 hover:bg-green-50 hover:text-green-600 bg-white shadow-md"
+        >
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </div>

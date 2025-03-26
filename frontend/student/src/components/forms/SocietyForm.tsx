@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { fetchDropdownOptions, formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
+import { fetchDropdownOptions, submitForm, validateRequiredFields } from "@/utils/formUtils";
 import { useToast } from "@/components/ui/use-toast";
 
 export const SocietyForm = () => {
@@ -16,34 +16,36 @@ export const SocietyForm = () => {
     membershipType: "",
     description: "",
     proof: null as File | null,
-    name:"",
-    type:"",
-    rollNumber:""
+    name: "",
+    type: "",
+    rollNumber: ""
   });
-
 
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [categories,setCategories]=useState([]);
-  const [membershipType,setMembershipType]=useState([])
+  const [categories, setCategories] = useState([]);
+  const [membershipType, setMembershipType] = useState([]);
   
-  useEffect(()=>{
-    fetchDropdownOptions("Society Club Form","category").then(setCategories)
-    fetchDropdownOptions("Society Club Form","Membership Type").then(setMembershipType)
-  
-  },[])
-  
+  useEffect(() => {
+    fetchDropdownOptions("Society Club Form", "category").then(setCategories);
+    fetchDropdownOptions("Society Club Form", "Membership Type").then(setMembershipType);
+  }, []);
   
   useEffect(() => {
     const storedUser = localStorage.getItem("userId");
-    const name=localStorage.getItem("name")
-    const rollNumber=localStorage.getItem("rollNumber")
-    const type="Society"
+    const name = localStorage.getItem("name");
+    const rollNumber = localStorage.getItem("rollNumber");
+    const type = "Society";
     if (storedUser) {
-      setFormData((prev) => ({ ...prev, userId: storedUser, name: name||"mushki", type: type, rollNumber: rollNumber||"b220244cs" })); // Assuming user.id holds the ID
+      setFormData((prev) => ({ 
+        ...prev, 
+        userId: storedUser, 
+        name: name || "", 
+        type: type, 
+        rollNumber: rollNumber || "" 
+      }));
     }
   }, []);
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -62,17 +64,8 @@ export const SocietyForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormData({
-      category: "",
-      societyOrClubname: "",
-      membershipType: "",
-      description: "",
-      proof: null as File | null,
-      name:"",
-      type:"",
-      rollNumber:""
-    })
-    const requiredFields = ["category", "name", "membershipType"];
+    
+    const requiredFields = ["category", "societyOrClubname", "membershipType"];
     const validation = validateRequiredFields(formData, requiredFields);
 
     if (!validation.valid) {
@@ -83,17 +76,15 @@ export const SocietyForm = () => {
       });
       return;
     }
-
+    const isConfirmed = window.confirm("Are you sure you want to submit?");
+    if (!isConfirmed) return;
     setIsSubmitting(true);
 
     try {
-
       const storedUser = localStorage.getItem("userId");
-   
       if (!storedUser) {
         throw new Error("User not found. Please log in again.");
       }
-
 
       const dataToSubmit = new FormData();
       dataToSubmit.append("category", formData.category);
@@ -101,9 +92,10 @@ export const SocietyForm = () => {
       dataToSubmit.append("membershipType", formData.membershipType);
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("studentId", storedUser);
-      dataToSubmit.append("name",formData.name)
-      dataToSubmit.append("type",formData.type);
-      dataToSubmit.append("rollNumber",formData.rollNumber)
+      dataToSubmit.append("name", formData.name);
+      dataToSubmit.append("type", formData.type);
+      dataToSubmit.append("rollNumber", formData.rollNumber);
+      
       if (formData.proof) {
         dataToSubmit.append("proof", formData.proof);
       }
@@ -111,7 +103,19 @@ export const SocietyForm = () => {
       const result = await submitForm("societies-clubs", dataToSubmit);
 
       if (result.success) {
-        toast({ title: "Success", description: result.message });
+        toast({ title: "Success", description: "Uploaded successfully" });
+        setFormData({
+          category: "",
+          societyOrClubname: "",
+          membershipType: "",
+          description: "",
+          proof: null,
+          name: "",
+          type: "",
+          rollNumber: ""
+        });
+        const fileInput = document.getElementById("proof") as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
         navigate("/society");
       } else {
         throw new Error(result.message);
@@ -149,7 +153,14 @@ export const SocietyForm = () => {
 
           <div className="space-y-2">
             <Label htmlFor="societyOrClubname" className="text-purple-900">Society/Club Name<span className="text-red-500">*</span></Label>
-            <Input id="societyOrClubname" name="societyOrClubname" value={formData.societyOrClubname} onChange={handleInputChange} placeholder="Enter society/club name" className="border-purple-300 focus:border-purple-500" />
+            <Input 
+              id="societyOrClubname" 
+              name="societyOrClubname" 
+              value={formData.societyOrClubname} 
+              onChange={handleInputChange} 
+              placeholder="Enter society/club name" 
+              className="border-purple-300 focus:border-purple-500" 
+            />
           </div>
         </div>
 
@@ -171,20 +182,42 @@ export const SocietyForm = () => {
 
         <div className="space-y-2">
           <Label htmlFor="description" className="text-purple-900">Description</Label>
-          <Textarea id="description" name="description" value={formData.description} onChange={handleInputChange} placeholder="Enter additional details" className="border-purple-300 focus:border-purple-500" />
+          <Textarea 
+            id="description" 
+            name="description" 
+            value={formData.description} 
+            onChange={handleInputChange} 
+            placeholder="Enter additional details" 
+            className="border-purple-300 focus:border-purple-500" 
+          />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="proof" className="text-purple-900">Proof (optional)</Label>
-          <Input id="proof" name="proof" type="file" onChange={handleFileChange} className="cursor-pointer border-purple-300 focus:border-purple-500" />
+          <Input 
+            id="proof" 
+            name="proof" 
+            type="file" 
+            onChange={handleFileChange} 
+            className="cursor-pointer border-purple-300 focus:border-purple-500" 
+          />
         </div>
       </div>
 
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={() => navigate("/dashboard")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={() => navigate("/dashboard")} 
+          className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
+        >
           Cancel
         </Button>
-        <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-md">
+        <Button 
+          type="submit" 
+          disabled={isSubmitting} 
+          className="border-green-300 text-green-600 hover:bg-green-50 hover:border-green-400 bg-white"
+        >
           {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </div>

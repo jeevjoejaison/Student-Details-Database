@@ -10,7 +10,7 @@ import com.verilag.student_details_database.models.formModels.CulturalEventModel
 import com.verilag.student_details_database.models.formModels.Internship;
 
 public interface InternshipRepository extends JpaRepository<Internship,Long> {
-    @Query("SELECT c FROM Internship c WHERE c.studentId = :studentId AND c.approved = false")
+    @Query("SELECT c FROM Internship c WHERE c.studentId = :studentId AND c.approved = true")
     List<Internship> findApprovedEventsByStudentId(@Param("studentId") Long studentId);
     void deleteByActivityId(Long activityId);
 }

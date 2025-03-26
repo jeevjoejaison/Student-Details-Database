@@ -22,8 +22,11 @@ const TechnicalEventPage = () => {
 
   const handleDelete = async (eventType: string, activityId: any) => {
     try {
+      const isConfirmed = window.confirm("Are you sure you want to delete?");
+      if (!isConfirmed) return;
+      
       await axios.delete(`http://localhost:8080/${eventType}/delete`, {
-        params: { activityId } // Pass activityId as a query parameter
+        params: { activityId }
       });
       setEvents(events.filter(event => event.activityId !== activityId));
     } catch (error) {
@@ -46,9 +49,19 @@ const TechnicalEventPage = () => {
         </div>
 
         <Tabs defaultValue="add" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg p-1">
-            <TabsTrigger value="add" className="text-white hover:bg-purple-600 data-[state=active]:bg-white data-[state=active]:text-purple-900 rounded-md">Add New</TabsTrigger>
-            <TabsTrigger value="view" className="text-white hover:bg-blue-600 data-[state=active]:bg-white data-[state=active]:text-blue-900 rounded-md">View All</TabsTrigger>
+          <TabsList className="grid w-full max-w-md grid-cols-2 bg-gradient-to-r from-purple-100 to-purple-200 rounded-lg p-1 border border-purple-200">
+            <TabsTrigger 
+              value="add" 
+              className="text-purple-800 hover:bg-purple-100 data-[state=active]:bg-white data-[state=active]:text-purple-900 data-[state=active]:shadow-sm rounded-md"
+            >
+              Add New
+            </TabsTrigger>
+            <TabsTrigger 
+              value="view" 
+              className="text-purple-800 hover:bg-purple-100 data-[state=active]:bg-white data-[state=active]:text-purple-900 data-[state=active]:shadow-sm rounded-md"
+            >
+              View All
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="add" className="pt-4">

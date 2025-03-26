@@ -8,7 +8,7 @@ import com.verilag.student_details_database.models.formModels.ConferencePaper;
 
 public interface ConferencePaperRepository extends JpaRepository<ConferencePaper, Long> {
 
-    @Query("SELECT c FROM ConferencePaper c WHERE c.studentId = :studentId")
+    @Query("SELECT c FROM ConferencePaper c WHERE c.studentId = :studentId AND c.approved = true")
     List<ConferencePaper> findByStudentId(@Param("studentId") Long studentId);
 
     void deleteByActivityId(Long activityId);

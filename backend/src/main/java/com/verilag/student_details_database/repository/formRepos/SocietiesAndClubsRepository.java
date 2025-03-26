@@ -9,7 +9,7 @@ import com.verilag.student_details_database.models.formModels.SocietiesAndClubsM
 
 public interface SocietiesAndClubsRepository extends JpaRepository<SocietiesAndClubsModel, Long> {
 
-    @Query("SELECT c FROM SocietiesAndClubsModel c WHERE c.studentId = :studentId AND c.approved = false")
+    @Query("SELECT c FROM SocietiesAndClubsModel c WHERE c.studentId = :studentId AND c.approved = true")
     List<SocietiesAndClubsModel> findApprovedEventsByStudentId(@Param("studentId") Long studentId);
     void deleteByActivityId(Long activityId);
 

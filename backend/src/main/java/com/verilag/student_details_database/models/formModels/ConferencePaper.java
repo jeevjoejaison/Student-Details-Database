@@ -18,7 +18,6 @@ public class ConferencePaper extends ResearchPaper {
     @NotBlank(message = "Organizer is required")
     private String organizer;
 
-    @NotNull(message = "Acceptance rate is required")
     @DecimalMin(value = "0.0", inclusive = false, message = "Acceptance rate must be greater than 0")
     @DecimalMax(value = "100.0", message = "Acceptance rate cannot exceed 100")
     private Double acceptanceRate;

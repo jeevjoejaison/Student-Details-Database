@@ -17,6 +17,7 @@ const SportsEventPage = () => {
   useEffect(() => {
     if (activeTab === "view" && storedUser) {
       fetchFormData("sports-events", storedUser).then(setEvents);
+      console.log(events)
     }
   }, [activeTab, storedUser]);
 
@@ -66,7 +67,7 @@ const SportsEventPage = () => {
                     <h3 className="text-xl font-semibold text-purple-900">{event.eventName}</h3>
                     <p className="text-sm text-purple-700 mb-2">{event.description}</p>
                     <p className="text-sm text-purple-800 font-medium">Participation Type: {event.participationType}</p>
-                    <p className="text-sm text-purple-600">Award: {event.award}</p>
+                    <p className="text-sm text-purple-600">Award: {event.awards}</p>
                     <p className="text-sm text-purple-600">Date: {formatDate(event.date)}</p>
                     <p className="text-sm text-purple-600">Location: {event.location}</p>
                     <div className="flex gap-2 mt-4">

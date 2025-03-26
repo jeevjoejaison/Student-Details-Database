@@ -32,8 +32,6 @@ public class JournalPaperDTO {
     @Size(min = 8, max = 9, message = "ISSN must be 8-9 characters long")
     private String issn;  // Fixed field name
 
-    @NotNull(message = "Impact factor is required")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Impact factor must be greater than 0")
     private Double impactFactor;
 
     @NotNull(message = "Volume is required")
@@ -42,19 +40,16 @@ public class JournalPaperDTO {
     @NotNull(message = "Issue is required")
     private Integer issue;
 
-    @NotBlank(message = "Page numbers are required")
     private String pageNumbers;
 
-    @NotBlank(message = "DOI is required")
+
     private String doi;
 
-    @NotBlank(message = "URL is required")
     private String url;
 
     @NotBlank(message = "Abstract is required")
     private String abstractText;
 
-    @NotBlank(message = "Description is required")
     private String description;
 
     // 🔴 **Missing Constructor - Now Added**
@@ -62,6 +57,25 @@ public class JournalPaperDTO {
                            Double impactFactor, Integer year, Integer volume, Integer issue, String pageNumbers, 
                            String doi, String url, String description, String abstractText, String author) {
         this.studentId = studentId;
+        this.title = title;
+        this.journalName = journalName;
+        this.publisher = publisher;
+        this.issn = issn;
+        this.impactFactor = impactFactor;
+        this.year = year;
+        this.volume = volume;
+        this.issue = issue;
+        this.pageNumbers = pageNumbers;
+        this.doi = doi;
+        this.url = url;
+        this.description = description;
+        this.abstractText = abstractText;
+        this.author = author;
+    }
+
+    public JournalPaperDTO(String title, String journalName, String publisher, String issn, Double impactFactor,
+                            Integer year, Integer volume, Integer issue, String pageNumbers, String doi, 
+                            String url, String description, String abstractText, String author) {
         this.title = title;
         this.journalName = journalName;
         this.publisher = publisher;

@@ -4,6 +4,7 @@ import com.verilag.student_details_database.models.*;
 import com.verilag.student_details_database.models.authModels.AuthenticationRequest;
 import com.verilag.student_details_database.models.authModels.AuthenticationResponse;
 import com.verilag.student_details_database.models.authModels.dtos.StudentRegistrationRequest;
+import com.verilag.student_details_database.repository.StudentRepository;
 import com.verilag.student_details_database.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,12 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
-    public AuthenticationService(UserRepository userRepository) {
+
+    public AuthenticationService(UserRepository userRepository,StudentRepository studentRepository) {
         this.userRepository = userRepository;
+        this.studentRepository=studentRepository;
     }
 
     /**
@@ -38,7 +42,7 @@ public class AuthenticationService {
             return new AuthenticationResponse("Invalid email or password", false, null);
         }
         
-        if(user.isActive()==false || user.getRole()!=Role.STUDENT){
+        if(user.isActive()==false){
             return new AuthenticationResponse("Invalid User", false, null);
         }
 
@@ -46,6 +50,27 @@ public class AuthenticationService {
         return new AuthenticationResponse("Login successful!", true, user.getUserId());
     }
 
+    public AuthenticationResponse authenticateStudent(AuthenticationRequest request) {
+        Optional<Student> optionalUser = studentRepository.findByEmail(request.getEmail());
+
+        if (optionalUser.isEmpty()) {
+            return new AuthenticationResponse("User not found", false, null);
+        }
+
+        Student student = optionalUser.get();
+
+        // Check if the password matches
+        if (!request.getPassword().equals(student.getPassword())) {
+            return new AuthenticationResponse("Invalid email or password", false, null);
+        }
+        
+        if(student.isActive()==false || student.getRole()!=Role.STUDENT){
+            return new AuthenticationResponse("Invalid User", false, null);
+        }
+
+        // Return userId on successful login
+        return new AuthenticationResponse("Login successful!", true, student.getUserId(),student.getName(),student.getSection(),student.getRollNumber());
+    }
     /**
      * Register a new student.
      *

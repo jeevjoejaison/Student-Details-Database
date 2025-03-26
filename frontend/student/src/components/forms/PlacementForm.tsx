@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
+import { fetchDropdownOptions, formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 
@@ -24,7 +24,11 @@ export const PlacementForm = () => {
 
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { userId } = useAuth();
+  const [hiringMode,setHiringMode]=useState([]);
+
+    useEffect(()=>{
+      fetchDropdownOptions("Placement Form","Hiring Mode").then(setHiringMode)
+    },[])
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userId");
@@ -134,9 +138,9 @@ export const PlacementForm = () => {
                 <SelectValue placeholder="Select hiring mode" />
               </SelectTrigger>
               <SelectContent>
-                {formDropdowns.hiringMode.map((mode) => (
-                  <SelectItem key={mode} value={mode} className="text-purple-900">
-                    {mode}
+                {hiringMode.map((mode) => (
+                  <SelectItem key={mode.id} value={mode.optionValue} className="text-purple-900">
+                    {mode.optionValue}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -168,7 +172,7 @@ export const PlacementForm = () => {
       </div>
 
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={() => navigate("/placements")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
+        <Button type="button" variant="outline" onClick={() => navigate("/dashboard")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-md">

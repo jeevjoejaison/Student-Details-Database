@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
+import { fetchDropdownOptions, formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { Calendar } from "@/components/ui/calendar";
@@ -28,6 +28,14 @@ export const SportsEventForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [date, setDate] = useState<Date | undefined>(undefined);
+
+  const [participationType,setParticipationType]=useState([]);
+  const [awards,setAwards]=useState([])
+  
+  useEffect(()=>{
+    fetchDropdownOptions("Sports Event Form","Participation Type").then(setParticipationType)
+    fetchDropdownOptions("Sports Event Form","Awards").then(setAwards)
+  },[])
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userId");
@@ -56,12 +64,12 @@ export const SportsEventForm = () => {
     e.preventDefault();
     setFormData({
       eventName: "",
-    location: "",
-    date: "",
-    participationType: "",
-    award: "",
-    description: "",
-    proof: null as File | null,
+      location: "",
+      date: "",
+      participationType: "",
+      award: "",
+      description: "",
+      proof: null as File | null,
     })
     const requiredFields = ["eventName", "location", "date", "participationType"];
     const validation = validateRequiredFields(formData, requiredFields);
@@ -74,7 +82,7 @@ export const SportsEventForm = () => {
       });
       return;
     }
-
+    console.log(formData)
     setIsSubmitting(true);
 
     try {
@@ -91,7 +99,7 @@ export const SportsEventForm = () => {
       dataToSubmit.append("location", formData.location);
       dataToSubmit.append("date", formData.date);
       dataToSubmit.append("participationType", formData.participationType);
-      dataToSubmit.append("award", formData.award);
+      dataToSubmit.append("awards", formData.award);
       dataToSubmit.append("description", formData.description);
       dataToSubmit.append("studentId", storedUser);
       if (formData.proof) {
@@ -165,9 +173,9 @@ export const SportsEventForm = () => {
                 <SelectValue placeholder="Select participation type" />
               </SelectTrigger>
               <SelectContent>
-                {formDropdowns.participationType.map((type) => (
-                  <SelectItem key={type} value={type} className="text-purple-900">
-                    {type}
+                {participationType.map((type) => (
+                  <SelectItem key={type.id} value={type.optionValue} className="text-purple-900">
+                    {type.optionValue}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -183,9 +191,9 @@ export const SportsEventForm = () => {
                 <SelectValue placeholder="Select an award" />
               </SelectTrigger>
               <SelectContent>
-                {formDropdowns.awards.map((award) => (
-                  <SelectItem key={award} value={award} className="text-purple-900">
-                    {award}
+                {awards.map((award) => (
+                  <SelectItem key={award.id} value={award.optionValue} className="text-purple-900">
+                    {award.optionValue}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -205,7 +213,7 @@ export const SportsEventForm = () => {
       </div>
 
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={() => navigate("/sports-events")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
+        <Button type="button" variant="outline" onClick={() => navigate("/dashboard")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-md">

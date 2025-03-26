@@ -63,6 +63,18 @@ export const formDropdowns = {
   ]
 };
 
+export const fetchDropdownOptions = async (category: any, dropdownName: any) => {
+  try {
+      const response = await axios.get('http://localhost:8080/dropdown/fetch', {
+          params: { category, dropdownName }
+      });
+      return response.data;  // Return the fetched dropdown options
+  } catch (error) {
+      console.error("Error fetching dropdown data:", error);
+      return [];  // Return an empty array in case of error
+  }
+};
+
 // Mock API call to submit form data
 export const submitForm = async (formType: string, formData: FormData): Promise<{ success: boolean; message: string }> => {
   try {

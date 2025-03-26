@@ -275,7 +275,7 @@ export const InternshipForm = () => {
         <Button 
           type="button" 
           variant="outline" 
-          onClick={() => navigate("/internships")}
+          onClick={() => navigate("/dashboard")}
         >
           Cancel
         </Button>

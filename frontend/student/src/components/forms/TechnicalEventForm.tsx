@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
+import { fetchDropdownOptions, submitForm, validateRequiredFields } from "@/utils/formUtils";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { Calendar } from "@/components/ui/calendar";
@@ -28,6 +28,15 @@ export const TechnicalEventForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [date, setDate] = useState<Date | undefined>(undefined);
+  const [categories,setCategories]=useState([]);
+  const [awards,setAwards]=useState([])
+  
+    useEffect(()=>{
+      fetchDropdownOptions("Technical Event Form","Category").then(setCategories)
+      fetchDropdownOptions("Technical Event Form","awards").then(setAwards)
+      console.log(categories)
+      console.log(awards)
+    },[])
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userId");
@@ -156,11 +165,9 @@ export const TechnicalEventForm = () => {
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
-                {formDropdowns.categories.filter(cat => 
-                  ["Technical", "Quiz", "Debate", "Other"].includes(cat)
-                ).map((category) => (
-                  <SelectItem key={category} value={category} className="text-purple-900">
-                    {category}
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.optionValue} className="text-purple-900">
+                    {category.optionValue}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -176,9 +183,9 @@ export const TechnicalEventForm = () => {
                 <SelectValue placeholder="Select an award" />
               </SelectTrigger>
               <SelectContent>
-                {formDropdowns.awards.map((award) => (
-                  <SelectItem key={award} value={award} className="text-purple-900">
-                    {award}
+                {awards.map((award) => (
+                  <SelectItem key={award.id} value={award.optionValue} className="text-purple-900">
+                    {award.optionValue}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -198,7 +205,7 @@ export const TechnicalEventForm = () => {
       </div>
 
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={() => navigate("/technical-events")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
+        <Button type="button" variant="outline" onClick={() => navigate("/dashboard")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-md">

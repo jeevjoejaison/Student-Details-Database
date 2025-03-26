@@ -10,16 +10,12 @@ import com.verilag.student_details_database.services.authServices.Authentication
 import com.verilag.student_details_database.services.authServices.UserService;
 import com.verilag.student_details_database.utils.GoogleTokenVerifier;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.Map;
 
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -38,34 +34,51 @@ public class AuthenticationController {
 
     @PostMapping("/google-login")
     public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> request) {
-        String token = request.get("token");
+    String token = request.get("token");
 
-        // Verify the Google token
-        GoogleIdToken.Payload payload = GoogleTokenVerifier.verifyToken(token);
-        if (payload == null) {
-            return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body("Invalid token");
-        }
+    // Verify the Google token
+    GoogleIdToken.Payload payload = GoogleTokenVerifier.verifyToken(token);
+    if (payload == null) {
+        return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body("Invalid token");
+    }
 
-        // Extract email from the token
-        String email = payload.getEmail();
+    // Extract email from the token
+    String email = payload.getEmail();
 
-        // Check if the user exists in your database
-        User user = userService.getUserByEmail(email);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.SC_NOT_FOUND).body("User not registered");
-        }
+    // Check if the user exists in the database
+    User user = userService.getUserByEmail(email);
+    if (user == null) {
+        return ResponseEntity.status(HttpStatus.SC_NOT_FOUND).body("User not registered");
+    }
 
-        if(user.isActive()==false){
-            return ResponseEntity.status(HttpStatus.SC_NOT_FOUND).body("Invalid User");
-        }
+    if (!user.isActive()) {
+        return ResponseEntity.status(HttpStatus.SC_UNAUTHORIZED).body("Invalid User");
+    }
 
-        // Return the user ID
-        return ResponseEntity.ok(Map.of("userId", user.getUserId()));
+    // If the user is a student, return additional details
+    if (user.getRole() == Role.STUDENT && user instanceof Student) {
+        Student student = (Student) user;
+        return ResponseEntity.ok(Map.of(
+            "userId", student.getUserId(),
+            "name", student.getName(),
+            "rollNumber", student.getRollNumber(),
+            "section", student.getSection()
+        ));
+    }
+
+    // Default response for non-student users
+    return ResponseEntity.ok(Map.of("userId", user.getUserId()));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse response = authenticationService.authenticate(request);
+        return response.isSuccess() ? ResponseEntity.ok(response) : ResponseEntity.status(401).body(response);
+    }
+
+    @PostMapping("/login-student")
+    public ResponseEntity<AuthenticationResponse> loginStudent(@RequestBody AuthenticationRequest request) {
+        AuthenticationResponse response = authenticationService.authenticateStudent(request);
         return response.isSuccess() ? ResponseEntity.ok(response) : ResponseEntity.status(401).body(response);
     }
 

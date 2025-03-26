@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
+import { fetchDropdownOptions, formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
 import { useToast } from "@/components/ui/use-toast";
 
 export const SocietyForm = () => {
@@ -18,8 +18,18 @@ export const SocietyForm = () => {
     proof: null as File | null,
   });
 
+
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [categories,setCategories]=useState([]);
+  const [membershipType,setMembershipType]=useState([])
+  
+  useEffect(()=>{
+    fetchDropdownOptions("Society Club Form","category").then(setCategories)
+    fetchDropdownOptions("Society Club Form","Membership Type").then(setMembershipType)
+  
+  },[])
+  
   
    useEffect(() => {
       const storedUser = localStorage.getItem("userId");
@@ -117,9 +127,9 @@ export const SocietyForm = () => {
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {formDropdowns.societyCategory.map((category) => (
-                  <SelectItem key={category} value={category} className="text-purple-900">
-                    {category}
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.optionValue} className="text-purple-900">
+                    {category.optionValue}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -139,9 +149,9 @@ export const SocietyForm = () => {
               <SelectValue placeholder="Select membership type" />
             </SelectTrigger>
             <SelectContent>
-              {formDropdowns.membershipType.map((type) => (
-                <SelectItem key={type} value={type} className="text-purple-900">
-                  {type}
+              {membershipType.map((type) => (
+                <SelectItem key={type.id} value={type.optionValue} className="text-purple-900">
+                  {type.optionValue}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -160,7 +170,7 @@ export const SocietyForm = () => {
       </div>
 
       <div className="flex justify-end space-x-4">
-        <Button type="button" variant="outline" onClick={() => navigate("/societies")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
+        <Button type="button" variant="outline" onClick={() => navigate("/dashboard")} className="border-purple-300 text-purple-900 hover:bg-purple-50">
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-md">

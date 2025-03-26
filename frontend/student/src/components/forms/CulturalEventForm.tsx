@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { formDropdowns, submitForm, validateRequiredFields } from "@/utils/formUtils";
+import { fetchDropdownOptions, submitForm, validateRequiredFields } from "@/utils/formUtils";
 import { useToast } from "@/components/ui/use-toast";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -18,7 +18,16 @@ export const CulturalEventForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
-  
+  const [categories,setCategories]=useState([]);
+  const [awards,setAwards]=useState([])
+
+  useEffect(()=>{
+    fetchDropdownOptions("Cultural Event Form","category").then(setCategories)
+    fetchDropdownOptions("Cultural Event Form","awards").then(setAwards)
+    console.log(categories)
+    console.log(awards)
+  },[])
+
   const [formData, setFormData] = useState({
     eventName: "",
     location: "",
@@ -44,7 +53,6 @@ export const CulturalEventForm = () => {
 
   const handleSelectChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-    console.log(formData)
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,16 +63,7 @@ export const CulturalEventForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormData({
-      eventName: "",
-      location: "",
-      date: "",
-      awards: "",
-      description: "",
-      category: "",
-      proof: null as File | null,
-      studentId: 0,})
-    setDate(undefined)
+    
     // Validate required fields
     const requiredFields = ["eventName", "location", "date", "category"];
     const validation = validateRequiredFields(formData, requiredFields);
@@ -77,7 +76,20 @@ export const CulturalEventForm = () => {
       });
       return;
     }
-
+    const isConfirmed = window.confirm("Are you sure you want to submit?");
+    if (!isConfirmed) {
+      return; // Abort submission if canceled
+    }
+    setFormData({
+      eventName: "",
+      location: "",
+      date: "",
+      awards: "",
+      description: "",
+      category: "",
+      proof: null as File | null,
+      studentId: 0,})
+    setDate(undefined)
     setIsSubmitting(true);
 
     try {
@@ -166,9 +178,9 @@ export const CulturalEventForm = () => {
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
-                {formDropdowns.categories.map((category) => (
-                  <SelectItem key={category} value={category} className="text-purple-900">
-                    {category}
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.optionValue} className="text-purple-900">
+                    {category.optionValue}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -184,9 +196,9 @@ export const CulturalEventForm = () => {
               <SelectValue placeholder="Select an award" />
             </SelectTrigger>
             <SelectContent>
-              {formDropdowns.awards.map((award) => (
-                <SelectItem key={award} value={award} className="text-purple-900">
-                  {award}
+              {awards.map((award) => (
+                <SelectItem key={award.id} value={award.optionValue} className="text-purple-900">
+                  {award.optionValue}
                 </SelectItem>
               ))}
             </SelectContent>

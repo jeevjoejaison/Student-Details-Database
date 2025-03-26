@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+
+import com.verilag.student_details_database.models.externalrepo.FacultyJournalPaper;
 import com.verilag.student_details_database.models.formModels.JournalPaper;
 import com.verilag.student_details_database.models.formModels.dtos.JournalPaperDTO;
+import com.verilag.student_details_database.repository.externalrepo.FacultyJournalPaperRepository;
 import com.verilag.student_details_database.repository.formRepos.JournalPaperRepository;
 
 import jakarta.transaction.Transactional;
@@ -13,9 +16,12 @@ import jakarta.transaction.Transactional;
 @Service
 public class JournalPaperService {
     private final JournalPaperRepository repository;
+    private final FacultyJournalPaperRepository fRepository;
 
-    public JournalPaperService(JournalPaperRepository repository) {
+
+    public JournalPaperService(JournalPaperRepository repository, FacultyJournalPaperRepository fRepository) {
         this.repository = repository;
+        this.fRepository=fRepository;
     }
 
     @Transactional
@@ -54,13 +60,12 @@ public class JournalPaperService {
     }
 
     public List<JournalPaperDTO> searchByName(String query) {
-        List<JournalPaper> papers = repository.findByJournalNameContainingIgnoreCase(query);
+        List<FacultyJournalPaper> papers = fRepository.findByJournalNameContainingIgnoreCase(query);
         return papers.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    private JournalPaperDTO convertToDTO(JournalPaper paper) {
+    private JournalPaperDTO convertToDTO(FacultyJournalPaper paper) {
         return new JournalPaperDTO(
-            paper.getStudentId(),
             paper.getTitle(),
             paper.getJournalName(),
             paper.getPublisher(),

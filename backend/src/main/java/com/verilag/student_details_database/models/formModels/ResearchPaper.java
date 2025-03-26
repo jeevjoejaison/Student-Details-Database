@@ -20,12 +20,10 @@ public abstract class ResearchPaper extends Activity {
     @Min(value = 1900, message = "Year must be after 1900")
     private Integer year;
 
-    @NotBlank(message = "DOI is required")
     private String doi;
 
-    @NotBlank(message = "URL is required")
     @Size(max = 255, message = "URL cannot exceed 255 characters")
-    private String url;
+    private String url; // Made optional by removing @NotBlank
 
     @NotBlank(message = "Title is required")
     private String title;

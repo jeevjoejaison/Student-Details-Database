@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.verilag.student_details_database.models.externalrepo.FacultyConferencePaper;
 import com.verilag.student_details_database.models.formModels.ConferencePaper;
 import com.verilag.student_details_database.models.formModels.CulturalEventModel;
 import com.verilag.student_details_database.models.formModels.dtos.ConferencePaperDTO;
+import com.verilag.student_details_database.repository.externalrepo.FacultyConferencePaperRepository;
 import com.verilag.student_details_database.repository.formRepos.ConferencePaperRepository;
 
 import jakarta.validation.Valid;
@@ -16,9 +18,10 @@ import jakarta.validation.Valid;
 @Service
 public class ConferencePaperService {
     private final ConferencePaperRepository repository;
-
-    public ConferencePaperService(ConferencePaperRepository repository) {
+    private final FacultyConferencePaperRepository fRepository;
+    public ConferencePaperService(ConferencePaperRepository repository,FacultyConferencePaperRepository fRepository) {
         this.repository = repository;
+        this.fRepository = fRepository;
     }
 
     @Transactional
@@ -53,13 +56,12 @@ public class ConferencePaperService {
     }
 
     public List<ConferencePaperDTO> searchByName(String query) {
-        List<ConferencePaper> papers = repository.findByConferenceNameContainingIgnoreCase(query);
+        List<FacultyConferencePaper> papers = fRepository.findByConferenceNameContainingIgnoreCase(query);
         return papers.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    private ConferencePaperDTO convertToDTO(ConferencePaper paper) {
+    private ConferencePaperDTO convertToDTO(FacultyConferencePaper paper) {
         return new ConferencePaperDTO(
-            paper.getStudentId(),
             paper.getTitle(),
             paper.getConferenceName(),
             paper.getLocation(),

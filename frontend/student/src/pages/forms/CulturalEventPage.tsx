@@ -23,6 +23,10 @@ const CulturalEventPage = () => {
 
   const handleDelete = async (eventType: string, activityId: any) => {
     try {
+      const isConfirmed = window.confirm("Are you sure you want to delete?");
+      if (!isConfirmed) {
+        return; // Abort submission if canceled
+      }
       await axios.delete(`http://localhost:8080/${eventType}/delete`, {
         params: { activityId } // Pass activityId as a query parameter
       });

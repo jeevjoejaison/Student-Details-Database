@@ -3,6 +3,7 @@ package com.verilag.student_details_database.models.formModels.dtos;
 import lombok.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,8 +32,7 @@ public class ConferencePaperDTO {
     @NotBlank(message = "Organizer is required")
     private String organizer;
 
-    @NotNull(message = "Acceptance rate is required")
-    private Double acceptanceRate;
+    private Double acceptanceRate; // Made optional by removing @NotNull
 
     @NotNull(message = "Start date is required")
     private LocalDate startDate;
@@ -40,17 +40,14 @@ public class ConferencePaperDTO {
     @NotNull(message = "End date is required")
     private LocalDate endDate;
 
-    @NotBlank(message = "DOI is required")
-    private String doi;
+    private String doi; // Made optional by removing @NotBlank
 
-    @NotBlank(message = "URL is required")
-    private String url;
+    private String url; // Made optional by removing @NotBlank
 
     @NotBlank(message = "Abstract is required")
     private String abstractText;
 
-    @NotBlank(message = "Description is required")
-    private String description;
+    private String description; // Made optional by removing @NotBlank
 
     // Correct constructor implementation
     public ConferencePaperDTO(Long studentId, String title, String conferenceName, String location,
@@ -58,6 +55,25 @@ public class ConferencePaperDTO {
                               String doi, String url, String abstractText, String description,
                               String author, Integer year) {
         this.studentId = studentId;
+        this.title = title;
+        this.conferenceName = conferenceName;
+        this.location = location;
+        this.organizer = organizer;
+        this.acceptanceRate = acceptanceRate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.doi = doi;
+        this.url = url;
+        this.abstractText = abstractText;
+        this.description = description;
+        this.author = author;
+        this.year = year;
+    }
+
+    public ConferencePaperDTO(String title, String conferenceName, String location, String organizer,
+                              Double acceptanceRate, LocalDate startDate, LocalDate endDate, 
+                              String doi, String url, String abstractText, 
+                              String description, String author, Integer year) {
         this.title = title;
         this.conferenceName = conferenceName;
         this.location = location;

@@ -20,8 +20,6 @@ public class JournalPaper extends ResearchPaper {
     @Size(min = 8, max = 9, message = "ISSN must be 8-9 characters long")
     private String ISSN;
 
-    @NotNull(message = "Impact factor is required")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Impact factor must be greater than 0")
     private Double impactFactor;
 
     @NotNull(message = "Volume is required")
@@ -30,6 +28,5 @@ public class JournalPaper extends ResearchPaper {
     @NotNull(message = "Issue is required")
     private Integer issue;
 
-    @NotBlank(message = "Page numbers are required")
     private String pageNumbers;
 }

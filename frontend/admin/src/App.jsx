@@ -1,11 +1,8 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-
 
 import Index from "./pages/Index";
 import CreateStudent from "./pages/CreateStudent";
@@ -24,13 +21,15 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Index />} />
           <Route path="/create-student" element={<CreateStudent />} />
           <Route path="/create-faculty" element={<CreateFaculty />} />
           <Route path="/manage-students" element={<ManageStudents />} />
           <Route path="/manage-faculty" element={<ManageFaculty />} />
           <Route path="/manage-dropdowns" element={<ManageDropdowns />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

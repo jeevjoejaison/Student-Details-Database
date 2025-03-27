@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import * as XLSX from 'xlsx';
 import { 
   ChevronLeft, 
   Search, 
-  Filter, 
-  UserMinus, 
+  Filter,
+  Upload,
   AlertTriangle,
-  Upload
+  Download
 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import {
@@ -26,9 +27,7 @@ const ManageFaculty = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [department, setDepartment] = useState('');
-  const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
   const [showBulkDeactivateDialog, setShowBulkDeactivateDialog] = useState(false);
-  const [selectedFaculty, setSelectedFaculty] = useState(null);
   const [facultyList, setFacultyList] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [excelFile, setExcelFile] = useState(null);
@@ -52,6 +51,28 @@ const ManageFaculty = () => {
       setIsLoading(false);
     }
   };
+  const exportToExcel = () => {
+    // Extract only the fields you need: name, email, and department from facultyList
+    const filteredData = facultyList.map(faculty => ({
+      name: faculty.name,
+      email: faculty.email,
+      department: faculty.department,
+    }));
+  
+    // Create a worksheet from the filtered data
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+  
+    // Create a new workbook and append the worksheet to it
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Faculty');
+  
+    // Generate current date for the filename
+    const today = new Date();
+    const dateString = today.toISOString().split('T')[0];
+  
+    // Write the workbook to an Excel file
+    XLSX.writeFile(workbook, `Faculty_Directory_${dateString}.xlsx`);
+  };
 
   const fetchDepartmentsList = async () => {
     try {
@@ -73,40 +94,9 @@ const ManageFaculty = () => {
   }, [department]);
 
   const filteredFaculty = facultyList.filter(faculty => {
-    return faculty.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return faculty.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+           faculty.email.toLowerCase().includes(searchTerm.toLowerCase());
   });
-
-  const handleDeactivateClick = (faculty) => {
-    setSelectedFaculty(faculty);
-    setShowDeactivateDialog(true);
-  };
-
-  const handleDeactivateConfirm = async () => {
-    try {
-      await facultyApi.deactivateFaculty(selectedFaculty.id);
-      
-      setFacultyList(prevList => 
-        prevList.map(faculty => 
-          faculty.id === selectedFaculty.id 
-            ? { ...faculty, status: faculty.status === 'active' ? 'inactive' : 'active' } 
-            : faculty
-        )
-      );
-      
-      toast({
-        title: `Account ${selectedFaculty.status === 'active' ? 'Deactivated' : 'Activated'}`,
-        description: `${selectedFaculty.name}'s account has been ${selectedFaculty.status === 'active' ? 'deactivated' : 'activated'}.`,
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: typeof error === 'string' ? error : "Failed to update faculty status",
-        variant: "destructive",
-      });
-    } finally {
-      setShowDeactivateDialog(false);
-    }
-  };
 
   const handleBulkDeactivate = async () => {
     if (!excelFile) {
@@ -192,7 +182,7 @@ const ManageFaculty = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="search"
-                  placeholder="Search by name"
+                  placeholder="Search by name or email"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-9 rounded-xl input-focus"
@@ -236,6 +226,15 @@ const ManageFaculty = () => {
                 <Search className="h-4 w-4" />
                 Refresh List
               </Button>
+              <Button 
+                onClick={exportToExcel} 
+                variant="outline" 
+                size="sm"
+                className="gap-2"
+              >
+                <Download className="h-4 w-4" />
+                Export to Excel
+              </Button>
             </div>
           </div>
 
@@ -244,10 +243,8 @@ const ManageFaculty = () => {
               <thead>
                 <tr className="bg-accent/5 text-left">
                   <th className="px-4 py-3 rounded-l-lg">Name</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3 rounded-r-lg text-right">
-                    <span>Actions</span>
-                  </th>
+                  <th className="px-4 py-3">Email</th>
+                  
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/30">
@@ -255,28 +252,8 @@ const ManageFaculty = () => {
                   filteredFaculty.map((faculty) => (
                     <tr key={faculty.id} className="hover:bg-accent/5 transition-colors">
                       <td className="px-4 py-3">{faculty.name}</td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          faculty.status === 'active' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}>
-                          {faculty.status === 'active' ? 'Active' : 'Inactive'}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            variant={faculty.status === 'active' ? "destructive" : "outline"}
-                            size="sm"
-                            onClick={() => handleDeactivateClick(faculty)}
-                            className="rounded-lg"
-                          >
-                            <UserMinus className="h-4 w-4 mr-2" />
-                            {faculty.status === 'active' ? 'Deactivate' : 'Activate'}
-                          </Button>
-                        </div>
-                      </td>
+                      <td className="px-4 py-3">{faculty.email}</td>
+                      <td className="px-4 py-3">{faculty.department}</td>
                     </tr>
                   ))
                 ) : (
@@ -291,37 +268,6 @@ const ManageFaculty = () => {
           </div>
         </div>
       </main>
-
-      <Dialog open={showDeactivateDialog} onOpenChange={setShowDeactivateDialog}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-destructive" />
-              {selectedFaculty?.status === 'active' 
-                ? 'Deactivate Account' 
-                : 'Activate Account'}
-            </DialogTitle>
-            <DialogDescription>
-              {selectedFaculty?.status === 'active'
-                ? 'This will deactivate the faculty account. They will no longer be able to log in.'
-                : 'This will activate the faculty account. They will be able to log in again.'}
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDeactivateDialog(false)}>
-              Cancel
-            </Button>
-            <Button 
-              variant={selectedFaculty?.status === 'active' ? "destructive" : "default"}
-              onClick={handleDeactivateConfirm}
-            >
-              {selectedFaculty?.status === 'active' 
-                ? 'Deactivate' 
-                : 'Activate'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       <Dialog open={showBulkDeactivateDialog} onOpenChange={setShowBulkDeactivateDialog}>
         <DialogContent className="sm:max-w-[425px]">
@@ -342,7 +288,6 @@ const ManageFaculty = () => {
                 onChange={handleFileChange}
                 className="mt-1"
               />
-             
             </div>
 
             {bulkError && (
@@ -373,6 +318,8 @@ const ManageFaculty = () => {
             >
               {isBulkProcessing ? 'Processing...' : 'Bulk Deactivate'}
             </Button>
+            
+            
           </DialogFooter>
         </DialogContent>
       </Dialog>

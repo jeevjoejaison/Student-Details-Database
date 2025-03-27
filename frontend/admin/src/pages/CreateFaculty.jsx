@@ -1,37 +1,12 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/use-toast';
-import { ChevronLeft, Send } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import CSVUploader from '@/components/CSVUploader';
 
 const CreateFaculty = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-
-  const handleSingleAccount = (e) => {
-    e.preventDefault();
-    if (!email || !email.includes('@')) {
-      toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    // Mock API call - would connect to backend in real application
-    toast({
-      title: "Account Creation Initiated",
-      description: `Faculty account for ${email} is being created.`,
-    });
-    
-    // Reset form
-    setEmail('');
-  };
 
   const handleBulkUploadComplete = async (file) => {
     const formData = new FormData();
@@ -41,7 +16,6 @@ const CreateFaculty = () => {
       const response = await fetch('http://localhost:8080/faculties/upload', {
         method: 'POST',
         body: formData,
-        // headers are not needed when using FormData, fetch sets them automatically
       });
   
       if (!response.ok) {
@@ -49,17 +23,10 @@ const CreateFaculty = () => {
       }
   
       const result = await response.json();
-      toast({
-        title: "Bulk Upload Successful",
-        description: result.message || "Faculty accounts created successfully.",
-      });
+      
     } catch (error) {
       console.error('Error uploading file:', error);
-      toast({
-        title: "Bulk Upload Failed",
-        description: error.message || "Failed to upload CSV file.",
-        variant: "destructive",
-      });
+      
     }
   };
 
@@ -77,39 +44,14 @@ const CreateFaculty = () => {
           </Button>
           
           <h1 className="text-3xl font-display font-medium mb-2">
-            Create Faculty Account
+            Create Faculty Accounts
           </h1>
-          
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Single Account Creation */}
-          <div className="glass-panel rounded-3xl p-8 opacity-0 animate-fade-in">
-            <h2 className="text-xl font-medium mb-6">Create Individual Account</h2>
-            
-            <form onSubmit={handleSingleAccount} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Faculty Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="faculty@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="rounded-xl input-focus"
-                />
-              </div>
-              
-              <Button type="submit" className="w-full rounded-xl gap-2">
-                <Send className="h-4 w-4" />
-                Create Account
-              </Button>
-            </form>
-          </div>
-
+        <div className="grid grid-cols-1">
           {/* Bulk Account Creation with CSV Uploader */}
           <CSVUploader 
-            title="Create Faculty Accounts"
+            title=" "
             description=" "
             onUploadComplete={handleBulkUploadComplete}
           />

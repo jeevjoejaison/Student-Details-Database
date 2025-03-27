@@ -51,7 +51,7 @@ export function LoginForm() {
       // Redirect based on role
       if (data.email === "student@example.com") {
         navigate("/dashboard");
-      } else if (data.email === "faculty@example.com") {
+      } else if (data.email === "fa@example.com" || data.email === "fa2@example.com") {
         navigate("/faculty");
       } else if (data.email === "admin@example.com") {
         navigate("/admin");
@@ -129,16 +129,6 @@ export function LoginForm() {
         </form>
       </Form>
 
-      <div className="mt-6 text-center text-sm">
-        <p className="text-muted-foreground">
-          Demo accounts:
-        </p>
-        <div className="flex flex-col gap-1 mt-1">
-          <code className="text-xs">student@example.com / password</code>
-          <code className="text-xs">faculty@example.com / password</code>
-          <code className="text-xs">admin@example.com / password</code>
-        </div>
-      </div>
     </CustomCard>
   );
 }

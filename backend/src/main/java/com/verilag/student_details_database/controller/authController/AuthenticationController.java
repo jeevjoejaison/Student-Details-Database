@@ -82,6 +82,13 @@ public class AuthenticationController {
         return response.isSuccess() ? ResponseEntity.ok(response) : ResponseEntity.status(401).body(response);
     }
 
+    @PostMapping("/login-faculty")
+    public ResponseEntity<AuthenticationResponse> loginFaculty(@RequestBody AuthenticationRequest request) {
+        AuthenticationResponse response = authenticationService.authenticateFaculty(request);
+        return response.isSuccess() ? ResponseEntity.ok(response) : ResponseEntity.status(401).body(response);
+    }
+
+
     @PostMapping("/register/student")
     public ResponseEntity<AuthenticationResponse> registerStudent(@RequestBody StudentRegistrationRequest student) {
         return ResponseEntity.ok(authenticationService.registerStudent(student));

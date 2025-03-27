@@ -13,20 +13,7 @@ const DashboardHeader = () => {
       </div>
       
       <div className="flex mt-4 md:mt-0 space-x-4 text-sm font-medium">
-        <Link 
-          to="/about" 
-          className="flex items-center space-x-1 text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <Info className="h-4 w-4" />
-          <span>About</span>
-        </Link>
-        <Link 
-          to="/feedback" 
-          className="flex items-center space-x-1 text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <MessageSquare className="h-4 w-4" />
-          <span>Feedback</span>
-        </Link>
+        
       </div>
     </div>
   );

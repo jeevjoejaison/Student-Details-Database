@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { handleDownloadProof } from "../../utils/formUtils";
 
 // Define color scheme for category
 const categoryColors = {
@@ -64,18 +65,18 @@ const FacultyRequests = () => {
   const formattedRequests = pendingRequests.map(
     (request) => ({
       activityId: request.activityId,
-      studentName: request.studentName || "N/A", 
+      studentName: request.name || "N/A", 
       rollNumber: request.rollNumber,
       title: request.eventName,
-      category: request.category || "General",
+      category: request.type,
       submittedOn: request.date,
       awards: request.awards || "None",
-      location: request.location || "N/A",
+      location: request.location,
       proof: request.proof || "N/A",
       details: request.details || {
-        eventName: request.eventName || "No Title",
-        location: request.location || "N/A",
-        date: request.date || "N/A",
+        eventName: request.eventName,
+        location: request.location,
+        date: request.date,
         awards: request.awards || "None",
         proof: request.proof || "N/A",
       },
@@ -307,14 +308,13 @@ const FacultyRequests = () => {
                           return (
                             <div key={key} className="mt-4">
                               <h3 className="text-sm font-medium text-muted-foreground">Proof Document</h3>
-                              <a 
-                                href={value as string} 
-                                target="_blank" 
+                              <Button 
+                                onClick={() => handleDownloadProof(selectedRequest.proof, selectedRequest.eventName)}
                                 rel="noopener noreferrer"
                                 className="text-blue-600 hover:underline"
                               >
                                 View Document
-                              </a>
+                              </Button>
                             </div>
                           );
                         } else {

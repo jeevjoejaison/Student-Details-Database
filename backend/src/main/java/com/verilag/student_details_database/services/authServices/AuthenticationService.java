@@ -71,6 +71,30 @@ public class AuthenticationService {
         // Return userId on successful login
         return new AuthenticationResponse("Login successful!", true, student.getUserId(),student.getName(),student.getRollNumber(),student.getSection());
     }
+
+    public AuthenticationResponse authenticateFaculty(AuthenticationRequest request) {
+        System.out.println(request.getEmail());
+        User user = userRepository.findByEmail(request.getEmail()).orElse(null);
+    
+        if (user == null) {
+            return new AuthenticationResponse("User not found", false, null);
+        }
+    
+        // Check if the password matches
+        if (!request.getPassword().equals(user.getPassword())) {
+            return new AuthenticationResponse("Invalid email or password", false, null);
+        }
+    
+        // Check if the user is active and is a faculty advisor
+        if (!user.isActive() || user.getRole() != Role.FA) {
+            return new AuthenticationResponse("Invalid User", false, null);
+        }
+    
+        // Cast to FA and return faculty-specific details
+        FA faculty = (FA) user;
+        return new AuthenticationResponse("Login successful!", true, faculty.getUserId());
+    }
+
     /**
      * Register a new student.
      *

@@ -55,13 +55,12 @@ export default function FacultyVerified() {
         // Map response to match the existing table format
         const formattedData = response.data.map((activity) => ({
           id: activity.activityId.toString(),
-          student: activity.studentName || "Unknown",
-          studentId: activity.studentId.toString(),
+          student: activity.name,
+          studentId: activity.rollNumber,
           type: activity.category || "General",
           title: activity.eventName || "Untitled",
           submittedOn: activity.date || "N/A",
           status: activity.approved ? "approved" : "rejected",
-          verifiedOn: activity.verifiedOn || "N/A",
           rejectionReason: activity.comments || "-",
         }));
 
@@ -200,7 +199,6 @@ export default function FacultyVerified() {
                     <TableHead>Title</TableHead>
                     <TableHead>Submitted On</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead>Verified On</TableHead>
                     <TableHead>Comments</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -230,7 +228,6 @@ export default function FacultyVerified() {
                               : "Rejected"}
                           </div>
                         </TableCell>
-                        <TableCell>{submission.verifiedOn}</TableCell>
                         <TableCell>
                           {submission.rejectionReason || "-"}
                         </TableCell>

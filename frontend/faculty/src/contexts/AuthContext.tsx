@@ -46,8 +46,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
           },
           "faculty-456": {
             id: "faculty-456",
-            name: "Jane Faculty",
-            email: "faculty@example.com",
+            name: "Jane",
+            email: "fa@example.com",
+            role: "faculty" as UserRole,
+          },
+          "faculty-476": {
+            id: "faculty-476",
+            name: "Veni",
+            email: "fa2@example.com",
             role: "faculty" as UserRole,
           },
           "admin-789": {
@@ -81,7 +87,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         // In a real app, this would be an API call
         if (
           (email === "student@example.com" && password === "password") ||
-          (email === "faculty@example.com" && password === "password") ||
+          (email === "fa@example.com" && password === "12345678") ||
+          (email === "fa2@example.com" && password === "12345678") ||
           (email === "admin@example.com" && password === "password")
         ) {
           let userData: User;
@@ -94,14 +101,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
               role: "student",
             };
             localStorage.setItem("userId", "student-123");
-          } else if (email === "faculty@example.com") {
+          } else if (email === "fa@example.com") {
             userData = {
               id: "faculty-456",
-              name: "Jane Faculty",
-              email: "faculty@example.com",
+              name: "Jane",
+              email: "fa@example.com",
               role: "faculty",
             };
             localStorage.setItem("userId", "faculty-456");
+          } else if (email === "fa2@example.com") {
+            userData = {
+              id: "faculty-476",
+              name: "Veni",
+              email: "fa2@example.com",
+              role: "faculty",
+            };
+            localStorage.setItem("userId", "faculty-476");
           } else {
             userData = {
               id: "admin-789",

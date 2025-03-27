@@ -21,16 +21,9 @@ public class Activity {
     public Activity() {
 
     }
-
-    public Activity(String description, boolean approved, Long studentId, String comments) {
-            this.description = description;
-            this.approved = approved;
-            this.studentId = studentId;
-            this.comments = comments;
-    }
     
     public Activity(Long activityId, String name, String rollNumber, String type, String description,
-            boolean approved, Long studentId) {
+            boolean approved, Long studentId, String comments) {
         this.activityId = activityId;
         this.name = name;
         this.rollNumber = rollNumber;
@@ -38,6 +31,7 @@ public class Activity {
         this.description = description;
         this.approved = approved;
         this.studentId = studentId;
+        this.comments = comments;
     }
 
     public Long getActivityId() { return activityId; }

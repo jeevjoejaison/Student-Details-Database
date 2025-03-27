@@ -17,7 +17,6 @@ import FacultyDashboard from "./pages/faculty/Dashboard";
 import FacultyStudents from "./pages/faculty/Students";
 import FacultyRequests from "./pages/faculty/Requests";
 import FacultyVerified from "./pages/faculty/Verified";
-import FacultyReports from "./pages/faculty/Reports";
 
 
 // Import framer-motion
@@ -80,16 +79,6 @@ const App = () => (
                     />
                   }
                 />
-                <Route
-                  path="/faculty/reports"
-                  element={
-                    <ProtectedRoute
-                      element={<FacultyReports />}
-                      allowedRoles={["faculty"]}
-                    />
-                  }
-                />
-                
                 
                 
                 {/* Catch-all route */}

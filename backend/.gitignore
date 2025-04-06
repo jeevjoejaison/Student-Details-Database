@@ -8,6 +8,7 @@ target/
 /.settings
 /.vscode
 application.properties
+application-test.properties
 .env
 
 ### Ignore target folders except inside src/main and src/test ###

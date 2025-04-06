@@ -2,7 +2,9 @@ package com.verilag.student_details_database.controller.filter;
 
 import java.util.List;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +23,12 @@ public class FilterFacultyController {
 
     // Endpoint to filter faculties by department
     @GetMapping("/filter")
-    public List<FA> filterFacultiesByDepartment(@RequestParam String department) {
-        return facultyService.getFacultiesByDepartment(department);
+    public ResponseEntity<?> filterFacultiesByDepartment(@RequestParam String department) {
+        try {
+            List<FA> result = facultyService.getFacultiesByDepartment(department);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).body("Something went wrong: " + e.getMessage());
+        }
     }
 }

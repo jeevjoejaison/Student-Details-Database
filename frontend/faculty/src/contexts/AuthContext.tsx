@@ -1,5 +1,5 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
 type UserRole = "student" | "faculty" | "admin";
@@ -25,158 +25,68 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [isLoading, setIsLoading] = useState(true);
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Check if user is logged in on initial load
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId) {
-      // Simulate fetching user data
-      setTimeout(() => {
-        // Mock data - in a real app, fetch from API
-        const mockUsers = {
-          "student-123": {
-            id: "student-123",
-            name: "John Student",
-            email: "student@example.com",
-            role: "student" as UserRole,
-          },
-          "faculty-456": {
-            id: "faculty-456",
-            name: "Jane",
-            email: "fa@example.com",
-            role: "faculty" as UserRole,
-          },
-          "faculty-476": {
-            id: "faculty-476",
-            name: "Veni",
-            email: "fa2@example.com",
-            role: "faculty" as UserRole,
-          },
-          "admin-789": {
-            id: "admin-789",
-            name: "Admin User",
-            email: "admin@example.com",
-            role: "admin" as UserRole,
-          },
-        };
-
-        if (userId in mockUsers) {
-          setUser(mockUsers[userId as keyof typeof mockUsers]);
-        } else {
-          // Invalid user ID, clear localStorage
-          localStorage.removeItem("userId");
-        }
-        setIsLoading(false);
-      }, 500);
-    } else {
-      setIsLoading(false);
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
+    setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
-    // Simulate API request
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Mock authentication logic
-        // In a real app, this would be an API call
-        if (
-          (email === "student@example.com" && password === "password") ||
-          (email === "fa@example.com" && password === "12345678") ||
-          (email === "fa2@example.com" && password === "12345678") ||
-          (email === "admin@example.com" && password === "password")
-        ) {
-          let userData: User;
-          
-          if (email === "student@example.com") {
-            userData = {
-              id: "student-123",
-              name: "John Student",
-              email: "student@example.com",
-              role: "student",
-            };
-            localStorage.setItem("userId", "student-123");
-          } else if (email === "fa@example.com") {
-            userData = {
-              id: "faculty-456",
-              name: "Jane",
-              email: "fa@example.com",
-              role: "faculty",
-            };
-            localStorage.setItem("userId", "faculty-456");
-          } else if (email === "fa2@example.com") {
-            userData = {
-              id: "faculty-476",
-              name: "Veni",
-              email: "fa2@example.com",
-              role: "faculty",
-            };
-            localStorage.setItem("userId", "faculty-476");
-          } else {
-            userData = {
-              id: "admin-789",
-              name: "Admin User",
-              email: "admin@example.com",
-              role: "admin",
-            };
-            localStorage.setItem("userId", "admin-789");
-          }
-          
-          setUser(userData);
-          setIsLoading(false);
-          toast({
-            title: "Login successful",
-            description: `Welcome back, ${userData.name}!`,
-          });
-          resolve(true);
-        } else {
-          setIsLoading(false);
-          toast({
-            variant: "destructive",
-            title: "Login failed",
-            description: "Invalid email or password",
-          });
-          resolve(false);
-        }
-      }, 1000);
-    });
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/login-faculty", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid email or password");
+      }
+
+      const userData: User = await response.json();
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
+      toast({ title: "Login Successful", description: `Welcome, ${userData.name}!` });
+
+      setIsLoading(false);
+      return true;
+    } catch (error) {
+      toast({ title: "Login Failed", description: error.message, variant: "destructive" });
+      setIsLoading(false);
+      return false;
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem("userId");
+    localStorage.removeItem("user");
     setUser(null);
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out",
-    });
+    navigate("/login");
+    toast({ title: "Logged Out", description: "You have been successfully logged out." });
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated: !!user,
-        isLoading,
-        user,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated: !!user, isLoading, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
-  
   return context;
 };

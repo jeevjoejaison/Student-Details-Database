@@ -2,6 +2,7 @@ package com.verilag.student_details_database.controller.facultyController;
 
 import com.verilag.student_details_database.models.formModels.Activity;
 import com.verilag.student_details_database.services.faculty.PendingReqService;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,6 +25,7 @@ class PendingReqControllerTest {
 
     @InjectMocks
     private PendingReqController pendingReqController;
+
 
     @Test
     void testGetPendingActivities() {

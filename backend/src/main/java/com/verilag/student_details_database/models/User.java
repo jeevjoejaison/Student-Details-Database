@@ -13,7 +13,7 @@ import java.util.Collections;
 @Inheritance(strategy = InheritanceType.JOINED) // Use JOINED inheritance strategy
 @Table(name = "USERS")
 
-public abstract class User implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

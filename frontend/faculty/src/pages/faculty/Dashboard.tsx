@@ -13,7 +13,7 @@ export default function FacultyDashboard() {
   const [pendingCount, setPendingCount] = useState(0);
   const [verifiedCount, setVerifiedCount] = useState(0);
 
-  const facultyId = 1; // Change this based on logged-in faculty
+  const facultyId = 110; // Change this based on logged-in faculty
 
   // Fetch counts from the backend
   useEffect(() => {

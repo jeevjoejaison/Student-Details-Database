@@ -15,7 +15,7 @@ const FacultyStudents = () => {
   const [students, setStudents] = useState([]); // Initially empty
   const [filteredData, setFilteredData] = useState([]);
 
-  const facultyId = 1; // Change this based on logged-in faculty
+  const facultyId = 110; // Change this based on logged-in faculty
   
   useEffect(() => {
     fetch(`http://localhost:8080/api/faculty/students/${facultyId}`)

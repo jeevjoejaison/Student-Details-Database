@@ -6,5 +6,5 @@ import com.verilag.student_details_database.models.externalrepo.FacultyConferenc
 
 public interface FacultyConferencePaperRepository extends JpaRepository<FacultyConferencePaper, Long> {
 
-    List<FacultyConferencePaper> findByConferenceNameContainingIgnoreCase(String conferenceName);
+    List<FacultyConferencePaper> findByTitleContainingIgnoreCase(String title);
 }

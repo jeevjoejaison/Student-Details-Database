@@ -6,5 +6,5 @@ import com.verilag.student_details_database.models.externalrepo.FacultyJournalPa
 
 public interface FacultyJournalPaperRepository extends JpaRepository<FacultyJournalPaper, Long> {
 
-    List<FacultyJournalPaper> findByJournalNameContainingIgnoreCase(String journalName);
+    List<FacultyJournalPaper> findByTitleContainingIgnoreCase(String title);
 }

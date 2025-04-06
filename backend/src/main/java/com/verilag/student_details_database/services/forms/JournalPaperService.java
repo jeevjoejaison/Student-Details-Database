@@ -63,7 +63,7 @@ public class JournalPaperService {
     }
 
     public List<JournalPaperDTO> searchByName(String query) {
-        List<FacultyJournalPaper> papers = fRepository.findByJournalNameContainingIgnoreCase(query);
+        List<FacultyJournalPaper> papers = fRepository.findByTitleContainingIgnoreCase(query);
         return papers.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 

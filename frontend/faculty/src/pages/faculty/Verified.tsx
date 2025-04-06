@@ -33,7 +33,7 @@ export default function FacultyVerified() {
   const [searchTerm, setSearchTerm] = useState("");
   const [verifiedSubmissions, setVerifiedSubmissions] = useState<VerifiedSubmission[]>([]);
 
-  const facultyId = 1; 
+  const facultyId = 110; 
 
   type VerifiedSubmission = {
     id: string;
@@ -179,12 +179,7 @@ export default function FacultyVerified() {
                 </SelectContent>
               </Select>
             </div>
-            <Button variant="outline" className="gap-1"
-              onClick={ExportToExcel}
-              >
-              <Download className="h-4 w-4" />
-              <span>Export</span>
-            </Button>
+            
           </div>
         </motion.div>
 

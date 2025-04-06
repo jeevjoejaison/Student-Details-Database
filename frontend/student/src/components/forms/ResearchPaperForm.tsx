@@ -202,7 +202,7 @@ const ResearchPaperForm = () => {
       setStartDate(item.startDate);
       setEndDate(item.endDate);
     }
-    setSearchQuery(item.journalName || item.conferenceName);
+    setSearchQuery(item.title);
     setShowDropdown(false); // Hide dropdown when an item is selected
   };
   
@@ -214,11 +214,11 @@ const ResearchPaperForm = () => {
     setShowDropdown(true); // Show dropdown on search
   
     if (paperType === "Journal") {
-      setJournalData((prev) => ({ ...prev, journalName: value })); // Correct spread syntax
+      setJournalData((prev) => ({ ...prev, title: value })); // Correct spread syntax
       const response = await axios.get(`http://localhost:8080/journal-papers/search?query=${value}`);
       setSearchResults(response.data);
     } else {
-      setConferenceData((prev) => ({ ...prev, conferenceName: value })); // Ensure conference name updates
+      setConferenceData((prev) => ({ ...prev, title: value })); // Ensure conference name updates
       const response = await axios.get(`http://localhost:8080/conference-papers/search?query=${value}`);
       setSearchResults(response.data);
     }
@@ -247,11 +247,11 @@ const ResearchPaperForm = () => {
           {paperType === "Journal" && (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField label="Journal Name">
+                <FormField label="Title">
                   <div className="relative">
                     <div className="relative">
                       <Input
-                        name="journalName"
+                        name="title"
                         value={searchQuery}
                         onChange={handleSearchChange}
                         required
@@ -268,18 +268,18 @@ const ResearchPaperForm = () => {
                             className="p-2 hover:bg-gray-100 cursor-pointer"
                             onClick={() => handleSelectItem(item)}
                           >
-                            {item.journalName || item.conferenceName}
+                            {item.title}
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
                 </FormField>
-                <FormField label="Title">
+                <FormField label="Journal Name">
                 <span className="text-red-500">*</span>
                   <Input 
-                    name="title" 
-                    value={journalData.title} 
+                    name="journalName" 
+                    value={journalData.journalName} 
                     onChange={handleInputChange} 
                     required 
                     className="border-purple-300 focus:border-purple-500" 
@@ -427,11 +427,11 @@ const ResearchPaperForm = () => {
           {paperType === "Conference" && (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField label="Conference Name">
+                <FormField label="Title">
                   <div className="relative">
                     <div className="relative">
                       <Input
-                        name="conferenceName"
+                        name="title"
                         value={searchQuery}
                         onChange={handleSearchChange}
                         required
@@ -447,7 +447,7 @@ const ResearchPaperForm = () => {
                             className="p-2 hover:bg-gray-100 cursor-pointer"
                             onClick={() => handleSelectItem(item)}
                           >
-                            {item.journalName || item.conferenceName}
+                            {item.title}
                           </div>
                         ))}
                       </div>
@@ -455,11 +455,11 @@ const ResearchPaperForm = () => {
                   </div>
                 </FormField>
 
-                <FormField label="Title">
+                <FormField label="Conference Name">
                 <span className="text-red-500">*</span>
                   <Input 
-                    name="title" 
-                    value={conferenceData.title} 
+                    name="conferenceName" 
+                    value={conferenceData.conferenceName} 
                     onChange={handleInputChange} 
                     required 
                     className="border-purple-300 focus:border-purple-500" 

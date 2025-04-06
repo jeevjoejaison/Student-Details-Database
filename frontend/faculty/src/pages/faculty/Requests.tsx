@@ -45,7 +45,7 @@ const FacultyRequests = () => {
   const [actionType, setActionType] = useState(null);
   const [comment, setComment] = useState("");
 
-  const faId = 1; // Change this based on logged-in faculty
+  const faId = 110; // Change this based on logged-in faculty
 
   // Fetch pending requests from the backend
   useEffect(() => {

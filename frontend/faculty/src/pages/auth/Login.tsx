@@ -11,13 +11,7 @@ export default function Login() {
 
   // Redirect if already logged in
   if (isAuthenticated) {
-    if (user?.role === "student") {
-      return <Navigate to="/dashboard" replace />;
-    } else if (user?.role === "faculty") {
-      return <Navigate to="/faculty" replace />;
-    } else if (user?.role === "admin") {
-      return <Navigate to="/admin" replace />;
-    }
+    return <Navigate to="/faculty" replace />;
   }
 
   return (
@@ -33,7 +27,7 @@ export default function Login() {
             Student Management System
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Log in to manage your academic and co-curricular achievements
+            Log in to manage your students and activities
           </p>
         </motion.div>
 

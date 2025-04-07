@@ -1,74 +1,65 @@
 package com.verilag.student_details_database.controller.facultyController;
 
-import com.verilag.student_details_database.models.FA;
+import com.verilag.student_details_database.config.TestSecurityConfig;
 import com.verilag.student_details_database.models.Student;
 import com.verilag.student_details_database.services.faculty.StudentFetchService;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+import org.mockito.Mockito;
 
-import java.util.Arrays;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
-class FacultyControllerTest {
+@WebMvcTest(FacultyController.class)
+@Import(TestSecurityConfig.class)
+public class FacultyControllerTest {
 
-    @Mock
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private StudentFetchService studentService;
 
-    @InjectMocks
-    private FacultyController facultyController;
+    // --------------------------------------------------
+    // ✅ Test /api/faculty/students/{faId} (GET)
+    // --------------------------------------------------
+    @Test
+    void testGetStudentsUnderFA_success() throws Exception {
+        Student student1 = new Student();
+        student1.setName("John");
+        student1.setRollNumber("22XX1001");
 
-    private FA testFA;
-    private Student student1, student2;
+        Student student2 = new Student();
+        student2.setName("Jane");
+        student2.setRollNumber("22XX1002");
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+        Mockito.when(studentService.getStudentsByFAId(10L)).thenReturn(List.of(student1, student2));
 
-        // Creating a dummy FA object
-        testFA = new FA();
-        testFA.setUserId(1L);
-
-        // Creating two Student objects
-        student1 = new Student("student1@example.com", "password", "S001", "John Doe", "CSE", "A", testFA);
-        student2 = new Student("student2@example.com", "password", "S002", "Jane Doe", "ECE", "B", testFA);
+        mockMvc.perform(get("/api/faculty/students/10"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$[0].name").value("John"))
+            .andExpect(jsonPath("$[1].name").value("Jane"));
     }
 
+    // --------------------------------------------------
+    // ✅ Test /api/faculty/students/count/{faId} (GET)
+    // --------------------------------------------------
     @Test
-    void testGetStudentsUnderFA() {
-        Long faId = 1L;
-        List<Student> studentsList = Arrays.asList(student1, student2);
+    void testGetStudentCountByFA_success() throws Exception {
+        Mockito.when(studentService.getStudentCountByFAId(10L)).thenReturn(2);
 
-        when(studentService.getStudentsByFAId(faId)).thenReturn(studentsList);
-
-        ResponseEntity<List<Student>> response = facultyController.getStudentsUnderFA(faId);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(2, response.getBody().size());
-        assertEquals("John Doe", response.getBody().get(0).getName());
-        assertEquals("Jane Doe", response.getBody().get(1).getName());
-
-        verify(studentService, times(1)).getStudentsByFAId(faId);
-    }
-
-    @Test
-    void testGetStudentCount() {
-        Long faId = 1L;
-        when(studentService.getStudentCountByFAId(faId)).thenReturn(5);
-
-        ResponseEntity<Integer> response = facultyController.getStudentCount(faId);
-
-        assertEquals(5, response.getBody());
-        verify(studentService, times(1)).getStudentCountByFAId(faId);
+        mockMvc.perform(get("/api/faculty/students/count/10"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("2"));
     }
 }
